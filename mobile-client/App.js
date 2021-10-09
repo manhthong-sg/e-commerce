@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, Text, View, Platform } from 'react-native';
+import {COLORS} from './constants/index' 
+import Login from './screens/Login'
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Xin chào đây là Frontend app E-commerce</Text>
-      <StatusBar style="auto" />
+      <Login/>
+
     </View>
   );
 }
@@ -15,7 +16,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
 });
