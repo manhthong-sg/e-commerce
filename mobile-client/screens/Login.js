@@ -3,138 +3,141 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'reac
 import {images, icons, COLORS} from '../constants'
 import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
-
+import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 const Login = () => {
     const [hidePassword, setHidePassword]=useState(true);
     return (
-        <View style={styles.container}>
-            {/* //logo image */}
-            <Image
-                source={require('../assets/icons/logo2.png')}
-                resizeMode="contain"
-                style={{
-                    width: 150,
-                    height: 150,
-                    justifyContent: 'flex-start'
-                }}
-            />
+        <KeyboardAvoidingWrapper>
+            <View style={styles.container}>
+                {/* //logo image */}
+                <Image
+                    source={require('../assets/icons/logo2.png')}
+                    resizeMode="contain"
+                    style={{
+                        width: 150,
+                        height: 150,
+                        justifyContent: 'flex-start'
+                    }}
+                />
 
-            {/* //Ten thuong hieu */}
-            <Text style={{
-                color: COLORS.brand, fontWeight: 'bold', fontSize: 24}}
-            >
-                E-Laptop
-            </Text>
-            {/* //titile */}
-            <Text style={{
-                color: COLORS.black, fontWeight: 'bold', fontSize: 17, marginTop: 10, letterSpacing: 2}}
-            >
-                Account Login
-            </Text>
-            {/* form login     */}
-            <Formik
-                initialValues={{email: '', password: ''}}
-                onSubmit={value=>console.log(value)}
+                {/* //Ten thuong hieu */}
+                <Text style={{
+                    color: COLORS.brand, fontWeight: 'bold', fontSize: 24}}
                 >
-                {
-                    ({handleChange, handleBlur, handleSubmit, values})=>{
-                        return (
-                            <View>
-                                {/* edittext email */}
-                                <MyTextInput
-                                    label="Email Address"
-                                    icon="mail"
-                                    placeholder="abc@gmail.com"
-                                    placeholderTextColor={COLORS.darklight}
-                                    onChangeText={handleChange('email')}
-                                    onBlur= {handleBlur('email')}
-                                    value={values.email}
-                                    keyboardType='email-address'
-                                />
+                    E-Laptop
+                </Text>
+                {/* //titile */}
+                <Text style={{
+                    color: COLORS.black, fontWeight: 'bold', fontSize: 17, marginTop: 10, letterSpacing: 2}}
+                >
+                    Account Login
+                </Text>
+                {/* form login     */}
+                <Formik
+                    initialValues={{email: '', password: ''}}
+                    onSubmit={value=>console.log(value)}
+                    >
+                    {
+                        ({handleChange, handleBlur, handleSubmit, values})=>{
+                            return (
+                                <View>
+                                    {/* edittext email */}
+                                    <MyTextInput
+                                        label="Email Address"
+                                        icon="mail"
+                                        placeholder="abc@gmail.com"
+                                        placeholderTextColor={COLORS.darklight}
+                                        onChangeText={handleChange('email')}
+                                        onBlur= {handleBlur('email')}
+                                        value={values.email}
+                                        keyboardType='email-address'
+                                    />
 
-                                {/* edittext password  */}
-                                <MyTextInput
-                                    label="Password"
-                                    icon="lock"
-                                    placeholder="* * * * * *"
-                                    placeholderTextColor={COLORS.darklight}
-                                    onChangeText={handleChange('password')}
-                                    onBlur= {handleBlur('password')}
-                                    value={values.password}
-                                    secureTextEntry={hidePassword}
-                                    isPassword={true}
-                                    hidePassword={hidePassword}
-                                    setHidePassword={setHidePassword}
-                                />
+                                    {/* edittext password  */}
+                                    <MyTextInput
+                                        label="Password"
+                                        icon="lock"
+                                        placeholder="* * * * * *"
+                                        placeholderTextColor={COLORS.darklight}
+                                        onChangeText={handleChange('password')}
+                                        onBlur= {handleBlur('password')}
+                                        value={values.password}
+                                        secureTextEntry={hidePassword}
+                                        isPassword={true}
+                                        hidePassword={hidePassword}
+                                        setHidePassword={setHidePassword}
+                                    />
 
-                                {/* messagebox, show error login  */}
-                                <Text style={{textAlign: 'center', fontSize: 13}}>
-                                    . . .
-                                </Text>
-
-                                {/* Button login */}
-                                <TouchableOpacity style={styles.Button}>
-                                    <Text style={{
-                                        color: COLORS.primary, 
-                                        fontSize: 16,
-                                        
-                                    }}>
-                                        Login
+                                    {/* messagebox, show error login  */}
+                                    <Text style={{textAlign: 'center', fontSize: 13}}>
+                                        . . .
                                     </Text>
-                                </TouchableOpacity>
-                                <Text 
-                                    style={{
-                                        marginBottom: 10,
-                                        color: COLORS.darklight,
-                                        //fontWeight: 'thin'
-                                    }}
-                                >
-                                    ______________________________________________
-                                </Text>
 
-                                {/* button login with gg      */}
-                                <TouchableOpacity style={styles.ButtonGoogle}>
-                                    <Fontisto 
-                                        name="google" 
-                                        color={COLORS.primary}
-                                        size={25}
-                                        />
-                                    <Text style={{
-                                        color: COLORS.primary, 
-                                        fontSize: 16,
-                                        paddingLeft: 5,
-                                    }}>
-                                        Sign with Google
-                                    </Text>
-                                </TouchableOpacity>    
-
-                                {/* no account/ register */}
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginTop: 10,
-                                }}>
-                                    <Text>Don't have an account already?</Text>
-                                    <TouchableOpacity>
-                                        <Text
-                                            style={{
-                                                color: COLORS.brand,
-                                                fontWeight: 'bold',
-                                                paddingLeft: 5,
-                                                
-
-                                            }}
-                                        > 
-                                            Register
+                                    {/* Button login */}
+                                    <TouchableOpacity style={styles.Button}>
+                                        <Text style={{
+                                            color: COLORS.primary, 
+                                            fontSize: 16,
+                                            
+                                        }}>
+                                            Login
                                         </Text>
                                     </TouchableOpacity>
-                                </View>
-                            </View>
+                                    <Text 
+                                        style={{
+                                            marginBottom: 10,
+                                            color: COLORS.darklight,
+                                            //fontWeight: 'thin'
+                                        }}
+                                    >
+                                        ______________________________________________
+                                    </Text>
 
-                    )}
-                }
-                
-            </Formik>    
-        </View>
+                                    {/* button login with gg      */}
+                                    <TouchableOpacity style={styles.ButtonGoogle}>
+                                        <Fontisto 
+                                            name="google" 
+                                            color={COLORS.primary}
+                                            size={25}
+                                            />
+                                        <Text style={{
+                                            color: COLORS.primary, 
+                                            fontSize: 16,
+                                            paddingLeft: 5,
+                                        }}>
+                                            Sign with Google
+                                        </Text>
+                                    </TouchableOpacity>    
+
+                                    {/* no account/ register */}
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        marginTop: 10,
+                                    }}>
+                                        <Text>Don't have an account already?</Text>
+                                        <TouchableOpacity>
+                                            <Text
+                                                style={{
+                                                    color: COLORS.brand,
+                                                    fontWeight: 'bold',
+                                                    paddingLeft: 5,
+                                                    
+
+                                                }}
+                                            > 
+                                                Register
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                        )}
+                    }
+                    
+                </Formik>    
+            </View>
+        </KeyboardAvoidingWrapper>
+        
     )
 }
 
