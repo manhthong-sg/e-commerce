@@ -3,25 +3,32 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'reac
 import {images, icons, COLORS} from '../constants'
 import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
-
-const Login = () => {
+import DateTimePicker from '@react-native-community/datetimepicker';
+const Register = () => {
     const [hidePassword, setHidePassword]=useState(true);
+    
+    // handle select canlendar
+    const [showCalendar, setShowCalendar]=useState(false);
+    const [date, setDate]=useState(new Date(2000, 0, 1));
+    const [dob, setDob]=useState();
+
+    const handleOnChangeDatePicker=(event, selectedDate)=>{
+        const currentDate=selectedDate || date;
+        setShowCalendar(false);
+        setDate(currentDate);
+        setDob(currentDate);
+    }
+    const showDatePicker=()=>{
+        setShowCalendar(true);
+    }
+
     return (
         <View style={styles.container}>
-            {/* //logo image */}
-            <Image
-                source={require('../assets/icons/logo2.png')}
-                resizeMode="contain"
-                style={{
-                    width: 150,
-                    height: 150,
-                    justifyContent: 'flex-start'
-                }}
-            />
+            
 
             {/* //Ten thuong hieu */}
             <Text style={{
-                color: COLORS.brand, fontWeight: 'bold', fontSize: 24}}
+                color: COLORS.brand, fontWeight: 'bold', fontSize: 24, marginTop: 20,}}
             >
                 E-Laptop
             </Text>
@@ -29,11 +36,25 @@ const Login = () => {
             <Text style={{
                 color: COLORS.black, fontWeight: 'bold', fontSize: 17, marginTop: 10, letterSpacing: 2}}
             >
-                Account Login
+                Account Register
             </Text>
+            
+            {/* //date picker show  */}
+            {showCalendar && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode='date'
+                    is24Hour={true}
+                    display="default"
+                    onChange={handleOnChangeDatePicker}
+
+                />
+            )}
+
             {/* form login     */}
             <Formik
-                initialValues={{email: '', password: ''}}
+                initialValues={{fullName:'', dateOfBirth:'',phone:'', email: '', password: '', confirmPassword: ''}}
                 onSubmit={value=>console.log(value)}
                 >
                 {
@@ -41,6 +62,38 @@ const Login = () => {
                         return (
                             <View>
                                 {/* edittext email */}
+                                <MyTextInput
+                                    label="Full Name"
+                                    icon="person"
+                                    placeholder="Nguyễn Văn A"
+                                    placeholderTextColor={COLORS.darklight}
+                                    onChangeText={handleChange('fullName')}
+                                    onBlur= {handleBlur('emfullNameail')}
+                                    value={values.fullName}
+                                    
+                                />
+                                <MyTextInput
+                                    label="Date of Birth"
+                                    icon="calendar"
+                                    placeholder="YYYY - MM - DD"
+                                    placeholderTextColor={COLORS.darklight}
+                                    onChangeText={handleChange('dateOfBirth')}
+                                    onBlur= {handleBlur('dateOfBirth')}
+                                    value={dob ? dob.toDateString() : ''}
+                                    isDate={true}
+                                    editable={false}
+                                    showDatePicker={showDatePicker}
+                                />
+                                <MyTextInput
+                                    label="Your Phone"
+                                    icon="rocket"
+                                    placeholder="xxxx-xxx-xxx"
+                                    placeholderTextColor={COLORS.darklight}
+                                    onChangeText={handleChange('phone')}
+                                    onBlur= {handleBlur('phone')}
+                                    value={values.phone}
+                                    keyboardType='numeric'
+                                />
                                 <MyTextInput
                                     label="Email Address"
                                     icon="mail"
@@ -67,6 +120,21 @@ const Login = () => {
                                     setHidePassword={setHidePassword}
                                 />
 
+                                {/* confirm password  */}
+                                <MyTextInput
+                                    label="Confirm password"
+                                    icon="lock"
+                                    placeholder="* * * * * *"
+                                    placeholderTextColor={COLORS.darklight}
+                                    onChangeText={handleChange('confirmPassword')}
+                                    onBlur= {handleBlur('confirmPassword')}
+                                    value={values.confirmPassword}
+                                    secureTextEntry={hidePassword}
+                                    isPassword={true}
+                                    hidePassword={hidePassword}
+                                    setHidePassword={setHidePassword}
+                                />
+
                                 {/* messagebox, show error login  */}
                                 <Text style={{textAlign: 'center', fontSize: 13}}>
                                     . . .
@@ -79,7 +147,7 @@ const Login = () => {
                                         fontSize: 16,
                                         
                                     }}>
-                                        Login
+                                        Register
                                     </Text>
                                 </TouchableOpacity>
                                 <Text 
@@ -92,28 +160,13 @@ const Login = () => {
                                     ______________________________________________
                                 </Text>
 
-                                {/* button login with gg      */}
-                                <TouchableOpacity style={styles.ButtonGoogle}>
-                                    <Fontisto 
-                                        name="google" 
-                                        color={COLORS.primary}
-                                        size={25}
-                                        />
-                                    <Text style={{
-                                        color: COLORS.primary, 
-                                        fontSize: 16,
-                                        paddingLeft: 5,
-                                    }}>
-                                        Sign with Google
-                                    </Text>
-                                </TouchableOpacity>    
-
+                                
                                 {/* no account/ register */}
                                 <View style={{
                                     flexDirection: 'row',
-                                    marginTop: 10,
+                                    //marginTop: 10,
                                 }}>
-                                    <Text>Don't have an account already?</Text>
+                                    <Text>Already have an account?</Text>
                                     <TouchableOpacity>
                                         <Text
                                             style={{
@@ -124,7 +177,7 @@ const Login = () => {
 
                                             }}
                                         > 
-                                            Register
+                                            Login
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -138,7 +191,7 @@ const Login = () => {
     )
 }
 
-const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, ...props})=>{
+const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, isDate, showDatePicker, ...props})=>{
     return (
         <View style={{marginTop: 20, width: 300}}>
             <View style={styles.LeftIcon}>
@@ -151,10 +204,23 @@ const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, ...pro
             <Text style={styles.InputLabel}>
                 {label}
             </Text>
-            <TextInput 
+            
+            {
+                !isDate && <TextInput 
                 style = {styles.TextInput}
                 {...props}
             />
+            }
+            {
+                isDate && (
+                <TouchableOpacity onPress={showDatePicker}>
+                    <TextInput 
+                        style = {styles.TextInput}
+                        {...props}
+                    />
+                </TouchableOpacity>)
+            }
+
             {
                 isPassword && (
                     <View style={styles.RightIcon}>
@@ -172,7 +238,7 @@ const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, ...pro
         )
 }
 
-export default Login
+export default Register
 
 const styles = StyleSheet.create({
     wrap:{
@@ -180,7 +246,7 @@ const styles = StyleSheet.create({
     },
     container:{ 
         alignItems: 'center',
-        paddingTop: 50,
+        paddingTop: 30,
     },
     TextInput:{
         flexDirection: 'row',
@@ -190,9 +256,9 @@ const styles = StyleSheet.create({
         paddingRight: 55,
         borderRadius: 5,
         fontSize: 16,
-        height: 60,
-        marginVertical: 3,
-        marginBottom: 10,
+        height: 50,
+        marginVertical: 1,
+        marginBottom: 5,
         color: COLORS.tertiary,
     },
     InputLabel:{
@@ -202,13 +268,13 @@ const styles = StyleSheet.create({
     },
     LeftIcon:{
         left: 15,
-        top: 38,
+        top: 30,
         position: 'absolute',
         zIndex: 1
     },
     RightIcon:{
         right: 15,
-        top: 38,
+        top: 30,
         position: 'absolute',
         zIndex: 1
     },
