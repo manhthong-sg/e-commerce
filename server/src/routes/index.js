@@ -1,4 +1,5 @@
 //Define route
+const usersRoute=require('./users')
 function route(app){
 
     //Define route /login
@@ -14,6 +15,9 @@ function route(app){
           <h2>Đây là trang đăng ký</h2>
         `);
     });
+    
+    //Define route /users
+    app.use('/users', usersRoute)
 
     //Define route default
     app.use('/', (req, res) => {
