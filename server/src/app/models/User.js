@@ -34,7 +34,7 @@ const User=new Schema({
       },
       profilePicture: {
         type: String,
-        default: 'profilePicture',
+        default: '',
       },
 }, {versionKey: false} )//bỏ __v trong document in mongoose
 

@@ -1,11 +1,47 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native'
 import {images, icons, COLORS} from '../constants'
 import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
+import axios from 'axios'
+
 const Login = () => {
     const [hidePassword, setHidePassword]=useState(true);
+    
+    //mesage
+    const [message, setMessage]=useState();
+    const [messageType, setMessageType]=useState();
+
+    //handle message 
+    const handleMessage=(message, type='FAILED')=>{
+        setMessage(message);
+        setMessageType(type);
+    }
+
+    //handle login
+    const handleLogin=(credentials, setSubmitting)=>{
+        const{phone, password}=credentials
+        
+        
+        handleMessage(null);
+        const url='http://192.168.1.11:3000/users/auth';
+        axios.post(url, {phone: phone, password: password})
+        .then((data)=>{
+            //let {status, msg}=data.body;
+            handleMessage("Login Successfully", "SUCCESS");
+            setSubmitting(false)
+        })
+        .catch((err)=> {
+            //console.log(err.json());
+            setSubmitting(false);
+            handleMessage("Please check your info again.");
+
+        })
+        // registerForm({fullName, phone, passward})
+        //RegisterUser({fullName,phone,password,confirmPW})
+
+    }
     return (
         <KeyboardAvoidingWrapper>
             <View style={styles.container}>
@@ -37,11 +73,20 @@ const Login = () => {
                 </Text>
                 {/* form login     */}
                 <Formik
-                    initialValues={{email: '', password: ''}}
-                    onSubmit={value=>console.log(value)}
+                    initialValues={{phone: '', password: ''}}
+                    onSubmit={(values, {setSubmitting})=>{
+
+                        if(values.phone=='' || values.password==''){
+                            handleMessage('Please fill all the fields')
+                            setSubmitting(false)
+                        } else{
+                            handleLogin(values, setSubmitting)
+
+                        }
+                    }}
                     >
                     {
-                        ({handleChange, handleBlur, handleSubmit, values})=>{
+                        ({handleChange, handleBlur, handleSubmit, values, isSubmitting})=>{
                             return (
                                 <View>
                                     {/* edittext phone number */}
@@ -72,21 +117,42 @@ const Login = () => {
                                     />
 
                                     {/* messagebox, show error login  */}
-                                    <Text style={{textAlign: 'center', fontSize: 13}}>
-                                        . . .
+                                    <Text 
+                                        type={messageType} 
+                                        style={{
+                                            textAlign: 'center', 
+                                            fontSize: 13,
+                                            color: (messageType=='SUCCESS'? COLORS.green: COLORS.red)
+                                            }}>
+                                        {message}
                                     </Text>
-
-                                    {/* Button login */}
-                                    <TouchableOpacity style={styles.Button}>
-                                        <Text style={{
-                                            color: COLORS.primary, 
-                                            fontSize: 15,
-                                            fontWeight: 'bold',
-                                            
-                                        }}>
-                                            Login
-                                        </Text>
-                                    </TouchableOpacity>
+                                    
+                                    {/* //login button  */}
+                                    {
+                                        !isSubmitting && (
+                                            // {/* Button login */}
+                                            <View>
+                                                <TouchableOpacity onPress={handleSubmit} style={styles.Button}>
+                                                    <Text style={{
+                                                        color: COLORS.primary, 
+                                                        fontSize: 15,
+                                                        fontWeight: 'bold'
+                                                    }}>
+                                                        Login
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        )
+                                    }
+                                    {
+                                        isSubmitting && (
+                                            <View>
+                                                <TouchableOpacity disabled={true} style={styles.Button}>
+                                                    <ActivityIndicator size ="large" color ={COLORS.primary}/>
+                                                </TouchableOpacity>
+                                            </View>
+                                        )
+                                    }
                                     <Text 
                                         style={{
                                             marginBottom: 10,

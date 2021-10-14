@@ -9,9 +9,8 @@ router.post('/', usersController.register)
 router.get('/register', (req, res)=>{
     return res.send(`
             <div>
-                <form method="POST" action="/users">
-                    <label for="name">Name</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Your name..">
+                <form method="POST" action="/users/auth">
+                    
 
                     <label for="age">Phone</label>
                     <input type="text" id="phone" name="phone" placeholder="Your phone..">
@@ -25,6 +24,8 @@ router.get('/register', (req, res)=>{
         `)
 })
 
+// Post /users/auth 
+router.post('/auth', usersController.auth)
 
 // get /users/
 router.get('/', usersController.index)

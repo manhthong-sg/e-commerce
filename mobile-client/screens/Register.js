@@ -76,15 +76,30 @@ const Register = () => {
             <View style={styles.container}>
                 
 
-                {/* //Ten thuong hieu */}
+                {/* //Ten thuong hieu
                 <Text style={{
                     color: COLORS.brand, fontWeight: 'bold', fontSize: 24, marginTop: 20,}}
                 >
                     E-Laptop
-                </Text>
+                </Text> */}
+
+                {/* //logo image */}
+                <Image
+                    source={require('../assets/icons/logo_brand.png')}
+                    resizeMode="contain"
+                    style={{
+                        width: 150,
+                        height: 150,
+                        //position: 'absolute',
+                        bottom: -15,
+                        justifyContent: 'flex-start',
+                        //marginTop:20,
+                    }}
+                />
+
                 {/* //titile */}
                 <Text style={{
-                    color: COLORS.black, fontWeight: 'bold', fontSize: 17, marginTop: 10, letterSpacing: 2}}
+                    color: COLORS.black, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
                 >
                     Account Register
                 </Text>
@@ -197,7 +212,7 @@ const Register = () => {
                                         setHidePassword={setHidePassword}
                                     />
 
-                                    {/* messagebox, show error login  */}
+                                    {/* messagebox, show error register  */}
                                     <Text 
                                         type={messageType} 
                                         style={{

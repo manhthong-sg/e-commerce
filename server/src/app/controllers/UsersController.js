@@ -1,4 +1,5 @@
 const User=require('../models/User')
+const bcrypt = require('bcrypt');
 
 class UsersController {
     
@@ -10,42 +11,47 @@ class UsersController {
     }
     
     //[POST] /users
-    register(req, res){
-        const {phone}=req.body;
-        // Error's Array
-        let errors = [];
+    async register(req, res){ 
+        const passwordHash = await bcrypt.hash(req.body.password, 10)
 
-        // User.findOne({phone: phone})
-        // .then(user=>{
-        //     if(!user){
-                var newUser=User(req.body);
-                newUser.save()
-                .then(()=> {console.log("Create new user SUCCESSFULLY!"); Promise.resolve();})
-                .catch((err)=> res.json({msg: "Create new user FAIL!"}))   
-                // errors.push({msg: 'Phone already exists'});                                                              
-                // // res.render('register',{errors})
-                // res.json(errors)
-            // }
-            // else{
-            //     res.json({msg: "Phone number exist already."})
-            // }
-            // else{
-                 
-            // }
-        // })
-        // .catch((err)=> res.json(err+ " "))
-     
-        
-        // console.log(req.body)
-        // res.json(req.body)
-        
-        // var newUser=User(req.body);
-        // newUser.save()
-        // .then(()=> console.log("Create new user SUCCESSFULLY!"))
-        // .catch((err)=> console.log("Create new user FAIL! "+err))
+        req.body.password = passwordHash
+             
+        var newUser=User(req.body);
+        newUser.save()
+        .then(()=> {console.log("Create new user SUCCESSFULLY!"); Promise.resolve();})
+        .catch((err)=> res.json({msg: "Create new user FAIL!"}))   
     }
     
-    
+    //[POST] auth user login
+    async auth(req, res){
+
+        // get account from database
+        const user = await User.findOne({ phone: req.body.phone});
+        // check account found and verify password
+        if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
+        // authentication failed
+            console.log("fail")
+            
+            res.status(500).send('Something broke!')
+
+            // res.json({
+            //     status: "FAIL",
+            //     msg: "Please check your info again.",
+                
+            // });
+
+        } else {
+            // authentication successful
+            console.log("success")
+            
+            res.json({
+                status: "SUCCESS",
+                msg: "Login Successfully",
+                user
+            });
+        }
+        
+    }
     
     detail(req, res){
         return res.send(
