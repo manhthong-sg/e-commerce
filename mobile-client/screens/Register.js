@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native'
 import {images, icons, COLORS} from '../constants'
 import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
-
+import { registerUser as RegisterUser } from '../api'
+import axios from 'axios'
 const Register = () => {
     const [hidePassword, setHidePassword]=useState(true);
     
@@ -14,14 +15,60 @@ const Register = () => {
     const [date, setDate]=useState(new Date(2000, 0, 1));
     const [dob, setDob]=useState();
 
+    //mesage
+    const [message, setMessage]=useState();
+    const [messageType, setMessageType]=useState();
+
+    //user info
+    const [fullName, setFullName]=useState();
+    const [phone, setPhone]=useState();
+    const [password, setPassword]=useState();
+    const [confirmPW, setConfirmPW]=useState();
+    const[user, setUser]=useState()
+
+    //register form
+    //const [submitting, setSubmitting]=useState();
+
     const handleOnChangeDatePicker=(event, selectedDate)=>{
         const currentDate=selectedDate || date;
         setShowCalendar(false);
         setDate(currentDate);
         setDob(currentDate);
     }
+
+    //handle message 
+    const handleMessage=(message, type='FAILED')=>{
+        setMessage(message);
+        setMessageType(type);
+    }
+
+    //handle datepicker
     const showDatePicker=()=>{
         setShowCalendar(true);
+    }
+
+    //handle register
+    const handleRegister=(credentials, setSubmitting)=>{
+        const{fullName, phone, password}=credentials
+        
+        
+        handleMessage(null);
+        const url='http://192.168.1.11:3000/users';
+        axios.post(url, {fullName: fullName, phone: phone, password: password})
+        .then((res)=>{
+            handleMessage("Register Successfully", "SUCCESS");
+            let {status, msg}=res.body;
+            setSubmitting(false)
+        })
+        .catch((err)=> {
+            //console.log(err.json());
+            setSubmitting(false);
+            handleMessage("Phone number already exist");
+
+        })
+        // registerForm({fullName, phone, passward})
+        //RegisterUser({fullName,phone,password,confirmPW})
+
     }
 
     return (
@@ -57,11 +104,23 @@ const Register = () => {
 
                 {/* form login     */}
                 <Formik
-                    initialValues={{fullName:'', dateOfBirth:'',phone:'', email: '', password: '', confirmPassword: ''}}
-                    onSubmit={value=>console.log(value)}
+                    initialValues={{fullName:'',phone:'', password: '', confirmPW: ''}}
+                    onSubmit={(values, {setSubmitting})=>{
+
+                        if(values.fullName=='' || values.phone=='' || values.password=='' || values.confirmPW==''){
+                            handleMessage('Please fill all the fields')
+                            setSubmitting(false)
+                        } else if(values.password != values.confirmPW){
+                            handleMessage('Make sure confirm password is same with password')
+                            setSubmitting(false)
+                        } else{
+                            handleRegister(values, setSubmitting)
+
+                        }
+                    }}
                     >
                     {
-                        ({handleChange, handleBlur, handleSubmit, values})=>{
+                        ({handleChange, handleBlur, handleSubmit, values, isSubmitting})=>{
                             return (
                                 <View>
                                     {/* edittext email */}
@@ -71,11 +130,11 @@ const Register = () => {
                                         placeholder="Nguyễn Văn A"
                                         placeholderTextColor={COLORS.darklight}
                                         onChangeText={handleChange('fullName')}
-                                        onBlur= {handleBlur('emfullNameail')}
+                                        onBlur= {handleBlur('fullName')}
                                         value={values.fullName}
                                         
                                     />
-                                    <MyTextInput
+                                    {/* <MyTextInput
                                         label="Date of Birth"
                                         icon="calendar"
                                         placeholder="YYYY - MM - DD"
@@ -86,7 +145,7 @@ const Register = () => {
                                         isDate={true}
                                         editable={false}
                                         showDatePicker={showDatePicker}
-                                    />
+                                    /> */}
                                     <MyTextInput
                                         label="Your Phone"
                                         icon="rocket"
@@ -97,7 +156,7 @@ const Register = () => {
                                         value={values.phone}
                                         keyboardType='numeric'
                                     />
-                                    <MyTextInput
+                                    {/* <MyTextInput
                                         label="Email Address"
                                         icon="mail"
                                         placeholder="abc@gmail.com"
@@ -106,7 +165,7 @@ const Register = () => {
                                         onBlur= {handleBlur('email')}
                                         value={values.email}
                                         keyboardType='email-address'
-                                    />
+                                    /> */}
 
                                     {/* edittext password  */}
                                     <MyTextInput
@@ -129,9 +188,9 @@ const Register = () => {
                                         icon="lock"
                                         placeholder="* * * * * *"
                                         placeholderTextColor={COLORS.darklight}
-                                        onChangeText={handleChange('confirmPassword')}
-                                        onBlur= {handleBlur('confirmPassword')}
-                                        value={values.confirmPassword}
+                                        onChangeText={handleChange('confirmPW')}
+                                        onBlur= {handleBlur('confirmPW')}
+                                        value={values.confirmPW}
                                         secureTextEntry={hidePassword}
                                         isPassword={true}
                                         hidePassword={hidePassword}
@@ -139,20 +198,43 @@ const Register = () => {
                                     />
 
                                     {/* messagebox, show error login  */}
-                                    <Text style={{textAlign: 'center', fontSize: 13}}>
-                                        . . .
+                                    <Text 
+                                        type={messageType} 
+                                        style={{
+                                            textAlign: 'center', 
+                                            fontSize: 13,
+                                            color: (messageType=='SUCCESS'? COLORS.green: COLORS.red)
+                                            }}>
+                                        {message}
                                     </Text>
 
-                                    {/* Button login */}
-                                    <TouchableOpacity style={styles.Button}>
-                                        <Text style={{
-                                            color: COLORS.primary, 
-                                            fontSize: 16,
-                                            
-                                        }}>
-                                            Register
-                                        </Text>
-                                    </TouchableOpacity>
+                                    
+
+                                    {
+                                        !isSubmitting && (
+                                            // {/* Button login */}
+                                            <View>
+                                                <TouchableOpacity onPress={handleSubmit} style={styles.Button}>
+                                                    <Text style={{
+                                                        color: COLORS.primary, 
+                                                        fontSize: 15,
+                                                        fontWeight: 'bold'
+                                                    }}>
+                                                        Register
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        )
+                                    }
+                                    {
+                                        isSubmitting && (
+                                            <View>
+                                                <TouchableOpacity disabled={true} style={styles.Button}>
+                                                    <ActivityIndicator size ="large" color ={COLORS.primary}/>
+                                                </TouchableOpacity>
+                                            </View>
+                                        )
+                                    }
                                     <Text 
                                         style={{
                                             marginBottom: 10,
@@ -198,7 +280,7 @@ const Register = () => {
 
 const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, isDate, showDatePicker, ...props})=>{
     return (
-        <View style={{marginTop: 20, width: 300}}>
+        <View style={{marginTop: 15, width: 300}}>
             <View style={styles.LeftIcon}>
                 <Octicons
                     name={icon}

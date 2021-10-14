@@ -2,14 +2,14 @@ const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 
 const User=new Schema({
-    fullName: {
+      fullName: {
         type: String,
         required: true,
       },
       email: {
         type: String,
         lowercase: true,
-        required: true,
+        //required: true,
       },
       password: {
         type: String,
@@ -18,13 +18,14 @@ const User=new Schema({
       phone: {
         type: String,
         // enum: 10,
-        default: '',
+        //default: '',
+        unique: true,
         required: true,
       },
       dateOfBirth: {
         type: String,
         // minlength: 6,
-        default: '',
+        default: '1/1/2000',
       },
       address: {
         type: String,

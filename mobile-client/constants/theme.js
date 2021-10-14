@@ -16,8 +16,9 @@ export const COLORS = {
     white: "#FFFFFF",
     tertiary: "#1f2937",
     darklight: "#9ca3af",
-    brand: "#6d28d9",
-    orange: "#dd571c",
+    brand: "#5c0381",
+    orange: "#cf6006",
+    yellow: "#FFD700",
     green: "#10b981",
     red: "#ef4444",
 

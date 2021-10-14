@@ -11,24 +11,27 @@ const Login = () => {
             <View style={styles.container}>
                 {/* //logo image */}
                 <Image
-                    source={require('../assets/icons/logo2.png')}
+                    source={require('../assets/icons/logo_brand.png')}
                     resizeMode="contain"
                     style={{
                         width: 150,
                         height: 150,
-                        justifyContent: 'flex-start'
+                        //position: 'absolute',
+                        bottom: -15,
+                        justifyContent: 'flex-start',
+                        //marginTop:20,
                     }}
                 />
 
                 {/* //Ten thuong hieu */}
-                <Text style={{
+                {/* <Text style={{
                     color: COLORS.brand, fontWeight: 'bold', fontSize: 24}}
                 >
                     E-Laptop
-                </Text>
+                </Text> */}
                 {/* //titile */}
                 <Text style={{
-                    color: COLORS.black, fontWeight: 'bold', fontSize: 17, marginTop: 10, letterSpacing: 2}}
+                    color: COLORS.black, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
                 >
                     Account Login
                 </Text>
@@ -41,16 +44,16 @@ const Login = () => {
                         ({handleChange, handleBlur, handleSubmit, values})=>{
                             return (
                                 <View>
-                                    {/* edittext email */}
+                                    {/* edittext phone number */}
                                     <MyTextInput
-                                        label="Email Address"
-                                        icon="mail"
-                                        placeholder="abc@gmail.com"
+                                        label="Your Phone"
+                                        icon="rocket"
+                                        placeholder="xxxx-xxx-xxx"
                                         placeholderTextColor={COLORS.darklight}
-                                        onChangeText={handleChange('email')}
-                                        onBlur= {handleBlur('email')}
-                                        value={values.email}
-                                        keyboardType='email-address'
+                                        onChangeText={handleChange('phone')}
+                                        onBlur= {handleBlur('phone')}
+                                        value={values.phone}
+                                        keyboardType='numeric'
                                     />
 
                                     {/* edittext password  */}
@@ -77,7 +80,8 @@ const Login = () => {
                                     <TouchableOpacity style={styles.Button}>
                                         <Text style={{
                                             color: COLORS.primary, 
-                                            fontSize: 16,
+                                            fontSize: 15,
+                                            fontWeight: 'bold',
                                             
                                         }}>
                                             Login
@@ -102,8 +106,9 @@ const Login = () => {
                                             />
                                         <Text style={{
                                             color: COLORS.primary, 
-                                            fontSize: 16,
+                                            fontSize: 15,
                                             paddingLeft: 5,
+                                            fontWeight: 'bold',
                                         }}>
                                             Sign with Google
                                         </Text>

@@ -1,6 +1,11 @@
 //Define route
 const usersRoute=require('./users')
+
 function route(app){
+
+   
+    //Define route /users
+    app.use('/users', usersRoute)
 
     //Define route /login
     app.use('/login', (req, res) => {
@@ -16,8 +21,6 @@ function route(app){
         `);
     });
     
-    //Define route /users
-    app.use('/users', usersRoute)
 
     //Define route default
     app.use('/', (req, res) => {
