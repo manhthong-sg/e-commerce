@@ -2,8 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 const route=require('./routes/index')
-//app.use(express.urlencoded({extended: true}))
-app.use (express.urlencoded())
+
+
+app.use(express.urlencoded({extended: true}))
+//app.use (express.urlencoded())
+app.use(express.json())
 
 
 //ROUTE INIT
