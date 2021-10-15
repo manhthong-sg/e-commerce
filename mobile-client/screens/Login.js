@@ -5,6 +5,7 @@ import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import axios from 'axios'
+import BottomTabs from '../components/Home/BottomTabs'
 
 const Login = () => {
     const [hidePassword, setHidePassword]=useState(true);
@@ -205,7 +206,8 @@ const Login = () => {
                         )}
                     }
                     
-                </Formik>    
+                </Formik>
+                <BottomTabs/>    
             </View>
         </KeyboardAvoidingWrapper>
         

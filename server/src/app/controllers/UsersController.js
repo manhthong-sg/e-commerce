@@ -61,6 +61,6 @@ class UsersController {
         );
     }
 
-    //post /news
+    
 }
 module.exports=new UsersController;
