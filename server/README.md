@@ -1,1 +1,2 @@
-Đây là SERVER
+Server use Nodejs, Express
+Database use MongoDB 
