@@ -11,16 +11,18 @@ export const COLORS = {
     primary: "#FFFFFF",
     secondary: "#e5e7eb",
 
-    // colors
+    // colors maim flow
     black: "#1E1F20",
     white: "#FFFFFF",
     tertiary: "#1f2937",
     darklight: "#9ca3af",
-    brand: "#5c0381",
-    orange: "#cf6006",
+    //brand: "#5c0381",
+    //orange: "#cf6006",
     yellow: "#FFD700",
     green: "#10b981",
     red: "#ef4444",
+
+
 
     lightGray: "#F5F5F6",
     lightGray2: "#F6F6F7",
@@ -28,6 +30,21 @@ export const COLORS = {
     lightGray4: "#F8F8F9",
     transparent: "transparent",
     darkgray: '#898C95',
+
+    //bang mau 2
+    tim1: "#a29bfe",
+    brand: "#6c5ce7",
+    cam1: "#fab1a0",
+    orange: "#e17055",
+    xam1: "#dfe6e9",
+    xam2: "#b2bec3",
+    xam3: "#636e72",
+    xam4: "#2d3436",
+    do1: "#ff7675",
+    do2: "#d63031",
+    vang1: "#ffeaa7",
+    vang2: "#fdcb6e",
+
 };
 
 export const SIZES = {

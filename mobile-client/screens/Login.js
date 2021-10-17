@@ -5,7 +5,6 @@ import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import axios from 'axios'
-import BottomTabs from '../components/Home/BottomTabs'
 
 const Login = () => {
     const [hidePassword, setHidePassword]=useState(true);
@@ -68,7 +67,7 @@ const Login = () => {
                 </Text> */}
                 {/* //titile */}
                 <Text style={{
-                    color: COLORS.black, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
+                    color: COLORS.xam4, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
                 >
                     Account Login
                 </Text>
@@ -206,8 +205,7 @@ const Login = () => {
                         )}
                     }
                     
-                </Formik>
-                <BottomTabs/>    
+                </Formik>    
             </View>
         </KeyboardAvoidingWrapper>
         
@@ -236,7 +234,7 @@ const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, ...pro
                     <View style={styles.RightIcon}>
                         <Ionicons
                             size={25}
-                            color={COLORS.darklight}
+                            color={hidePassword ? COLORS.darklight: COLORS.brand}
                             name={hidePassword ? 'md-eye-off': 'md-eye'}
                             onPress={()=>setHidePassword(!hidePassword)}
                         />
@@ -260,7 +258,7 @@ const styles = StyleSheet.create({
     },
     TextInput:{
         flexDirection: 'row',
-        backgroundColor: COLORS.secondary,
+        backgroundColor: COLORS.xam1,
         padding: 13,
         paddingLeft: 55,
         paddingRight: 55,
@@ -301,7 +299,7 @@ const styles = StyleSheet.create({
     ButtonGoogle:{
         flexDirection: 'row',
         padding: 15,
-        backgroundColor: '#dd571c',
+        backgroundColor: COLORS.orange,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,

@@ -99,7 +99,7 @@ const Register = () => {
 
                 {/* //titile */}
                 <Text style={{
-                    color: COLORS.black, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
+                    color: COLORS.xam4, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
                 >
                     Account Register
                 </Text>
@@ -216,6 +216,7 @@ const Register = () => {
                                     <Text 
                                         type={messageType} 
                                         style={{
+                                            marginTop: 15,
                                             textAlign: 'center', 
                                             fontSize: 13,
                                             color: (messageType=='SUCCESS'? COLORS.green: COLORS.red)
@@ -328,7 +329,7 @@ const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, isDate
                     <View style={styles.RightIcon}>
                         <Ionicons
                             size={25}
-                            color={COLORS.darklight}
+                            color={hidePassword ? COLORS.darklight: COLORS.brand}
                             name={hidePassword ? 'md-eye-off': 'md-eye'}
                             onPress={()=>setHidePassword(!hidePassword)}
                         />
@@ -352,7 +353,7 @@ const styles = StyleSheet.create({
     },
     TextInput:{
         flexDirection: 'row',
-        backgroundColor: COLORS.secondary,
+        backgroundColor: COLORS.xam1,
         padding: 13,
         paddingLeft: 55,
         paddingRight: 55,

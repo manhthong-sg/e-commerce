@@ -2,13 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import {COLORS} from './constants/index' 
+import Home from './screens/Home';
 import Login from './screens/Login'
 import Register from './screens/Register'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Login/>
+      <Home/>
       
     </View>
   );
@@ -17,7 +18,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    backgroundColor: COLORS.white,
+    //paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
 });
