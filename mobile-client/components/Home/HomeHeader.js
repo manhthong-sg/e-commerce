@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 25,
         // backgroundColor: COLORS.orange,
-        backgroundColor: 'transparent',
+        //backgroundColor: 'transparent',
         height: 100,
         zIndex: 1,
         
