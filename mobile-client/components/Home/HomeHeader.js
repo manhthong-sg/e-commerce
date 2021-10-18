@@ -1,18 +1,17 @@
 import React, {useState} from 'react'
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, SafeAreaView, Animated} from 'react-native'
-import { COLORS, SIZES } from '../../constants'
+import { COLORS, SIZES, images } from '../../constants'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
-import { render } from 'react-dom'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const HomeHeader = () => {
 
     const scrollX = new Animated.Value(0);
     const [banner, setBanner]=useState([
-        {photo: '../../assets/icons/logo2.png'},
-        {photo: '../../assets/icons/logo_brand1.png'},
-        {photo: '../../assets/icons/login_logo.png'},
-        {photo: '../../assets/icons/login_logo.png'},
+        {photo: images.banner4},
+        {photo: images.banner2},
+        {photo: images.banner3},
+        {photo: images.banner1},
 
 
     ]);
@@ -91,7 +90,7 @@ const HomeHeader = () => {
                             <View style={{ height: 210 }}>
                                 {/* Food Image */}
                                 <Image
-                                    source={require('../../assets/images/banner4.png')}
+                                    source={item.photo}
                                     resizeMode="cover"
                                     style={{
                                         width: SIZES.width,
@@ -130,14 +129,15 @@ const HomeHeader = () => {
                         //onPress={()=>setHidePassword(!hidePassword)}
                     />
                 </TouchableOpacity>   
-                <TouchableOpacity style={styles.Message}>
+                
+                {/* <TouchableOpacity style={styles.Message}>
                     <FontAwesome5
                         size={25}
                         color={COLORS.white}
                         name='comment-dots'
                         onPress={()=>console.log("Message")}
                     />
-                </TouchableOpacity>      
+                </TouchableOpacity>       */}
 
 
             </View>
@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
         paddingTop: 25,
         // backgroundColor: COLORS.orange,
         //backgroundColor: 'transparent',
+        width: '100%',
         height: 100,
         zIndex: 1,
         
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
         zIndex: 1
     },
     RightIcon:{
-        right: 5,
+        right: 10,
         top: 50,
         position: 'absolute',
         zIndex: 1

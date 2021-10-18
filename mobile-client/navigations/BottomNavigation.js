@@ -33,7 +33,7 @@ const BottomNavigation = () => {
                     elevation: 3,
                     borderRadius: 15,
                     backgroundColor: COLORS.xam1,
-                    height: 90,
+                    height: 80,
                 }
             }}
         >
