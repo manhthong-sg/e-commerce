@@ -15,6 +15,8 @@ const Tab = createBottomTabNavigator();
 const screenOptions={
     headerShown: false,
 }
+
+//custom focus icon animation
 const iconCuscom={
     icon_focus: 30,
     icon_out: 23,
@@ -118,6 +120,19 @@ const BottomNavigation = () => {
                                     }}>
                                     Cart
                                 </Text>
+                                <View style={{
+                                    position: 'absolute',
+                                    backgroundColor: COLORS.white,
+                                    width: 20,
+                                    height: 20,
+                                    borderRadius: 8,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    bottom: focused ? 38: 30,
+                                    left: 20
+                                    }}>
+                                    <Text style={{fontSize: focused ? 20: 16 }}>0</Text>
+                                </View>
                         </View>
                 )}}
             />
