@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image } from 'react
 import HomeHeader from '../components/Home/HomeHeader'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import { COLORS , SIZES, icons} from '../constants'
-const Home = () => {
+const Home1 = () => {
 
     // data categories 
     const categoryData = [
@@ -55,53 +55,8 @@ const Home = () => {
         },
 
     ]
-    //brand data
-    const brandData=[
-        {
-            id: 1,
-            name: 'MacBook',
-            icon: icons.acer,
-        },
-        {
-            id: 2,
-            name: 'MacBook',
-            icon: icons.asus,
-        },
-        {
-            id: 3,
-            name: 'MacBook',
-            icon: icons.dell,
-        },
-        {
-            id: 4,
-            name: 'MacBook',
-            icon: icons.macbook,
-        },
-        {
-            id: 5,
-            name: 'MacBook',
-            icon: icons.msi,
-        },
-        {
-            id: 6,
-            name: 'MacBook',
-            icon: icons.lg,
-        },
-        {
-            id: 7,
-            name: 'MacBook',
-            icon: icons.lenovo,
-        },
-        {
-            id: 8,
-            name: 'MacBook',
-            icon: icons.msi,
-        },
-
-    ]
     const [categories, setCategories] = useState(categoryData)
     const [selectedCategory, setSelectedCategory] = useState(null)
-    const [brand, setBrand] = useState(brandData)
 
     const renderCategories=()=>{
         const renderItem = ({ item }) => {
@@ -110,7 +65,7 @@ const Home = () => {
                     style={{
                         padding: SIZES.padding,
                         marginLeft: 10,
-                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.vang1 : COLORS.brand,
+                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.orange : COLORS.orange,
                         borderRadius: SIZES.radius,
                         alignItems: "center",
                         justifyContent: "center",
@@ -145,7 +100,6 @@ const Home = () => {
                         style={{
                             marginTop: SIZES.padding,
                             color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.white,
-                            fontWeight: 'bold'
                         }}
                     >
                         {item.name}
@@ -188,89 +142,19 @@ const Home = () => {
             </View>
         )
     }
-
-    const renderBrand=()=>{
-        const renderBrandItems = ({ item }) => {
-            return (
-                <TouchableOpacity
-                    style={{
-                        //padding: SIZES.padding,
-                        marginLeft: 12,
-                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.vang1 : COLORS.white,
-                        borderRadius: 10,
-                        alignItems: "center",
-                        elevation: 1 ,
-                        justifyContent: "center",
-                        height: 40,
-                        width: 110,
-                        marginRight: 10,
-                        //marginTop: 10,
-                        //bottom: 40,
-                        zIndex: 2,
-                        marginBottom: 10,
-                    }}
-                    //onPress={() => onSelectCategory(item)}
-                >     
-                    <Image
-                        source={item.icon}
-                        resizeMode="contain"
-                        style={{
-                            width: 80,
-                            height: 80
-                        }}
-                    />
-                    
-                </TouchableOpacity>
-            )
-        }
-    
-        return (
-            <View style={{backgroundColor: COLORS.do1, paddingBottom: 10, borderRadius: 10}}>
-                <View style={styles.PopularBrandHeader}>
-                    <Text style={{
-                        color: COLORS.white, 
-                        fontSize: 26,
-                        paddingLeft: 10, 
-                        }}
-                    >
-                        Popular Brand
-                    </Text>
-                    <TouchableOpacity style={{
-                        position: 'absolute',
-                        right: 12,
-    
-                    }}>
-                        <Text style={{color: COLORS.white}}>See all {'>'} </Text>
-                    </TouchableOpacity>
-                </View>
-                <FlatList
-                        data={brand}
-                        style={{
-                            zIndex: 1,
-                        }}
-                        vertical
-                        numColumns={4}
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => `${item.id}`}
-                        renderItem={renderBrandItems}
-                        contentContainerStyle={{  }}
-                    />    
-            </View>
-        )
-    }
     return (
         // <KeyboardAvoidingWrapper>
             <View style={styles.container}>
                 <HomeHeader/>
                 {renderCategories()}
-                {renderBrand()}
+                {renderCategories()}
             </View>
 
         // {/* </KeyboardAvoidingWrapper> */}
     )
 }
 
-export default Home
+export default Home1
 
 
 
@@ -285,16 +169,6 @@ const styles = StyleSheet.create({
         //backgroundColor: COLORS.orange,
         bottom: 20,
         marginBottom: -10,
-        zIndex: -2,
-        //position: 'absolute',
-        //marginTop: 220,
-    },
-    PopularBrandHeader:{
-        flexDirection: 'row',
-        alignItems: 'center',
-        //backgroundColor: COLORS.orange,
-        //top: 10,
-        marginBottom: 15,
         zIndex: -2,
         //position: 'absolute',
         //marginTop: 220,

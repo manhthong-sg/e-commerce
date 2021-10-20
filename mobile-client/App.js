@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import {COLORS} from './constants/index' 
 import Home from './screens/Home';
@@ -12,11 +12,18 @@ import { NavigationContainer } from '@react-navigation/native'
 export default function App() {
   const Stack=createStackNavigator();
   const Tab = createBottomTabNavigator();
+  const [isLogin, setIsLogin]=useState(true);
   return (
     <View style={styles.container}>
-      <NavigationContainer>
-        <BottomNavigation/>
-      </NavigationContainer>
+      {isLogin && (
+        <NavigationContainer>
+          <BottomNavigation/>
+        </NavigationContainer>
+
+      )}
+      {!isLogin && (
+        <Login/>
+      )}
     </View>
   );
 }

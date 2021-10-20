@@ -9,6 +9,7 @@ import { COLORS } from '../constants';
 import Me from '../screens/Me';
 import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
+import Home1 from '../screens/Home1';
 
 const Tab = createBottomTabNavigator();
 const screenOptions={
