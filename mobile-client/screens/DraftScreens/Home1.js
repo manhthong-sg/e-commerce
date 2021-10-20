@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image } from 'react-native'
 
-import HomeHeader from '../components/Home/HomeHeader'
-import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
-import { COLORS , SIZES, icons} from '../constants'
+import HomeHeader from '../../components/Home/HomeHeader'
+import KeyboardAvoidingWrapper from '../../components/KeyboardAvoidingWrapper'
+import { COLORS , SIZES, icons} from '../../constants'
 const Home1 = () => {
 
     // data categories 

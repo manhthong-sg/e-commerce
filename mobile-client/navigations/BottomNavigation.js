@@ -9,7 +9,7 @@ import { COLORS } from '../constants';
 import Me from '../screens/Me';
 import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
-import Home1 from '../screens/Home1';
+import HomeNavigation from './index'
 
 const Tab = createBottomTabNavigator();
 const screenOptions={
@@ -41,7 +41,7 @@ const BottomNavigation = () => {
             {/* Home Screen  */}
             <Tab.Screen 
                 name="Home" 
-                component={Home} 
+                component={HomeNavigation} 
                 options={
                     {headerShown: false, tabBarIcon: ({focused})=>(
                         <View style={{

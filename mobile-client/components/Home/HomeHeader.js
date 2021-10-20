@@ -75,9 +75,10 @@ const HomeHeader = () => {
                 horizontal
                 pagingEnabled
                 scrollEventThrottle={16}
+                
                 snapToAlignment="center"
                 showsHorizontalScrollIndicator={false}
-                onScroll={Animated.event([
+                onScroll={ Animated.event([
                     { nativeEvent: { contentOffset: { x: scrollX } } }
                 ], { useNativeDriver: false })}
             >
