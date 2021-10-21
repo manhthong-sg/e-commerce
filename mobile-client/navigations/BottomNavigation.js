@@ -18,10 +18,10 @@ const screenOptions={
 
 //custom focus icon animation
 const iconCuscom={
-    icon_focus: 30,
-    icon_out: 23,
-    text_focus: 14,
-    text_out: 13
+    icon_focus: 22,
+    icon_out: 18,
+    text_focus: 13,
+    text_out: 12
 }
 const BottomNavigation = () => {
     return (
@@ -30,19 +30,17 @@ const BottomNavigation = () => {
                 tabBarShowLabel: false,
                 tabBarStyle:{
                     position: 'absolute',
-                    bttom: 35,
-                    left: 20,
-                    right: 20,
+                    //bottom: 35,
                     elevation: 3,
-                    borderRadius: 15,
-                    backgroundColor: COLORS.xam1,
-                    height: 80,
+                    //borderRadius: 15,
+                    backgroundColor: COLORS.white,
+                    height: 50,
                 }
             }}
         >
             {/* Home Screen  */}
             <Tab.Screen 
-                name="Home" 
+                name="HomeContainer" 
                 component={HomeNavigation} 
                 options={
                     {headerShown: false, tabBarIcon: ({focused})=>(
@@ -54,11 +52,11 @@ const BottomNavigation = () => {
                                 <FontAwesome5
                                     name='home'
                                     size={focused ? iconCuscom.icon_focus: iconCuscom.icon_out}
-                                    color={focused ? COLORS.brand: COLORS.orange}
+                                    color={focused ? COLORS.brand: COLORS.xam2}
                                     //style={styles.Icon}
                                 />
                                 <Text style={{
-                                    color: focused ? COLORS.brand: COLORS.orange,
+                                    color: focused ? COLORS.brand: COLORS.xam2,
                                     fontSize: focused ? iconCuscom.text_focus: iconCuscom.text_out
                                     
                                     }}>
@@ -82,11 +80,11 @@ const BottomNavigation = () => {
                                 <FontAwesome5
                                     name='heart'
                                     size={focused ? iconCuscom.icon_focus: iconCuscom.icon_out}
-                                    color={focused ? COLORS.brand: COLORS.orange}
+                                    color={focused ? COLORS.brand: COLORS.xam2}
                                     //style={styles.Icon}
                                 />
                                 <Text style={{
-                                    color: focused ? COLORS.brand: COLORS.orange,
+                                    color: focused ? COLORS.brand: COLORS.xam2,
                                     fontSize: focused ? iconCuscom.text_focus: iconCuscom.text_out
                                     
                                     }}>
@@ -110,11 +108,11 @@ const BottomNavigation = () => {
                                 <FontAwesome5
                                     name='shopping-cart'
                                     size={focused ? iconCuscom.icon_focus: iconCuscom.icon_out}
-                                    color={focused ? COLORS.brand: COLORS.orange}
+                                    color={focused ? COLORS.brand: COLORS.xam2}
                                     //style={styles.Icon}
                                 />
                                 <Text style={{
-                                    color: focused ? COLORS.brand: COLORS.orange,
+                                    color: focused ? COLORS.brand: COLORS.xam2,
                                     fontSize: focused ? iconCuscom.text_focus: iconCuscom.text_out
                                     
                                     }}>
@@ -122,16 +120,16 @@ const BottomNavigation = () => {
                                 </Text>
                                 <View style={{
                                     position: 'absolute',
-                                    backgroundColor: COLORS.white,
-                                    width: 20,
-                                    height: 20,
-                                    borderRadius: 8,
+                                    backgroundColor: COLORS.red,
+                                    width: 18,
+                                    height: 18,
+                                    borderRadius: 7,
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    bottom: focused ? 38: 30,
+                                    bottom: focused ? 28: 25,
                                     left: 20
                                     }}>
-                                    <Text style={{fontSize: focused ? 20: 16 }}>0</Text>
+                                    <Text style={{fontSize: focused ? 16: 14, color: COLORS.white }}>0</Text>
                                 </View>
                         </View>
                 )}}
@@ -151,11 +149,11 @@ const BottomNavigation = () => {
                                 <FontAwesome5
                                     name='user'
                                     size={focused ? iconCuscom.icon_focus: iconCuscom.icon_out}
-                                    color={focused ? COLORS.brand: COLORS.orange}
+                                    color={focused ? COLORS.brand: COLORS.xam2}
                                     //style={styles.Icon}
                                 />
                                 <Text style={{
-                                    color: focused ? COLORS.brand: COLORS.orange,
+                                    color: focused ? COLORS.brand: COLORS.xam2,
                                     fontSize: focused ? iconCuscom.text_focus: iconCuscom.text_out
                                     
                                     }}>

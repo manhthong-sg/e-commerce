@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image } from 'react-native'
 
 import HomeHeader from '../components/Home/HomeHeader'
@@ -86,14 +86,24 @@ const Home = ({navigation}) => {
     const [selectedBrand, setSelectedBrand] = useState(null)
     //const [brand, setBrand] = useState(brandData)
 
+    const [categoryChoice, setCategoryChoice]=useState(categories[0]);
+    const [count, setCount]=useState(0)
+    useEffect(() => {
+        if(count != 0){
+            navigation.navigate('CategoriesContainer', categoryChoice)
+
+        }
+    }, [categoryChoice])
+
     //onPress category
     function onSelectCategory(category) {
         //filter restaurant
         //let categoriesList = categoryData.filter(a => a.categories.includes(category.id))
 
         //setRestaurants(categoriesList)
-
+        setCount(1)
         setSelectedCategory(category)
+        setCategoryChoice(category)
     }
 
     //onPress brand
@@ -173,7 +183,7 @@ const Home = ({navigation}) => {
                         right: 12,
                         
                     }}
-                        onPress={()=> navigation.navigate("CategoriesContainer")}
+                        onPress={()=> navigation.navigate("CategoriesContainer", categoryChoice)}
                     >
                         <Text style={{color: COLORS.xam4}}>See all {'>'} </Text>
                     </TouchableOpacity>
@@ -229,7 +239,12 @@ const Home = ({navigation}) => {
         }
     
         return (
-            <View style={{backgroundColor: COLORS.do1, paddingBottom: 10, borderRadius: 10}}>
+            <View style={{
+                backgroundColor: COLORS.white,
+                paddingBottom: 10,
+                elevation: 1, 
+                backgroundColor: COLORS.do1,
+            }}>
                 <View style={styles.PopularBrandHeader}>
                     <Text style={{
                         color: COLORS.white, 
