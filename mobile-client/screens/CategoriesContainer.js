@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Image, SafeAreaView, StyleSheet, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -35,144 +35,164 @@ const CategoriesContainer = ({route, navigation}) => {
     ]
 
     //brand data
-    const brandData=[
+    const productsData=[
         {
             id: 1,
             name: 'MacBook',
             star: 3,
             icon: icons.acer,
-            price: "1500$"
+            price: "1500$",
+            category: 1,
         },
         {
             id: 2,
             name: 'MacBook',
             icon: icons.asus,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 4,
         },
         {
             id: 3,
             name: 'MacBook',
             icon: icons.dell,
             star: 4,
-            price: "1500$"
+            price: "1500$",
+            category: 1,
         },
         {
             id: 4,
             name: 'MacBook',
             icon: icons.macbook,
             star: 5,
-            price: "1500$"
+            price: "1500$",
+            category: 1,
         },
         {
             id: 5,
             name: 'MacBook',
             icon: icons.msi2,
             star: 1,
-            price: "1500$"
+            price: "1500$",
+            category: 2,
         },
         {
             id: 6,
             name: 'MacBook',
             icon: icons.lg,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 1,
         },
         {
             id: 7,
             name: 'MacBook',
             icon: icons.lenovo,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 3,
         },
         {
             id: 8,
             name: 'MacBook',
             icon: icons.msi,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 4,
         },{
             id: 9,
             name: 'MacBook',
             icon: icons.acer,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 3,
         },
         {
             id: 10,
             name: 'MacBook',
             icon: icons.asus,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 2,
         },
         {
             id: 11,
             name: 'MacBook',
             icon: icons.dell,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 1,
         },
         {
             id: 12,
             name: 'MacBook',
             icon: icons.macbook,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 2,
         },
         {
             id: 13,
             name: 'MacBook',
             icon: icons.msi2,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 3,
         },
         {
             id: 14,
             name: 'MacBook',
             icon: icons.lg,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 4,
         },
         {
             id: 15,
             name: 'MacBook',
             icon: icons.lenovo,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 4,
         },
         {
             id: 16,
             name: 'MacBook',
             icon: icons.msi,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 4,
         },{
             id: 17,
             name: 'MacBook',
             icon: icons.acer,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 2,
         },
         {
             id: 18,
             name: 'MacBook',
             icon: icons.asus,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 3,
         },
         {
             id: 19,
             name: 'MacBook',
             icon: icons.dell,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 1,
         },
         {
             id: 20,
             name: 'MacBook',
             icon: icons.macbook,
             star: 2,
-            price: "1500$"
+            price: "1500$",
+            category: 3,
         },
     ]
 
@@ -183,13 +203,18 @@ const CategoriesContainer = ({route, navigation}) => {
     const [selectedCategory, setSelectedCategory] = useState(
         initialSelectedCategory
     )
-    const [products, setProducts] = useState(categoryData)
     
+    useEffect(() => {
+        let productsList = productsData.filter(a => a?.category==initialSelectedCategory.id)
+
+        setProducts(productsList)
+    }, [])
     //add to favorite
     const [selectedFavorite, setSelectedFavorite]=useState([])
-
+    
     //products
-    const [brands, setBrands] = useState(brandData)
+    const [products, setProducts] = useState()
+    
     const [selectedBrand, setSelectedBrand] = useState(null)
 
     //onpress sort
@@ -223,9 +248,9 @@ const CategoriesContainer = ({route, navigation}) => {
     //onPress category
     function onSelectCategory(category) {
         //filter restaurant
-        //let categoriesList = categoryData.filter(a => a.categories.includes(category.id))
+        let productsList = productsData.filter(a => a?.category==category.id)
 
-        //setRestaurants(categoriesList)
+        setProducts(productsList)
 
         setSelectedCategory(category)
     }
@@ -560,7 +585,7 @@ const CategoriesContainer = ({route, navigation}) => {
             <View style={{marginBottom: 125}}>
                 
                 <FlatList
-                        data={brands}
+                        data={products}
                         style={{
                             
                         }}
