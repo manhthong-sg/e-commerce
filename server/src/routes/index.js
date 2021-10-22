@@ -1,9 +1,12 @@
 //Define route
 const usersRoute=require('./users')
+const productsRoute=require('./products')
 
 function route(app){
 
    
+    //Defint route /products
+    app.use('/products', productsRoute)
     //Define route /users
     app.use('/users', usersRoute)
 
