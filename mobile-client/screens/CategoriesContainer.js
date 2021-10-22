@@ -251,7 +251,10 @@ const CategoriesContainer = ({route, navigation}) => {
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
-                    onPress={()=> navigation.navigate("Home")}
+                    onPress={()=> {
+                        
+                        navigation.goBack();
+                    }}
                 >
                     <FontAwesome5
                         name="arrow-left"
@@ -554,7 +557,7 @@ const CategoriesContainer = ({route, navigation}) => {
         }
     
         return (
-            <View style={{paddingBottom: 10}}>
+            <View style={{marginBottom: 125}}>
                 
                 <FlatList
                         data={brands}
@@ -563,7 +566,8 @@ const CategoriesContainer = ({route, navigation}) => {
                         }}
                         vertical
                         numColumns={2}
-                        showsHorizontalScrollIndicator={false}
+                        //showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
                         keyExtractor={item => `${item.id}`}
                         renderItem={renderProductItems}
                         contentContainerStyle={{}}

@@ -85,15 +85,9 @@ const Home = ({navigation}) => {
     const [brands, setBrands] = useState(brandData)
     const [selectedBrand, setSelectedBrand] = useState(null)
     //const [brand, setBrand] = useState(brandData)
-
+    
+    const initSelectedCategory=categories[0]
     const [categoryChoice, setCategoryChoice]=useState(categories[0]);
-    const [count, setCount]=useState(0)
-    useEffect(() => {
-        if(count != 0){
-            navigation.navigate('CategoriesContainer', categoryChoice)
-
-        }
-    }, [categoryChoice])
 
     //onPress category
     function onSelectCategory(category) {
@@ -101,9 +95,13 @@ const Home = ({navigation}) => {
         //let categoriesList = categoryData.filter(a => a.categories.includes(category.id))
 
         //setRestaurants(categoriesList)
-        setCount(1)
+        //setCount(1)
         setSelectedCategory(category)
-        setCategoryChoice(category)
+        let passContainer={...category}
+
+        navigation.navigate('CategoriesContainer', passContainer)
+        setSelectedCategory(null)
+        //setCategoryChoice(categories[0])
     }
 
     //onPress brand
