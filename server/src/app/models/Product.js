@@ -10,14 +10,19 @@ const Product = new Schema({
         type: Number,
         required: true,
       },
+      promotion: {
+        type: Number,
+        default: 0,
+        //required: true,
+      },
       description: {
         type: String,
         //required: true,
       },
-      img: {
-        type: String,
+      image: {
+        type: Array,
         // enum: 10,
-        default: '',
+        //default: '',
         //required: true,
       },
       star: {
@@ -30,7 +35,7 @@ const Product = new Schema({
         // minlength: 6,
         default: 1,
       },
-      inventory: { // la so luong con trong kho
+      remaining: { // la so luong con trong kho
         type: Number,
         default: 10,
       },
