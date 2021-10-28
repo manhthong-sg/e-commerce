@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import { Image, SafeAreaView, StyleSheet, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import getProducts from '../api/getProducts';
+import axios from 'axios';
 
 const CategoriesContainer = ({route, navigation}) => {
 
@@ -33,187 +35,52 @@ const CategoriesContainer = ({route, navigation}) => {
             icon: icons.student2,
         },
     ]
-
-    //brand data
-    const productsData=[
-        {
-            id: 1,
-            name: 'MacBook',
-            star: 3,
-            icon: icons.acer,
-            price: "1500$",
-            category: 1,
-        },
-        {
-            id: 2,
-            name: 'MacBook',
-            icon: icons.asus,
-            star: 2,
-            price: "1500$",
-            category: 4,
-        },
-        {
-            id: 3,
-            name: 'MacBook',
-            icon: icons.dell,
-            star: 4,
-            price: "1500$",
-            category: 1,
-        },
-        {
-            id: 4,
-            name: 'MacBook',
-            icon: icons.macbook,
-            star: 5,
-            price: "1500$",
-            category: 1,
-        },
-        {
-            id: 5,
-            name: 'MacBook',
-            icon: icons.msi2,
-            star: 1,
-            price: "1500$",
-            category: 2,
-        },
-        {
-            id: 6,
-            name: 'MacBook',
-            icon: icons.lg,
-            star: 2,
-            price: "1500$",
-            category: 1,
-        },
-        {
-            id: 7,
-            name: 'MacBook',
-            icon: icons.lenovo,
-            star: 2,
-            price: "1500$",
-            category: 3,
-        },
-        {
-            id: 8,
-            name: 'MacBook',
-            icon: icons.msi,
-            star: 2,
-            price: "1500$",
-            category: 4,
-        },{
-            id: 9,
-            name: 'MacBook',
-            icon: icons.acer,
-            star: 2,
-            price: "1500$",
-            category: 3,
-        },
-        {
-            id: 10,
-            name: 'MacBook',
-            icon: icons.asus,
-            star: 2,
-            price: "1500$",
-            category: 2,
-        },
-        {
-            id: 11,
-            name: 'MacBook',
-            icon: icons.dell,
-            star: 2,
-            price: "1500$",
-            category: 1,
-        },
-        {
-            id: 12,
-            name: 'MacBook',
-            icon: icons.macbook,
-            star: 2,
-            price: "1500$",
-            category: 2,
-        },
-        {
-            id: 13,
-            name: 'MacBook',
-            icon: icons.msi2,
-            star: 2,
-            price: "1500$",
-            category: 3,
-        },
-        {
-            id: 14,
-            name: 'MacBook',
-            icon: icons.lg,
-            star: 2,
-            price: "1500$",
-            category: 4,
-        },
-        {
-            id: 15,
-            name: 'MacBook',
-            icon: icons.lenovo,
-            star: 2,
-            price: "1500$",
-            category: 4,
-        },
-        {
-            id: 16,
-            name: 'MacBook',
-            icon: icons.msi,
-            star: 2,
-            price: "1500$",
-            category: 4,
-        },{
-            id: 17,
-            name: 'MacBook',
-            icon: icons.acer,
-            star: 2,
-            price: "1500$",
-            category: 2,
-        },
-        {
-            id: 18,
-            name: 'MacBook',
-            icon: icons.asus,
-            star: 2,
-            price: "1500$",
-            category: 3,
-        },
-        {
-            id: 19,
-            name: 'MacBook',
-            icon: icons.dell,
-            star: 2,
-            price: "1500$",
-            category: 1,
-        },
-        {
-            id: 20,
-            name: 'MacBook',
-            icon: icons.macbook,
-            star: 2,
-            price: "1500$",
-            category: 3,
-        },
-    ]
-
-    const initialSelectedCategory = route.params
-
     
+    const initialSelectedCategory = route.params;
+    //console.log(initialSelectedCategory);
+    var [productsData, setProductData]=useState(null);
+    const [products, setProducts] = useState(null);
     const [categories, setCategories] = useState(categoryData)
-    const [selectedCategory, setSelectedCategory] = useState(
-        initialSelectedCategory
-    )
+    const [selectedCategory, setSelectedCategory] = useState(initialSelectedCategory)
     
-    useEffect(() => {
-        let productsList = productsData.filter(a => a?.category==initialSelectedCategory.id)
+    
+    
+    //call api product and get all products
+    const fetchProducts = async () => {
+        const res = await axios.get(`http://192.168.1.7:3000/products`).catch((err) => { console.log("Fetch API failed!! " + err); }); 
+        //const res = await getProducts.getAllProduct(); 
+        if (!res) return;
 
-        setProducts(productsList)
-    }, [])
+        //console.log(res["data"]);
+        setProductData(res["data"]);
+    }
+
+
+    useEffect(() => {
+        //fetch products data
+        fetchProducts();
+        
+    }, []);
+
+
+    useEffect(() => {
+        //fetch products data
+        // if (products)
+            onSelectCategory(selectedCategory);
+        // else return;
+        
+    }, [selectedCategory]);
+    
+    
+
+    
+    
+    
+    
     //add to favorite
     const [selectedFavorite, setSelectedFavorite]=useState([])
     
     //products
-    const [products, setProducts] = useState()
     
     const [selectedBrand, setSelectedBrand] = useState(null)
 
@@ -246,12 +113,11 @@ const CategoriesContainer = ({route, navigation}) => {
         }
     }
     //onPress category
-    function onSelectCategory(category) {
+    const onSelectCategory = async (category) =>{
         //filter restaurant
-        let productsList = productsData.filter(a => a?.category==category.id)
-
-        setProducts(productsList)
-
+        let productsList = await axios.get(`http://192.168.1.7:3000/products/categories/${category.id}`)
+        
+        setProducts(productsList["data"])
         setSelectedCategory(category)
     }
 
@@ -323,6 +189,8 @@ const CategoriesContainer = ({route, navigation}) => {
             </View>
         )
     }
+
+
     
     //render categories list item
     const renderCategories=()=>{
@@ -342,6 +210,7 @@ const CategoriesContainer = ({route, navigation}) => {
                         zIndex:1,
                     }}
                     onPress={() => onSelectCategory(item)}
+
                 >
                     <View
                         style={{
@@ -506,6 +375,9 @@ const CategoriesContainer = ({route, navigation}) => {
 
     // render products 
     const renderProducts=()=>{
+
+        //if (!productsData) return <Text>Loading...</Text>
+        
         const renderProductItems = ({ item }) => {
             return (
                 <TouchableOpacity
@@ -536,16 +408,16 @@ const CategoriesContainer = ({route, navigation}) => {
                         //onPress={() => onSelectFavorite(item)}
                     >
                         <FontAwesome5
-                                //solid
+                                solid
                                 //solid={(selectedFavorite[item.id].id == item.id) ? true : false}
                                 name="heart"
                                 size={20}
-                                color={(selectedFavorite[4]?.id == item.id) ? COLORS.orange : COLORS.xam2} 
+                                color={(selectedFavorite[4]?.id == item.id) ? COLORS.white : COLORS.xam2} 
                             />    
                     </TouchableOpacity>
                     <Image
-                        source={item.icon}
-                        resizeMode="contain"
+                        source={{uri: `http://192.168.1.7:3000/images/${item.image[0]}`}}
+                        resizeMode="cover"
                         style={{
                             width: '100%',
                             height: '70%'
@@ -574,7 +446,7 @@ const CategoriesContainer = ({route, navigation}) => {
                                 ))
                                 
                         }
-                        <Text style={{fontWeight: 'bold', textAlign: 'right', fontSize: 16, width: '55%'}}>{item.price}</Text>
+                        <Text style={{fontWeight: 'bold', textAlign: 'right', fontSize: 16, width: '55%'}}>{item.price}$</Text>
                     </View>
                     
                 </TouchableOpacity>
@@ -582,22 +454,24 @@ const CategoriesContainer = ({route, navigation}) => {
         }
     
         return (
-            <View style={{marginBottom: 125}}>
-                
-                <FlatList
-                        data={products}
-                        style={{
-                            
-                        }}
-                        vertical
-                        numColumns={2}
-                        //showsHorizontalScrollIndicator={false}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={item => `${item.id}`}
-                        renderItem={renderProductItems}
-                        contentContainerStyle={{}}
-                    />    
-            </View>
+
+                <View style={{marginBottom: 125}}>
+                    
+                    <FlatList
+                            data={!products ? productsData: products}
+                            style={{
+                                
+                            }}
+                            vertical
+                            numColumns={2}
+                            //showsHorizontalScrollIndicator={false}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={item => `${item._id}`}
+                            renderItem={renderProductItems}
+                            contentContainerStyle={{}}
+                        />    
+                </View>
+            
         )
     }
     
@@ -607,7 +481,7 @@ const CategoriesContainer = ({route, navigation}) => {
             {renderHeader()}
             {renderCategories()}
             {renderSort()}
-            {renderProducts()}
+            {productsData ? renderProducts() : (<Text>Loading...</Text>)}
         </View>
     )
 }

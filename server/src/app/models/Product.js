@@ -15,10 +15,6 @@ const Product = new Schema({
         default: 0,
         //required: true,
       },
-      description: {
-        type: String,
-        //required: true,
-      },
       image: {
         type: Array,
         // enum: 10,
@@ -30,15 +26,33 @@ const Product = new Schema({
         // minlength: 6,
         default: 5,
       },
-      category: {
-        type: Number,
-        // minlength: 6,
-        default: 1,
-      },
       remaining: { // la so luong con trong kho
         type: Number,
         default: 10,
       },
+      description: {
+        brand:{
+          type: String
+        },
+        category: {
+          type: Number,
+          default: 1,
+        },
+        cpu:{
+          type: String,
+        },
+        ram:{
+          type: String,
+        },
+        rom:{
+          type: String,
+        },
+        pin:{
+          type: String,
+        },
+        
+      },
+      
     //   comment: {
     //       type: String,
     //       ref: 'User'

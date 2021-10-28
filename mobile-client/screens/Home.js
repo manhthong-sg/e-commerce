@@ -87,7 +87,7 @@ const Home = ({navigation}) => {
     //const [brand, setBrand] = useState(brandData)
     
     const initSelectedCategory=categories[0]
-    const [categoryChoice, setCategoryChoice]=useState(categories[0]);
+    const [categoryChoice, setCategoryChoice]=useState(initSelectedCategory);
 
     //onPress category
     function onSelectCategory(category) {
@@ -96,11 +96,11 @@ const Home = ({navigation}) => {
 
         //setRestaurants(categoriesList)
         //setCount(1)
-        setSelectedCategory(category)
+        //setSelectedCategory(category)
         let passContainer={...category}
 
         navigation.navigate('CategoriesContainer', passContainer)
-        setSelectedCategory(null)
+        //setSelectedCategory(null)
         //setCategoryChoice(categories[0])
     }
 
@@ -278,6 +278,7 @@ const Home = ({navigation}) => {
             </View>
         )
     }
+    
     return (
         // <KeyboardAvoidingWrapper>
             <View style={styles.container}>

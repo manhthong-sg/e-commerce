@@ -14,7 +14,7 @@ function route(app){
     app.use('/login', (req, res) => {
         return res.send(`
           <h2>Đây là trang đăng nhập</h2>
-          <img src="/images/1635134888420banner3.png"/>
+          
         `);
     })
 

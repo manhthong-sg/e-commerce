@@ -17,7 +17,8 @@ const storage = multer.diskStorage({
 const upload=multer({storage: storage})
 var multipleUpload=upload.fields([{name: 'image1'},{name: 'image2'},{name: 'image3'}])
 
-
+// get /products/categories/bussiness
+router.get('/categories/:categoryID', productsController.getProductsCategories)
 // get /products/
 router.get('/', productsController.index)
 
@@ -34,9 +35,6 @@ router.get('/upload', (req, res)=>{
                     <label for="email">Price</label>
                     <input type="number" id="price" name="price" placeholder="Your password..">
 
-                    <label for="email">Description</label>
-                    <input type="text" id="description" name="description" placeholder="Your password..">
-
                     <label for="email">Image1</label>
                     <input type="file" multiple id="image1" name="image1" required multiple placeholder="Your password..">
 
@@ -51,6 +49,9 @@ router.get('/upload', (req, res)=>{
                     
                     <label for="email">Category</label>
                     <input type="number" id="category" name="category" placeholder="Your password..">
+
+                    <label for="email">Brand</label>
+                    <input type="text" id="brand" name="brand" placeholder="Your password..">
                 
                     <input type="submit" value="Submit">
                 </form>
