@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, Text, View, Platform, LogBox  } from 'react-native';
 import {COLORS} from './constants/index' 
 import Home from './screens/Home';
 import Login from './screens/Login'
@@ -9,7 +9,12 @@ import BottomNavigation from './navigations/BottomNavigation';
 import {createStackNavigator} from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native'
+
+
 export default function App() {
+  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  LogBox.ignoreAllLogs();//Ignore all log notifications
+
   const Stack=createStackNavigator();
   const Tab = createBottomTabNavigator();
   const [isLogin, setIsLogin]=useState(true);

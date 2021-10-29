@@ -9,7 +9,8 @@ import { COLORS } from '../constants';
 import Me from '../screens/Me';
 import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
-import HomeNavigation from './index'
+import {HomeNavigation, MeNavigation} from './index'
+// import MeNavigation from './index'
 
 const Tab = createBottomTabNavigator();
 const screenOptions={
@@ -137,8 +138,8 @@ const BottomNavigation = () => {
 
             {/* Me Screen  */}
             <Tab.Screen 
-                name="Me" 
-                component={Me} 
+                name="MeContainer" 
+                component={MeNavigation} 
                 options={
                     {headerShown: false, tabBarIcon: ({focused})=>(
                         <View style={{

@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import { registerUser as RegisterUser } from '../api'
 import axios from 'axios'
-const Register = () => {
+const Register = ({navigation}) => {
     const [hidePassword, setHidePassword]=useState(true);
     
     // handle select canlendar
@@ -53,7 +53,7 @@ const Register = () => {
         
         
         handleMessage(null);
-        const url='http://192.168.1.11:3000/users';
+        const url='http://192.168.1.7:3000/users';
         axios.post(url, {fullName: fullName, phone: phone, password: password})
         .then((res)=>{
             handleMessage("Register Successfully", "SUCCESS");
@@ -268,7 +268,9 @@ const Register = () => {
                                         //marginTop: 10,
                                     }}>
                                         <Text>Already have an account?</Text>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={()=> navigation.goBack()}
+                                        >
                                             <Text
                                                 style={{
                                                     color: COLORS.brand,

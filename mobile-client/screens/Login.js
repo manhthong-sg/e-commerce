@@ -6,7 +6,7 @@ import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import axios from 'axios'
 
-const Login = () => {
+const Login = ({navigation}) => {
     const [hidePassword, setHidePassword]=useState(true);
     
     //mesage
@@ -25,7 +25,7 @@ const Login = () => {
         
         
         handleMessage(null);
-        const url='http://192.168.1.11:3000/users/auth';
+        const url='http://192.168.1.7:3000/users/auth';
         axios.post(url, {phone: phone, password: password})
         .then((data)=>{
             //let {status, msg}=data.body;
@@ -186,7 +186,9 @@ const Login = () => {
                                         marginTop: 10,
                                     }}>
                                         <Text>Don't have an account already?</Text>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={()=>navigation.navigate('Register')}
+                                        >
                                             <Text
                                                 style={{
                                                     color: COLORS.brand,

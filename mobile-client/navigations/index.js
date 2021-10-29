@@ -7,7 +7,9 @@ import Home from '../screens/Home'
 import CategoriesContainer from '../screens/CategoriesContainer'
 import BrandsContainer from '../screens/BrandsContainer'
 import DetailProduct from '../screens/DetailProduct'
-
+import Login from '../screens/Login'
+import Register from '../screens/Register'
+import Me from '../screens/Me'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -22,5 +24,19 @@ const HomeNavigation = () => {
             </Stack.Navigator>
     )
 }
+export {HomeNavigation}
 
-export default HomeNavigation
+const MeNavigation = () => {
+    const Stack=createStackNavigator();
+    const screenOptions={
+        headerShown: false,
+    }
+    return (
+            <Stack.Navigator initialRouteName='Me' screenOptions={screenOptions}>
+                <Stack.Screen name = 'Me' component = {Me} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'Login' component = {Login} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'Register' component = {Register} screenOptions={screenOptions}/>
+            </Stack.Navigator>
+    )
+}
+export {MeNavigation}
