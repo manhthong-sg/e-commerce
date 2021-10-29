@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Image, SafeAreaView, StyleSheet, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
+import { Image, ActivityIndicator,SafeAreaView, StyleSheet, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import getProducts from '../api/getProducts';
@@ -391,7 +391,7 @@ const CategoriesContainer = ({route, navigation}) => {
                         marginBottom: 5,
                         zIndex: -1,
                     }}
-                    //onPress={() => onSelectedBrand(item)}
+                    onPress={() =>navigation.navigate("DetailProduct", item)}
                 >   
                     {/* //icon favorite      */}
                     <TouchableOpacity 
@@ -481,7 +481,16 @@ const CategoriesContainer = ({route, navigation}) => {
             {renderHeader()}
             {renderCategories()}
             {renderSort()}
-            {productsData ? renderProducts() : (<Text>Loading...</Text>)}
+            {productsData ? renderProducts() : (
+                    <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <ActivityIndicator size ="large" color ={COLORS.brand}/>
+                    </View>
+                )
+            }
         </View>
     )
 }

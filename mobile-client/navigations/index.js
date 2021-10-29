@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import Home from '../screens/Home'
 import CategoriesContainer from '../screens/CategoriesContainer'
 import BrandsContainer from '../screens/BrandsContainer'
+import DetailProduct from '../screens/DetailProduct'
 
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
@@ -17,6 +18,7 @@ const HomeNavigation = () => {
                 <Stack.Screen name = 'Home' component = {Home} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'CategoriesContainer' component = {CategoriesContainer} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'BrandsContainer' component = {BrandsContainer} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'DetailProduct' component = {DetailProduct} screenOptions={screenOptions}/>
             </Stack.Navigator>
     )
 }

@@ -40,15 +40,19 @@ const Product = new Schema({
         },
         cpu:{
           type: String,
+          default: 'Intel core I5, 1135G7, 2.4GHz'
         },
         ram:{
           type: String,
+          default: '8GB'
         },
         rom:{
           type: String,
+          default: '128GB'
         },
         pin:{
           type: String,
+          default: '4000mah'
         },
         
       },
