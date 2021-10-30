@@ -9,27 +9,22 @@ import BottomNavigation from './navigations/BottomNavigation';
 import {createStackNavigator} from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native'
+import {Provider as ReduxProvider} from 'react-redux'
+import configureStore from './redux/store';
 
-
+const store = configureStore();
 export default function App() {
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
   LogBox.ignoreAllLogs();//Ignore all log notifications
 
-  const Stack=createStackNavigator();
-  const Tab = createBottomTabNavigator();
-  const [isLogin, setIsLogin]=useState(true);
   return (
-    <View style={styles.container}>
-      {isLogin && (
-        <NavigationContainer>
-          <BottomNavigation/>
-        </NavigationContainer>
-
-      )}
-      {!isLogin && (
-        <Login/>
-      )}
-    </View>
+    <ReduxProvider store={store}>
+      <View style={styles.container}>
+          <NavigationContainer>
+              <BottomNavigation/>
+          </NavigationContainer>
+      </View>
+    </ReduxProvider>
   );
 }
 

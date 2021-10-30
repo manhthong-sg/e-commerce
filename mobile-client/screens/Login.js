@@ -5,10 +5,19 @@ import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+
 
 const Login = ({navigation}) => {
     const [hidePassword, setHidePassword]=useState(true);
     
+    const dispatch = useDispatch();
+
+    const setUser=(user)=> dispatch({
+        type: 'SET_USER', 
+        payload: user
+    })
+
     //mesage
     const [message, setMessage]=useState();
     const [messageType, setMessageType]=useState();
@@ -27,10 +36,14 @@ const Login = ({navigation}) => {
         handleMessage(null);
         const url='http://192.168.1.7:3000/users/auth';
         axios.post(url, {phone: phone, password: password})
-        .then((data)=>{
-            //let {status, msg}=data.body;
+        .then((res)=>{
+            let {user, msg}=res.data; //get user from res data
+            //console.log(user);
+            setUser(user)
             handleMessage("Login Successfully", "SUCCESS");
             setSubmitting(false)
+            navigation.goBack();
+            navigation.navigate('Home', user)
         })
         .catch((err)=> {
             //console.log(err.json());
@@ -38,8 +51,7 @@ const Login = ({navigation}) => {
             handleMessage("Please check your info again.");
 
         })
-        // registerForm({fullName, phone, passward})
-        //RegisterUser({fullName,phone,password,confirmPW})
+        
 
     }
     return (
