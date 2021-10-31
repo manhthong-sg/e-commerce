@@ -4,10 +4,13 @@ import { COLORS , SIZES, icons, images } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
-const DetailProduct = ({navigation, route}) => {
+const ProductDetail = ({navigation, route}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user);
     
     const {
+        _id,
         name,
         image,
         description,
@@ -48,6 +51,23 @@ const DetailProduct = ({navigation, route}) => {
         }
     }
 
+    //handle add to cart
+    const handleAddToCart=()=>{
+        console.log({
+            idProduct: _id,
+            itemNum: count,
+            idUser: CurrentUser._id,
+
+        });
+        const url='http://192.168.1.7:3000/carts';
+        axios.post(url, {idProduct: _id, itemNum: count, idUser: CurrentUser._id})
+        .then((res)=>{
+            //console.log("Add to cart Successfully", "SUCCESS");
+        })
+        .catch((err)=> {
+            console.log(err+ " :ERROR!");
+        })
+    }
     //render header of this screens
     function renderHeader() {
         return (
@@ -345,7 +365,9 @@ const DetailProduct = ({navigation, route}) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         marginRight: 20
-                    }}>
+                    }}
+                        onPress={handleAddToCart}
+                    >
                         <Text style={{
                             color: COLORS.white,
                             fontWeight: 'bold',
@@ -367,7 +389,7 @@ const DetailProduct = ({navigation, route}) => {
     )
 }
 
-export default DetailProduct
+export default ProductDetail
 
 const styles = StyleSheet.create({
     container:{

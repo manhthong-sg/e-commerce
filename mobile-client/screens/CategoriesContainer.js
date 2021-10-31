@@ -391,7 +391,7 @@ const CategoriesContainer = ({route, navigation}) => {
                         marginBottom: 5,
                         zIndex: -1,
                     }}
-                    onPress={() =>navigation.navigate("DetailProduct", item)}
+                    onPress={() =>navigation.navigate("ProductDetail", item)}
                 >   
                     {/* //icon favorite      */}
                     <TouchableOpacity 
@@ -455,7 +455,7 @@ const CategoriesContainer = ({route, navigation}) => {
     
         return (
 
-                <View style={{marginBottom: 125}}>
+                <View style={{marginBottom: 125, maxHeight: SIZES.height-50}}>
                     
                     <FlatList
                             data={!products ? productsData: products}
