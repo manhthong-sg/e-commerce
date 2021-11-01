@@ -6,6 +6,10 @@ const cartsController=require('../app/controllers/CartsController');
 router.post('/', cartsController.addToCart)
 
 
+
+// get /carts/:id
+router.get('/:idUser', cartsController.getCartById)
+
 // get /carts/
 router.get('/', cartsController.index)
 

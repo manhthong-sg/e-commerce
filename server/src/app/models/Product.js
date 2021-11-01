@@ -54,7 +54,10 @@ const Product = new Schema({
           type: String,
           default: '4000mah'
         },
-        
+        // cart: {
+        //   type: String,
+        //   ref: "Cart"
+        // }
       },
       
     //   comment: {
