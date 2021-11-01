@@ -6,7 +6,7 @@ import getProducts from '../api/getProducts';
 import axios from 'axios';
 
 const CategoriesContainer = ({route, navigation}) => {
-
+    
     // data categories 
     const categoryData = [
         {

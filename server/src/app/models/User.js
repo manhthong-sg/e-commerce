@@ -36,10 +36,10 @@ const User=new Schema({
         type: String,
         default: '',
       },
-      cart: [{
-        type: String,
-        ref: "Cart"
-      }]
+      // cart: [{
+      //   type: String,
+      //   ref: "Cart"
+      // }]
 }, {versionKey: false} )//bỏ __v trong document in mongoose
 
 module.exports=mongoose.model('User', User, 'User')

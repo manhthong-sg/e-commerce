@@ -11,6 +11,10 @@ const Me = ({route, navigation}) => {
     console.log(CurrentUser);
     return (
         <View style={styles.container}>
+            <Text style={{
+                fontSize: 30,
+                fontWeight: 'bold',
+            }}>Me</Text>
             {
                 !CurrentUser && (
                     <View style={{flexDirection: 'row'}}>
@@ -18,7 +22,11 @@ const Me = ({route, navigation}) => {
                         <TouchableOpacity
                             onPress={()=> navigation.navigate('Login') }
                         >
-                            <Text style={{fontWeight: 'bold', color: COLORS.brand,}}>Login</Text>
+                            <Text style={{
+                                fontWeight: 'bold',
+                                color: COLORS.brand,
+                                textDecorationLine: 'underline',
+                            }}>Login</Text>
                         </TouchableOpacity>
                     </View>
                 )

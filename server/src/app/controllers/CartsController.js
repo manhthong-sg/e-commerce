@@ -14,22 +14,24 @@ class CartsController {
     //[POST] /carts
     async addToCart(req,res){
         
+        var newCart=Cart(req.body);
+        newCart.save()
+        .then(()=> {
+            console.log("Add new cart SUCCESSFULLY!");
+            res.redirect('/carts')
+        })
+        .catch((err)=> res.json({msg: "Add new cart FAIL!"}))  
+        
         // let checkCart= await Cart.findOne({idUser: req.body.idUser})
         // if(!checkCart){
+
             // }else{
                 //     checkCart.idProduct.push(req.body.idProduct);
                 //     console.log(checkCart.idProduct);
                 //     checkCart.save()
                 // }
                 
-                var newCart=Cart(req.body);
-                newCart.save()
-                .then(()=> {
-                    console.log("Add new cart SUCCESSFULLY!");
-                    res.redirect('/carts')
-                })
-                .catch((err)=> res.json({msg: "Add new cart FAIL!"}))  
-            }
+    }
 
     //[GET] /carts/test
     getCartById(req, res){

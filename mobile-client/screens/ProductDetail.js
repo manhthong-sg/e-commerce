@@ -53,20 +53,28 @@ const ProductDetail = ({navigation, route}) => {
 
     //handle add to cart
     const handleAddToCart=()=>{
-        console.log({
-            idProduct: _id,
-            itemNum: count,
-            idUser: CurrentUser._id,
-
-        });
-        const url='http://192.168.1.7:3000/carts';
-        axios.post(url, {idProduct: _id, itemNum: count, idUser: CurrentUser._id})
-        .then((res)=>{
-            //console.log("Add to cart Successfully", "SUCCESS");
-        })
-        .catch((err)=> {
-            console.log(err+ " :ERROR!");
-        })
+        if(CurrentUser){
+            console.log({
+                idProduct: _id,
+                itemNum: count,
+                idUser: CurrentUser._id,
+    
+            });
+            const url='http://192.168.1.7:3000/carts';
+            axios.post(url, {idProduct: _id, itemNum: count, idUser: CurrentUser._id})
+            .then((res)=>{
+                //console.log("Add to cart Successfully", "SUCCESS");
+            })
+            .catch((err)=> {
+                console.log(err+ " :ERROR!");
+            })
+        }else{
+            ToastAndroid.showWithGravity(
+                "Sorry, you must LOGIN to add to cart",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+        }
     }
     //render header of this screens
     function renderHeader() {

@@ -3,43 +3,29 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image} f
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import { useSelector } from 'react-redux'
 
-const Cart = () => {
-    // data categories 
-    const categoryData = [
-        {
-            id: 1,
-            name: "Bussiness",
-            icon: icons.bussiness,
-            star: 2,
-        },
-        {
-            id: 2,
-            name: "Gaming",
-            icon: icons.gaming,
-            star: 3,
-        },
-        {
-            id: 3,
-            name: "Graphics",
-            icon: icons.do_hoa,
-            star: 4,
-        },
-        {
-            id: 4,
-            name: "Students",
-            icon: icons.student1,
-            star: 5,
-        },
-        {
-            id: 5,
-            name: "Like new 99%",
-            icon: icons.student2,
-            star: 1,
-        },
-    ]
-    const [cartData, setCartData]=useState(categoryData);
+const Cart = ({navigation}) => {
+    //get current user
+    const CurrentUser = useSelector(state=> state.userReducer.user); 
     const [count, setCount]=useState(1);
+    const [cartData, setCartData]=useState();
+    // fetch api cart items from id user 
+    const fetchItemsCart=()=>{
+        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+        .then((data)=>{
+            setCartData(data["data"]);
+        })
+        //.then(()=> console.log(arrCart))
+        .catch(err=>console.log(err))
+
+    }
+
+    useEffect(() => {
+         if(CurrentUser){
+            fetchItemsCart();
+        }
+    },[])
 
     //handle decrease product
     const handleIncreaseCount=()=>{
@@ -95,11 +81,13 @@ const Cart = () => {
                     }}>
                         <View style={styles.ImageCart}>
                             <Image 
-                                source={item.icon}
+                                source={{uri: `http://192.168.1.7:3000/images/${item["idProduct"].image[0]}`}}
                                 style={{
                                     width: 70,
                                     height: 70,
                                 }}
+                                resizeMode="contain"
+                                
                             />
                         </View>
                         <View style={{width: '70%',}}>
@@ -109,7 +97,7 @@ const Cart = () => {
                                 fontSize: 16,
                                 width: '100%',
                                 // backgroundColor: COLORS.xam1
-                            }}>{item.name}</Text>
+                            }}>{item["idProduct"].name}</Text>
                             <View style={{
                                 flexDirection: 'row',
                                 paddingLeft: 7,
@@ -123,7 +111,7 @@ const Cart = () => {
                                     <FontAwesome5 
                                         size={10} 
                                         solid name='star' 
-                                        color={(star <= item.star) ? COLORS.orange : COLORS.xam2}
+                                        color={(star <= item["idProduct"].star) ? COLORS.orange : COLORS.xam2}
                                         style={{
                                             marginLeft: 3
                                         }}
@@ -140,17 +128,19 @@ const Cart = () => {
                                 <Text style={{
                                     fontWeight: 'bold',
                                     paddingLeft: 10,
-                                    //marginTop: 10,
+                                    maxWidth: 60,
+                                    minWidth: 60,
                                     fontSize: 17,
+                                    // backgroundColor: COLORS.xam1,
                                     alignItems: 'flex-end'
-                                }}>0$</Text>
+                                }}>{item["idProduct"].price}$</Text>
                                 {/* //edit increase or decrease  */}
                                 <View style={{
                                     flexDirection: 'row',
                                     height: 30,
                                     // backgroundColor: COLORS.orange,
                                     alignItems: 'center',
-                                    marginLeft: 170
+                                    marginLeft: 140
                                 }}>
                                     <TouchableOpacity style={{
                                         width: 20,
@@ -164,7 +154,7 @@ const Cart = () => {
                                     >
                                         <Text style={styles.updown}>-</Text>
                                     </TouchableOpacity>
-                                    <Text style={{fontSize: 22, fontWeight: 'bold', marginLeft: 5, marginRight: 5}}>{(count>0) ? count : 0}</Text>
+                                    <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 5, marginRight: 5}}>{item.itemNum}</Text>
                                     <TouchableOpacity style={{
                                         width: 20,
                                         height: 20,
@@ -196,7 +186,7 @@ const Cart = () => {
         return (
             <View style={{width: '95%', marginTop: 20, height: SIZES.height-430}}> 
                 <FlatList
-                    data={categoryData}
+                    data={cartData}
                     style={{
                         
                     }}
@@ -265,6 +255,7 @@ const Cart = () => {
                 }}>
                     <Text style={{
                         width: '90%',
+                        // maxwidth: '90%'-20,
                         fontSize: 16,
                         letterSpacing: 1
                     }}>Delivery:</Text>
@@ -330,7 +321,42 @@ const Cart = () => {
             
             {/* //list cart  */}
             {
-                cartData && (
+                !CurrentUser && (
+                    <View style={{
+                        flex: 1,
+                        height: '100%',
+                        justifyContent: 'center'
+                    }}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text>Please </Text>
+                            <TouchableOpacity
+                                onPress={()=> navigation.navigate('Login') }
+                            >
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                    color: COLORS.brand,
+                                    textDecorationLine: 'underline',
+                                }}>Login</Text>
+
+                            </TouchableOpacity>
+                            <Text> to see your Cart</Text>
+
+                        </View>
+
+                    </View>
+                )
+            }
+            {
+                !cartData &&CurrentUser && (
+                    <Text style={{
+                        fontSize: 28, 
+                        flex: 1, 
+                        textAlignVertical: 'center'
+                    }}>Cart Empty</Text>
+                )
+            }
+            {
+                (cartData &&CurrentUser) && (
                     <View style={{
                         width: '100%',
                         marginLeft: 15,
@@ -350,11 +376,6 @@ const Cart = () => {
 
                     </View>
 
-                )
-            }
-            {
-                !cartData && (
-                    <Text style={{fontSize: 28, flex: 1, textAlignVertical: 'center'}}>Cart Empty</Text>
                 )
             }
             
