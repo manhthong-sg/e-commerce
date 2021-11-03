@@ -4,9 +4,10 @@ import { COLORS , SIZES, icons, images } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ProductDetail = ({navigation, route}) => {
+    // get current user 
     const CurrentUser = useSelector(state=> state.userReducer.user);
     
     const {

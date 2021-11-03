@@ -3,29 +3,19 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image} f
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 const Cart = ({navigation}) => {
     //get current user
     const CurrentUser = useSelector(state=> state.userReducer.user); 
+    const Cart = useSelector(state1=> state1.cartReducer.cart);
+    
     const [count, setCount]=useState(1);
-    const [cartData, setCartData]=useState();
-    // fetch api cart items from id user 
-    const fetchItemsCart=()=>{
-        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
-        .then((data)=>{
-            setCartData(data["data"]);
-        })
-        //.then(()=> console.log(arrCart))
-        .catch(err=>console.log(err))
-
-    }
+    const [cartData, setCartData]=useState(null);
 
     useEffect(() => {
-         if(CurrentUser){
-            fetchItemsCart();
-        }
-    },[])
+            setCartData(Cart.items)
+    },)
 
     //handle decrease product
     const handleIncreaseCount=()=>{
@@ -284,7 +274,9 @@ const Cart = ({navigation}) => {
                     // backgroundColor: COLORS.xam2
                 }}>
                     <Text style={{
-                        width: '90%',
+                        width: '80%',
+                        maxwidth: '80%',
+                        //minwidth: '80%',
                         fontSize: 17,
                         letterSpacing: 1,
                         fontWeight: 'bold'
@@ -296,7 +288,7 @@ const Cart = ({navigation}) => {
                             textAlign: 'right',
                             fontWeight: 'bold'
                         }}
-                    >0$</Text>
+                    >{Cart.total}$</Text>
                 </View>
                 <TouchableOpacity 
                     style={styles.Button}
@@ -347,7 +339,7 @@ const Cart = ({navigation}) => {
                 )
             }
             {
-                !cartData &&CurrentUser && (
+                (!cartData && CurrentUser) && (
                     <Text style={{
                         fontSize: 28, 
                         flex: 1, 
@@ -369,7 +361,7 @@ const Cart = ({navigation}) => {
                             paddingLeft: 20,
                             letterSpacing: 1,
                         }}>
-                                0 Item
+                                {Cart.itemNum} Item
                         </Text>
                         <ListCartItems/>
                         <PaymentContainer/>

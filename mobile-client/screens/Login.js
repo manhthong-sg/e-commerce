@@ -18,6 +18,11 @@ const Login = ({navigation}) => {
         payload: user
     })
 
+    const setCart=(cart)=> dispatch({
+        type: 'SET_CART', 
+        payload: cart
+    })
+    var userClone;
     //mesage
     const [message, setMessage]=useState();
     const [messageType, setMessageType]=useState();
@@ -38,12 +43,24 @@ const Login = ({navigation}) => {
         axios.post(url, {phone: phone, password: password})
         .then((res)=>{
             let {user, msg}=res.data; //get user from res data
+            userClone=res.data.user;
             //console.log(user);
             setUser(user)
             handleMessage("Login Successfully", "SUCCESS");
             setSubmitting(false)
             navigation.goBack();
             navigation.navigate('Home', user)
+        })
+        .then(()=>{
+            // fetch api cart items from id user 
+            axios.get(`http://192.168.1.7:3000/carts/${userClone._id}`)
+            .then((data)=>{
+                //setCartData(data["data"]);
+                setCart(data["data"])
+                // console.log(data["data"]);
+            })
+            //.then(()=> console.log(arrCart))
+            .catch(err=>console.log(err))
         })
         .catch((err)=> {
             //console.log(err.json());

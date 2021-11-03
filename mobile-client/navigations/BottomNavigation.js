@@ -10,7 +10,7 @@ import Me from '../screens/Me';
 import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
 import {HomeNavigation, MeNavigation} from './index'
-// import MeNavigation from './index'
+import { useSelector, useDispatch } from 'react-redux'
 
 const Tab = createBottomTabNavigator();
 const screenOptions={
@@ -25,6 +25,7 @@ const iconCuscom={
     text_out: 12
 }
 const BottomNavigation = () => {
+    const CartContainer = useSelector(state1=> state1.cartReducer.cart);
     return (
         <Tab.Navigator 
             screenOptions={{
@@ -130,7 +131,7 @@ const BottomNavigation = () => {
                                     bottom: focused ? 28: 25,
                                     left: 20
                                     }}>
-                                    <Text style={{fontSize: focused ? 16: 14, color: COLORS.white }}>0</Text>
+                                    <Text style={{fontSize: focused ? 16: 14, color: COLORS.white }}>{CartContainer.itemNum}</Text>
                                 </View>
                         </View>
                 )}}
