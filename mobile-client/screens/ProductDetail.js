@@ -23,7 +23,12 @@ const ProductDetail = ({navigation, route}) => {
     const [total, setTotal]=useState(price);
     
     //console.log(description);
-    
+    const setCart=(cart)=> dispatch({
+        type: 'SET_CART', 
+        payload: cart
+    })
+    const dispatch = useDispatch();
+
     //handle decrease product
     const handleIncreaseCount=()=>{
         if(count>remaining-1){
@@ -55,20 +60,32 @@ const ProductDetail = ({navigation, route}) => {
     //handle add to cart
     const handleAddToCart=()=>{
         if(CurrentUser){
-            console.log({
+            const item={
                 idProduct: _id,
                 itemNum: count,
                 idUser: CurrentUser._id,
     
-            });
+            };
             const url='http://192.168.1.7:3000/carts';
             axios.post(url, {idProduct: _id, itemNum: count, idUser: CurrentUser._id})
-            .then((res)=>{
-                //console.log("Add to cart Successfully", "SUCCESS");
+            .then(()=>{
+                ToastAndroid.showWithGravity(
+                    "Add to cart Successfully",
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM
+                  );
+                axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    setCart(data["data"])
+                    // console.log(data["data"]);
+                })
+                setCount(1)
             })
             .catch((err)=> {
                 console.log(err+ " :ERROR!");
             })
+            //setCart(item)
         }else{
             ToastAndroid.showWithGravity(
                 "Sorry, you must LOGIN to add to cart",

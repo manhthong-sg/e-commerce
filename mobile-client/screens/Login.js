@@ -6,6 +6,7 @@ import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Login = ({navigation}) => {
@@ -32,7 +33,15 @@ const Login = ({navigation}) => {
         setMessage(message);
         setMessageType(type);
     }
-
+    const storeUser = async (value) => {
+        try {
+          //const jsonValue = JSON.stringify(value)
+          await AsyncStorage.setItem('USER', value)
+        } catch (e) {
+          // saving error
+          console.log("Error: ", e);
+        }
+      }
     //handle login
     const handleLogin=(credentials, setSubmitting)=>{
         const{phone, password}=credentials
@@ -46,6 +55,7 @@ const Login = ({navigation}) => {
             userClone=res.data.user;
             //console.log(user);
             setUser(user)
+            storeUser("Thong")
             handleMessage("Login Successfully", "SUCCESS");
             setSubmitting(false)
             navigation.goBack();

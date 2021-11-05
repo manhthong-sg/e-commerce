@@ -4,6 +4,7 @@ import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Cart = ({navigation}) => {
     //get current user
@@ -13,8 +14,19 @@ const Cart = ({navigation}) => {
     const [count, setCount]=useState(1);
     const [cartData, setCartData]=useState(null);
 
+    // const getCart = async () => {
+    //     try {
+    //       const jsonValue = await AsyncStorage.getItem('CART')
+    //       return jsonValue != null ? JSON.parse(jsonValue) : null;
+    //     } catch(e) {
+    //       // error reading value
+    //         console.log("Error: ", e);
+    //     }
+    //   }
+    
     useEffect(() => {
-            setCartData(Cart.items)
+        //console.log(getCart());
+        setCartData(Cart.items)
     },)
 
     //handle decrease product

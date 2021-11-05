@@ -23,9 +23,12 @@ let userReducer= (state = defaultState, action)=>{
                 address: action.payload.address,
                 profilePicture: action.payload.profilePicture,
             };
-            //console.log(newState);
+            console.log(newState);
             return newState;
         }
+        // case 'USER_LOGOUT':{
+        //     return defaultState
+        // }
         default: 
             return state;
     }

@@ -131,7 +131,7 @@ const BottomNavigation = () => {
                                     bottom: focused ? 28: 25,
                                     left: 20
                                     }}>
-                                    <Text style={{fontSize: focused ? 16: 14, color: COLORS.white }}>{CartContainer.itemNum}</Text>
+                                    <Text style={{fontSize: focused ? 15: 14, color: COLORS.white }}>{CartContainer.itemNum}</Text>
                                 </View>
                         </View>
                 )}}
