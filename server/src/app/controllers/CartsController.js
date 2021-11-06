@@ -35,7 +35,7 @@ class CartsController {
                 
     }
 
-    //[GET] /carts/test
+    //[GET] /carts/:idUser
     getCartById(req, res){
         let listProduct=[];
         Cart.find({idUser: req.params.idUser})
@@ -46,6 +46,20 @@ class CartsController {
             // console.log(listProduct);
             res.json(cart); 
         });
+    }
+
+    // [POST] /carts/delete
+    removeToCart(req, res){
+        //let listProduct=[];
+        Cart.findOneAndRemove({idProduct: req.params.idProduct})
+        .then(cart => {
+            console.log('Remove item successfully!');
+            res.redirect('/carts')
+        })
+        .catch((err)=>{
+            console.log("error: ", err);
+        })
+
     }
 }
 module.exports=new CartsController;

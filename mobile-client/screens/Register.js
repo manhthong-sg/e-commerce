@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ActivityIndicator, ToastAndroid} from 'react-native'
 import {images, icons, COLORS} from '../constants'
 import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
@@ -57,8 +57,14 @@ const Register = ({navigation}) => {
         axios.post(url, {fullName: fullName, phone: phone, password: password})
         .then((res)=>{
             handleMessage("Register Successfully", "SUCCESS");
-            let {status, msg}=res.body;
-            setSubmitting(false)
+            //let {status, msg}=res.body;
+            setSubmitting(false);
+            ToastAndroid.showWithGravity(
+                "Register successfully, now you can login!",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+            navigation.navigate('Login');
         })
         .catch((err)=> {
             //console.log(err.json());

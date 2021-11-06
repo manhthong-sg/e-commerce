@@ -5,6 +5,9 @@ const cartsController=require('../app/controllers/CartsController');
 //post /carts/
 router.post('/', cartsController.addToCart)
 
+//post /carts/
+router.post('/delete/:idProduct', cartsController.removeToCart)
+
 
 
 // get /carts/:id

@@ -27,8 +27,18 @@ const ProductDetail = ({navigation, route}) => {
         type: 'SET_CART', 
         payload: cart
     })
+    
     const dispatch = useDispatch();
 
+    const handleResetCart=()=>{
+        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    setCart(data["data"])
+                    // console.log(data["data"]);
+                })
+    }
+    
     //handle decrease product
     const handleIncreaseCount=()=>{
         if(count>remaining-1){
@@ -74,12 +84,7 @@ const ProductDetail = ({navigation, route}) => {
                     ToastAndroid.LONG,
                     ToastAndroid.BOTTOM
                   );
-                axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
-                .then((data)=>{
-                    //setCartData(data["data"]);
-                    setCart(data["data"])
-                    // console.log(data["data"]);
-                })
+                handleResetCart();
                 setCount(1)
             })
             .catch((err)=> {

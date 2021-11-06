@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image} from 'react-native'
+import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image, ToastAndroid} from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
@@ -14,16 +14,42 @@ const Cart = ({navigation}) => {
     const [count, setCount]=useState(1);
     const [cartData, setCartData]=useState(null);
 
-    // const getCart = async () => {
-    //     try {
-    //       const jsonValue = await AsyncStorage.getItem('CART')
-    //       return jsonValue != null ? JSON.parse(jsonValue) : null;
-    //     } catch(e) {
-    //       // error reading value
-    //         console.log("Error: ", e);
-    //     }
-    //   }
+    const setCart=(cart)=> dispatch({
+        type: 'SET_CART', 
+        payload: cart
+    })
     
+    const dispatch = useDispatch();
+
+    const handleResetCart=()=>{
+        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    setCart(data["data"])
+                    // console.log(data["data"]);
+                })
+    }
+    //handle detele from cart
+    const handleDeleteFromCart=(idProduct)=>{
+        const url=`http://192.168.1.7:3000/carts/delete/${idProduct}`;
+        axios.post(url)
+        .then(()=>{
+            ToastAndroid.showWithGravity(
+                "Remove item successfully",
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM
+              );
+            handleResetCart();
+        })
+        .catch(()=>{
+            ToastAndroid.showWithGravity(
+                "Remove item failed, please check your network",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+        })
+       
+    }
     useEffect(() => {
         //console.log(getCart());
         setCartData(Cart.items)
@@ -174,7 +200,9 @@ const Cart = ({navigation}) => {
                             </View>
                         <View>
                             {/* // button delete cart item  */}
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={()=>handleDeleteFromCart(item["idProduct"]._id)}
+                            >
                                 <FontAwesome5 name='trash-alt' size={18} color={COLORS.xam4} />
                             </TouchableOpacity>
                             
@@ -287,7 +315,7 @@ const Cart = ({navigation}) => {
                 }}>
                     <Text style={{
                         width: '80%',
-                        maxwidth: '80%',
+                        // maxwidth: '80%',
                         //minwidth: '80%',
                         fontSize: 17,
                         letterSpacing: 1,
