@@ -2,13 +2,17 @@
 const usersRoute=require('./users')
 const productsRoute=require('./products')
 const cartsRoute=require('./carts')
+const favoritesRoute=require('./favorites')
 
 function route(app){
 
-    //defint route /carts
+    //define route /carts
     app.use('/carts', cartsRoute)
+    
+    //define route /carts
+    app.use('/favorites', favoritesRoute)
 
-    //Defint route /products
+    //Define route /products
     app.use('/products', productsRoute)
     //Define route /users
     app.use('/users', usersRoute)
