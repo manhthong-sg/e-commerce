@@ -14,36 +14,59 @@ class FavoritesController {
     //[POST] /favorites
     async addToFavorite(req,res){
         
-        let checkFavorite= await Favorite.findOne({idProduct: req.body.idProduct, idUser: req.body.idUser})
+        let checkFavorite= await Favorite.findOne({idUser: req.body.idUser})
         if(!checkFavorite){
-            var newCart=Cart(req.body);
-            newCart.save()
+            var newFav=Favorite(req.body);
+            newFav.save()
             .then(()=> {
-                console.log("Add new cart SUCCESSFULLY!");
+                console.log("Add new favorite SUCCESSFULLY!");
                 res.redirect('/favorites')
             })
             .catch((err)=> res.json({msg: "Add new cart FAIL!"}))  
         }
         else{
-            checkFavorite.idProduct.push(req.body)
-            checkFavorite.save()
-            console.log("Add new cart SUCCESSFULLY!");
-            res.redirect('/favorites')
+            if(checkFavorite.idProduct.includes(req.body.idProduct)){
+                checkFavorite.idProduct=checkFavorite.idProduct.filter((idProduct)=>{
+                    return idProduct !==req.body.idProduct
+                })
+                checkFavorite.save()
+                console.log("Remove favorite SUCCESSFULLY!");
+                res.redirect('/favorites')
+
+            }else{
+                checkFavorite.idProduct.push(req.body.idProduct)
+                checkFavorite.save()
+                console.log("Add favorite SUCCESSFULLY!");
+                res.redirect('/favorites')
+            }
+
+            // checkFavorite.idProduct.forEach(idProduct => {
+            //     if(idProduct == req.body.idProduct){
+                    
+            //     }
+            //     else{
+            //         checkFavorite.idProduct.push(req.body)
+            //         checkFavorite.save()
+            //         console.log("Add new favorite SUCCESSFULLY!");
+            //         res.redirect('/favorites')
+
+            //     }
+            // });
         }             
     }
 
-    // //[GET] /carts/:idUser
-    // getCartById(req, res){
-    //     let listProduct=[];
-    //     Cart.find({idUser: req.params.idUser})
-    //     .populate("idProduct") // key to populate
-    //     .then(cart => {
-    //         //cart.foreach(item=> console.log(item.idProduct))
-    //         //cart.forEach(element => listProduct.push(element.idProduct));
-    //         // console.log(listProduct);
-    //         res.json(cart); 
-    //     });
-    // }
+    //[GET] /carts/:idUser
+    getFavoriteById(req, res){
+        let listFavorite=[];
+        Favorite.find({idUser: req.params.idUser})
+        .populate("idProduct") // key to populate
+        .then(favorite => {
+            //cart.foreach(item=> console.log(item.idProduct))
+            //cart.forEach(element => listProduct.push(element.idProduct));
+            // console.log(listProduct);
+            res.json(favorite); 
+        });
+    }
 
     // // [POST] /carts/delete
     // removeToCart(req, res){

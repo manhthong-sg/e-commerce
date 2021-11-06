@@ -11,7 +11,7 @@ router.post('/', favoritesController.addToFavorite)
 
 
 // // get /carts/:id
-// router.get('/:idUser', cartsController.getCartById)
+router.get('/:idUser', favoritesController.getFavoriteById)
 
 // get /carts/
 router.get('/', favoritesController.index)

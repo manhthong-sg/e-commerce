@@ -23,6 +23,10 @@ const Login = ({navigation}) => {
         type: 'SET_CART', 
         payload: cart
     })
+    const setFavorite=(fav)=> dispatch({
+        type: 'SET_FAVORITE', 
+        payload: fav
+    })
     var userClone;
     //mesage
     const [message, setMessage]=useState();
@@ -67,6 +71,16 @@ const Login = ({navigation}) => {
             .then((data)=>{
                 //setCartData(data["data"]);
                 setCart(data["data"])
+                // console.log(data["data"]);
+            })
+            //.then(()=> console.log(arrCart))
+            .catch(err=>console.log(err))
+
+            // fetch api favorite items from id user
+            axios.get(`http://192.168.1.7:3000/favorites/${userClone._id}`)
+            .then((data)=>{
+                //setCartData(data["data"]);
+                setFavorite(data["data"])
                 // console.log(data["data"]);
             })
             //.then(()=> console.log(arrCart))

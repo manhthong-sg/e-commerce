@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image, ToastAndroid} from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';

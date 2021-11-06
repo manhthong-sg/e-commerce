@@ -9,7 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 const ProductDetail = ({navigation, route}) => {
     // get current user 
     const CurrentUser = useSelector(state=> state.userReducer.user);
-    
+    const Favorite = useSelector(state=> state.favoriteReducer.favorite.items);
+    //console.log(Favorite[0].idProduct);
     const {
         _id,
         name,
@@ -21,13 +22,31 @@ const ProductDetail = ({navigation, route}) => {
     
     const [count, setCount]=useState(1);
     const [total, setTotal]=useState(price);
-    
+    const [isFavorite, setIsFavorite]=useState(()=>{
+        let flag=false;
+        Favorite[0].idProduct.forEach(item => {
+            if(item._id == _id){
+                flag=true;
+            }
+        });
+        return flag;
+        // if(Favorite[0].idProduct.includes(_id)){
+        //     return true
+        // }
+        // else{
+        //     return false;
+        // }
+    });
+    //console.log(isFavorite);
     //console.log(description);
     const setCart=(cart)=> dispatch({
         type: 'SET_CART', 
         payload: cart
     })
-    
+    const setFavorite=(fav)=> dispatch({
+        type: 'SET_FAVORITE', 
+        payload: fav
+    })
     const dispatch = useDispatch();
 
     const handleResetCart=()=>{
@@ -38,7 +57,14 @@ const ProductDetail = ({navigation, route}) => {
                     // console.log(data["data"]);
                 })
     }
-    
+    const handleResetFavorite=()=>{
+        axios.get(`http://192.168.1.7:3000/favorites/${CurrentUser._id}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    setFavorite(data["data"])
+                    // console.log(data["data"]);
+                })
+    }
     //handle decrease product
     const handleIncreaseCount=()=>{
         if(count>remaining-1){
@@ -99,6 +125,31 @@ const ProductDetail = ({navigation, route}) => {
               );
         }
     }
+    
+    //handle add to favorite 
+    const handleAddToFavorite=()=>{
+        //console.log(Favorite)
+        if(CurrentUser){
+            const url='http://192.168.1.7:3000/favorites';
+            axios.post(url, {idProduct: _id, idUser: CurrentUser._id})
+            .then(()=>{
+                handleResetFavorite();
+                setIsFavorite(!isFavorite)
+                //setCount(1)
+            })
+            .catch((err)=> {
+                console.log(err+ " :ERROR!");
+            })
+            //setCart(item)
+        }else{
+            ToastAndroid.showWithGravity(
+                "Sorry, you must LOGIN to add to cart",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+        }
+    }
+
     //render header of this screens
     function renderHeader() {
         return (
@@ -318,7 +369,7 @@ const ProductDetail = ({navigation, route}) => {
                     width: 60,
                     height: 60,
                     borderRadius: 30,
-                    backgroundColor: COLORS.orange,
+                    backgroundColor: isFavorite ? COLORS.orange: COLORS.xam1,
                     opacity: 10,
                     elevation: 10,
                     shadowColor: COLORS.orange,
@@ -327,8 +378,15 @@ const ProductDetail = ({navigation, route}) => {
                     //zIndex: 10,
                     justifyContent: 'center',
                     alignItems: 'center',
-                }}>
-                    <FontAwesome5 solid name='heart' size={25} color={COLORS.white}/>
+                }}
+                    onPress={handleAddToFavorite}
+                >
+                    <FontAwesome5 
+                        solid={isFavorite} 
+                        name='heart' 
+                        size={25} 
+                        color={isFavorite ? COLORS.white: COLORS.black}
+                        />
                 </TouchableOpacity>
 
                 
