@@ -5,10 +5,29 @@ import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = () => {
+
+const Login = ({navigation}) => {
     const [hidePassword, setHidePassword]=useState(true);
     
+    const dispatch = useDispatch();
+
+    const setUser=(user)=> dispatch({
+        type: 'SET_USER', 
+        payload: user
+    })
+
+    const setCart=(cart)=> dispatch({
+        type: 'SET_CART', 
+        payload: cart
+    })
+    const setFavorite=(fav)=> dispatch({
+        type: 'SET_FAVORITE', 
+        payload: fav
+    })
+    var userClone;
     //mesage
     const [message, setMessage]=useState();
     const [messageType, setMessageType]=useState();
@@ -18,19 +37,54 @@ const Login = () => {
         setMessage(message);
         setMessageType(type);
     }
-
+    const storeUser = async (value) => {
+        try {
+          //const jsonValue = JSON.stringify(value)
+          await AsyncStorage.setItem('USER', value)
+        } catch (e) {
+          // saving error
+          console.log("Error: ", e);
+        }
+      }
     //handle login
     const handleLogin=(credentials, setSubmitting)=>{
         const{phone, password}=credentials
         
         
         handleMessage(null);
-        const url='http://192.168.1.11:3000/users/auth';
+        const url='http://192.168.1.7:3000/users/auth';
         axios.post(url, {phone: phone, password: password})
-        .then((data)=>{
-            //let {status, msg}=data.body;
+        .then((res)=>{
+            let {user, msg}=res.data; //get user from res data
+            userClone=res.data.user;
+            //console.log(user);
+            setUser(user)
+            storeUser("Thong")
             handleMessage("Login Successfully", "SUCCESS");
             setSubmitting(false)
+            navigation.goBack();
+            navigation.navigate('Home', user)
+        })
+        .then(()=>{
+            // fetch api cart items from id user 
+            axios.get(`http://192.168.1.7:3000/carts/${userClone._id}`)
+            .then((data)=>{
+                //setCartData(data["data"]);
+                setCart(data["data"])
+                // console.log(data["data"]);
+            })
+            //.then(()=> console.log(arrCart))
+            .catch(err=>console.log(err))
+
+            // fetch api favorite items from id user
+            axios.get(`http://192.168.1.7:3000/favorites/${userClone._id}`)
+            .then((data)=>{
+                //setCartData(data["data"]);
+                setFavorite(data["data"])
+                // console.log(data["data"]);
+            })
+            //.then(()=> console.log(arrCart))
+            .catch(err=>console.log(err))
         })
         .catch((err)=> {
             //console.log(err.json());
@@ -38,8 +92,7 @@ const Login = () => {
             handleMessage("Please check your info again.");
 
         })
-        // registerForm({fullName, phone, passward})
-        //RegisterUser({fullName,phone,password,confirmPW})
+        
 
     }
     return (
@@ -67,7 +120,7 @@ const Login = () => {
                 </Text> */}
                 {/* //titile */}
                 <Text style={{
-                    color: COLORS.black, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
+                    color: COLORS.xam4, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
                 >
                     Account Login
                 </Text>
@@ -186,7 +239,9 @@ const Login = () => {
                                         marginTop: 10,
                                     }}>
                                         <Text>Don't have an account already?</Text>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={()=>navigation.navigate('Register')}
+                                        >
                                             <Text
                                                 style={{
                                                     color: COLORS.brand,
@@ -234,7 +289,7 @@ const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, ...pro
                     <View style={styles.RightIcon}>
                         <Ionicons
                             size={25}
-                            color={COLORS.darklight}
+                            color={hidePassword ? COLORS.darklight: COLORS.brand}
                             name={hidePassword ? 'md-eye-off': 'md-eye'}
                             onPress={()=>setHidePassword(!hidePassword)}
                         />
@@ -258,7 +313,7 @@ const styles = StyleSheet.create({
     },
     TextInput:{
         flexDirection: 'row',
-        backgroundColor: COLORS.secondary,
+        backgroundColor: COLORS.xam1,
         padding: 13,
         paddingLeft: 55,
         paddingRight: 55,
@@ -299,7 +354,7 @@ const styles = StyleSheet.create({
     ButtonGoogle:{
         flexDirection: 'row',
         padding: 15,
-        backgroundColor: '#dd571c',
+        backgroundColor: COLORS.orange,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,

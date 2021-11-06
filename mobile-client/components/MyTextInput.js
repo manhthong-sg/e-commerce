@@ -50,4 +50,63 @@ const MyTextInput = ({label, icon,isPassword,hidePassword, setHidePassword, isDa
 
 export default MyTextInput
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    wrap:{
+        
+    },
+    container:{ 
+        alignItems: 'center',
+        paddingTop: 50,
+    },
+    TextInput:{
+        flexDirection: 'row',
+        backgroundColor: COLORS.xam1,
+        padding: 13,
+        paddingLeft: 55,
+        paddingRight: 55,
+        borderRadius: 5,
+        fontSize: 16,
+        height: 60,
+        marginVertical: 3,
+        marginBottom: 10,
+        color: COLORS.tertiary,
+    },
+    InputLabel:{
+        color: COLORS.black,
+        fontSize: 13,
+        textAlign: 'left'
+    },
+    LeftIcon:{
+        left: 15,
+        top: 38,
+        position: 'absolute',
+        zIndex: 1
+    },
+    RightIcon:{
+        right: 15,
+        top: 38,
+        position: 'absolute',
+        zIndex: 1
+    },
+    Button:{
+        padding: 15,
+        backgroundColor: COLORS.brand,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        marginVertical: 5,
+        //marginTop: 10,
+        height: 60,
+    },
+    ButtonGoogle:{
+        flexDirection: 'row',
+        padding: 15,
+        backgroundColor: COLORS.orange,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        marginVertical: 5,
+        //marginTop: 10,
+        height: 60,
+    }
+})

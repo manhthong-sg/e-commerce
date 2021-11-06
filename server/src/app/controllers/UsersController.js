@@ -18,8 +18,14 @@ class UsersController {
              
         var newUser=User(req.body);
         newUser.save()
-        .then(()=> {console.log("Create new user SUCCESSFULLY!"); Promise.resolve();})
-        .catch((err)=> res.json({msg: "Create new user FAIL!"}))   
+        .then(()=> {
+            console.log("Create new user SUCCESSFULLY!");
+            res.redirect('/users')
+
+        })
+        .catch((err)=> {
+            res.status(500).send('Something broke!')
+        })   
     }
     
     //[POST] auth user login
@@ -61,6 +67,6 @@ class UsersController {
         );
     }
 
-    //post /news
+    
 }
 module.exports=new UsersController;

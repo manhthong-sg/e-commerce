@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ActivityIndicator, ToastAndroid} from 'react-native'
 import {images, icons, COLORS} from '../constants'
 import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import { registerUser as RegisterUser } from '../api'
 import axios from 'axios'
-const Register = () => {
+const Register = ({navigation}) => {
     const [hidePassword, setHidePassword]=useState(true);
     
     // handle select canlendar
@@ -53,12 +53,18 @@ const Register = () => {
         
         
         handleMessage(null);
-        const url='http://192.168.1.11:3000/users';
+        const url='http://192.168.1.7:3000/users';
         axios.post(url, {fullName: fullName, phone: phone, password: password})
         .then((res)=>{
             handleMessage("Register Successfully", "SUCCESS");
-            let {status, msg}=res.body;
-            setSubmitting(false)
+            //let {status, msg}=res.body;
+            setSubmitting(false);
+            ToastAndroid.showWithGravity(
+                "Register successfully, now you can login!",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+            navigation.navigate('Login');
         })
         .catch((err)=> {
             //console.log(err.json());
@@ -99,7 +105,7 @@ const Register = () => {
 
                 {/* //titile */}
                 <Text style={{
-                    color: COLORS.black, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
+                    color: COLORS.xam4, fontWeight: 'bold', fontSize: 22, letterSpacing: 2}}
                 >
                     Account Register
                 </Text>
@@ -216,6 +222,7 @@ const Register = () => {
                                     <Text 
                                         type={messageType} 
                                         style={{
+                                            marginTop: 15,
                                             textAlign: 'center', 
                                             fontSize: 13,
                                             color: (messageType=='SUCCESS'? COLORS.green: COLORS.red)
@@ -267,7 +274,9 @@ const Register = () => {
                                         //marginTop: 10,
                                     }}>
                                         <Text>Already have an account?</Text>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={()=> navigation.goBack()}
+                                        >
                                             <Text
                                                 style={{
                                                     color: COLORS.brand,
@@ -328,7 +337,7 @@ const MyTextInput=({label, icon,isPassword,hidePassword, setHidePassword, isDate
                     <View style={styles.RightIcon}>
                         <Ionicons
                             size={25}
-                            color={COLORS.darklight}
+                            color={hidePassword ? COLORS.darklight: COLORS.brand}
                             name={hidePassword ? 'md-eye-off': 'md-eye'}
                             onPress={()=>setHidePassword(!hidePassword)}
                         />
@@ -352,7 +361,7 @@ const styles = StyleSheet.create({
     },
     TextInput:{
         flexDirection: 'row',
-        backgroundColor: COLORS.secondary,
+        backgroundColor: COLORS.xam1,
         padding: 13,
         paddingLeft: 55,
         paddingRight: 55,
