@@ -4,7 +4,8 @@ let defaultState= {
     favorite: {
         items: {
             
-        }
+        },
+        itemNum: 0
     },
 }
 
@@ -23,6 +24,7 @@ let favoriteReducer= (state = defaultState, action)=>{
         case 'SET_FAVORITE' :{
             favorite = {
                 items: action.payload,
+                itemsNum: action.payload[0].idProduct.length
             }
             //console.log(favorite);
             //storeData(cart)

@@ -86,7 +86,7 @@ const Cart = ({navigation}) => {
     const ListCartItems=()=>{
         const renderItem = ({ item }) => {
             return (
-                <View
+                <TouchableOpacity
                     style={{
                         backgroundColor: COLORS.white,
                         alignItems: "center",
@@ -100,7 +100,7 @@ const Cart = ({navigation}) => {
                         borderRadius: 10,
                         //zIndex: -1,
                     }}
-                    //onPress={() =>navigation.navigate("ProductDetail", item)}
+                    onPress={() =>navigation.navigate("ProductDetail", item.idProduct)}
                 > 
                     <View style={{
                         flexDirection: 'row',
@@ -210,7 +210,7 @@ const Cart = ({navigation}) => {
                             
                         </View>
                     </View>
-                </View>    
+                </TouchableOpacity>    
             )
         }
         return (
@@ -401,7 +401,7 @@ const Cart = ({navigation}) => {
                             paddingLeft: 20,
                             letterSpacing: 1,
                         }}>
-                                {Cart.itemNum} Item
+                                {Cart.itemNum} Items
                         </Text>
                         <ListCartItems/>
                         <PaymentContainer/>

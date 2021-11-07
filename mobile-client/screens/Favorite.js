@@ -5,13 +5,13 @@ import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 
-const Favorite = () => {
+const Favorite = ({navigation}) => {
     //get current user
     const CurrentUser = useSelector(state=> state.userReducer.user);
 
     const Cart = useSelector(state1=> state1.cartReducer.cart);
 
-    const Favorite = useSelector(state=> state.favoriteReducer.favorite.items);
+    const Favorite = useSelector(state=> state.favoriteReducer.favorite);
 
     const [favoriteData, setFavoriteData]=useState(null);
     const [isFavorite, setIsFavorite] =useState(true);
@@ -57,13 +57,16 @@ const Favorite = () => {
     useEffect(() => {
         //console.log(getCart());
         // console.log(Favorite[0].idProduct)
-        setFavoriteData(Favorite[0].idProduct)
+        if(CurrentUser){
+            setFavoriteData(Favorite.items[0].idProduct)
+
+        }
     },)
 
-    const ListCartItems=()=>{
+    const ListFavoriteItems=()=>{
         const renderItem = ({ item }) => {
             return (
-                <View
+                <TouchableOpacity
                     style={{
                         backgroundColor: COLORS.white,
                         alignItems: "center",
@@ -77,7 +80,7 @@ const Favorite = () => {
                         borderRadius: 10,
                         //zIndex: -1,
                     }}
-                    //onPress={() =>navigation.navigate("ProductDetail", item)}
+                    onPress={() =>navigation.navigate("ProductDetail", item)}
                 > 
                     <View style={{
                         flexDirection: 'row',
@@ -151,7 +154,7 @@ const Favorite = () => {
                             
                         </View>
                     </View>
-                </View>    
+                </TouchableOpacity>    
             )
         }
         return (
@@ -230,9 +233,9 @@ const Favorite = () => {
                             paddingLeft: 20,
                             letterSpacing: 1,
                         }}>
-                                {/* {Cart.itemNum} Item */}
+                                {Favorite.itemsNum} Items
                         </Text>
-                        <ListCartItems/>
+                        <ListFavoriteItems/>
                     </View>
 
                 )
