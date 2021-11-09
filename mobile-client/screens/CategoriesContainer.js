@@ -4,9 +4,17 @@ import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SERVER_URL from '../api'
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
 
 const CategoriesContainer = ({route, navigation}) => {
-    
+    const CurrentUser = useSelector(state=> state.userReducer.user);
+    const Favorite = useSelector(state=> state.favoriteReducer.favorite);
+    //lay ra id nhung item da them vao favorite de hien ra
+    var favoriteData=[];
+    Favorite.items[0].idProduct.forEach(item=>{
+        favoriteData.push(item._id)
+    })
+    //console.log(favoriteData);
     // data categories 
     const categoryData = [
         {
@@ -36,13 +44,49 @@ const CategoriesContainer = ({route, navigation}) => {
         },
     ]
     
+    const setFavorite=(fav)=> dispatch({
+        type: 'SET_FAVORITE', 
+        payload: fav
+    })
+    const dispatch = useDispatch();
+    const handleResetFavorite=()=>{
+        axios.get(`${SERVER_URL}/favorites/${CurrentUser._id}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    setFavorite(data["data"])
+                    // console.log(data["data"]);
+                })
+    }
+    //handle add to favorite 
+    const handleAddToFavorite=(idProduct)=>{
+        //console.log(Favorite)
+        if(CurrentUser){
+            const url=`${SERVER_URL}/favorites`;
+            axios.post(url, {idProduct: idProduct, idUser: CurrentUser._id})
+            .then(()=>{
+                handleResetFavorite();
+                setIsFavorite(!isFavorite)
+                //setCount(1)
+            })
+            .catch((err)=> {
+                console.log(err+ " :ERROR!");
+            })
+            //setCart(item)
+        }else{
+            ToastAndroid.showWithGravity(
+                "Sorry, you must LOGIN to add to cart",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+        }
+    }
     const initialSelectedCategory = route.params;
     //console.log(initialSelectedCategory);
     var [productsData, setProductData]=useState(null);
     const [products, setProducts] = useState(null);
     const [categories, setCategories] = useState(categoryData)
     const [selectedCategory, setSelectedCategory] = useState(initialSelectedCategory)
-    
+    const [isFavorite, setIsFavorite]=useState(false);
     
     
     //call api product and get all products
@@ -169,23 +213,6 @@ const CategoriesContainer = ({route, navigation}) => {
                         <Text style={{fontWeight: 'bold', fontSize: 25, color: COLORS.xam4}}>Main Categories</Text>
                     </View>
                 </View>
-
-                {/* <TouchableOpacity
-                    style={{
-                        width: 50,
-                        paddingRight: SIZES.padding * 2,
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Image
-                        source={icons.basket}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
-                </TouchableOpacity> */}
             </View>
         )
     }
@@ -405,14 +432,14 @@ const CategoriesContainer = ({route, navigation}) => {
                             right: 0,
 
                         }}
-                        //onPress={() => onSelectFavorite(item)}
+                        onPress={()=>handleAddToFavorite(item._id)}
                     >
                         <FontAwesome5
                                 solid
                                 //solid={(selectedFavorite[item.id].id == item.id) ? true : false}
                                 name="heart"
                                 size={20}
-                                color={(selectedFavorite[4]?.id == item.id) ? COLORS.white : COLORS.xam2} 
+                                color={(favoriteData.includes(item._id)) ? COLORS.do2 : COLORS.white} 
                             />    
                     </TouchableOpacity>
                     <Image

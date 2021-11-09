@@ -10,10 +10,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Cart = ({navigation}) => {
     //get current user
     const CurrentUser = useSelector(state=> state.userReducer.user); 
-    const Cart = useSelector(state1=> state1.cartReducer.cart);
+    const Cart = useSelector(state=> state.cartReducer.cart);
     
-    const [count, setCount]=useState(1);
     const [cartData, setCartData]=useState(null);
+    const [count, setCount]=useState(1);
 
     const setCart=(cart)=> dispatch({
         type: 'SET_CART', 
@@ -56,36 +56,38 @@ const Cart = ({navigation}) => {
         setCartData(Cart.items)
     },)
 
-    //handle decrease product
-    const handleIncreaseCount=()=>{
-        if(count>remaining-1){
-            ToastAndroid.showWithGravity(
-                "Only "+remaining +" products left!",
-                ToastAndroid.LONG,
-                ToastAndroid.BOTTOM
-              );
-        }else{
-            setCount(count+1)
-            
-            setTotal(total+price)
-        }
-    }
-    //handle increase product
-    const handleDecreaseCount=()=>{
-        if(count>1){
-            setCount(count-1); 
-            setTotal(total-price)
-        }else{
-            ToastAndroid.showWithGravity(
-                "Minimum is 1",
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM
-              );
-        }
-    }
+    
 
     const ListCartItems=()=>{
         const renderItem = ({ item }) => {
+            
+            //handle decrease product
+            const handleIncreaseCount=()=>{
+                if(count>remaining-1){
+                    ToastAndroid.showWithGravity(
+                        "Only "+remaining +" products left!",
+                        ToastAndroid.LONG,
+                        ToastAndroid.BOTTOM
+                    );
+                }else{
+                    setCount(count+1)
+                    
+                    // setTotal(total+price)
+                }
+            }
+            //handle increase product
+            const handleDecreaseCount=()=>{
+                if(count>1){
+                    setCount(count-1); 
+                    // setTotal(total-price)
+                }else{
+                    ToastAndroid.showWithGravity(
+                        "Minimum is 1",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.BOTTOM
+                    );
+                }
+            }
             return (
                 <TouchableOpacity
                     style={{
@@ -179,7 +181,7 @@ const Cart = ({navigation}) => {
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                     }}
-                                        //onPress={handleDecreaseCount}
+                                        onPress={handleDecreaseCount}
                                     >
                                         <Text style={styles.updown}>-</Text>
                                     </TouchableOpacity>
@@ -192,7 +194,7 @@ const Cart = ({navigation}) => {
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                     }}
-                                        //onPress={handleIncreaseCount}
+                                        onPress={handleIncreaseCount}
                                     >
                                         <Text style={styles.updown}>+</Text>
                                     </TouchableOpacity>         
