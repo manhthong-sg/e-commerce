@@ -2,9 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let defaultState= {
     favorite: {
-        items: {
-            
-        },
+        items: [
+            {
+                idProduct:[]
+            }
+        ],
         itemNum: 0
     },
 }
@@ -24,7 +26,7 @@ let favoriteReducer= (state = defaultState, action)=>{
         case 'SET_FAVORITE' :{
             favorite = {
                 items: action.payload,
-                itemsNum: action.payload[0].idProduct.length
+                itemsNum: (action.payload[0] ===undefined) ? 0 : action.payload[0].idProduct.length
             }
             //console.log(favorite);
             //storeData(cart)

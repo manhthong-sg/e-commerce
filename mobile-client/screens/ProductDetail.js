@@ -25,11 +25,14 @@ const ProductDetail = ({navigation, route}) => {
     const [total, setTotal]=useState(price);
     const [isFavorite, setIsFavorite]=useState(()=>{
         let flag=false;
-        Favorite[0].idProduct.forEach(item => {
-            if(item._id == _id){
-                flag=true;
-            }
-        });
+        if(CurrentUser){
+            Favorite[0].idProduct.forEach(item => {
+                if(item._id == _id){
+                    flag=true;
+                }
+            });
+            
+        }
         return flag;
         // if(Favorite[0].idProduct.includes(_id)){
         //     return true

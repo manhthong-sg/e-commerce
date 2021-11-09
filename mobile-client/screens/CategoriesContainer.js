@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Image, ActivityIndicator,SafeAreaView, StyleSheet, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
+import { Image, ActivityIndicator,SafeAreaView, StyleSheet, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SERVER_URL from '../api'
@@ -9,11 +9,13 @@ import { useSelector, useDispatch } from 'react-redux'
 const CategoriesContainer = ({route, navigation}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user);
     const Favorite = useSelector(state=> state.favoriteReducer.favorite);
-    //lay ra id nhung item da them vao favorite de hien ra
     var favoriteData=[];
-    Favorite.items[0].idProduct.forEach(item=>{
-        favoriteData.push(item._id)
-    })
+    if(CurrentUser){
+        //lay ra id nhung item da them vao favorite de hien ra
+        Favorite.items[0].idProduct.forEach(item=>{
+            favoriteData.push(item._id)
+        })
+    }
     //console.log(favoriteData);
     // data categories 
     const categoryData = [
