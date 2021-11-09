@@ -3,6 +3,7 @@ import { StyleSheet, Text, Image, View, StatusBar, TouchableOpacity, Animated, T
 import { COLORS , SIZES, icons, images } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import SERVER_URL from '../api'
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -50,7 +51,7 @@ const ProductDetail = ({navigation, route}) => {
     const dispatch = useDispatch();
 
     const handleResetCart=()=>{
-        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                 .then((data)=>{
                     //setCartData(data["data"]);
                     setCart(data["data"])
@@ -58,7 +59,7 @@ const ProductDetail = ({navigation, route}) => {
                 })
     }
     const handleResetFavorite=()=>{
-        axios.get(`http://192.168.1.7:3000/favorites/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/favorites/${CurrentUser._id}`)
                 .then((data)=>{
                     //setCartData(data["data"]);
                     setFavorite(data["data"])
@@ -102,7 +103,7 @@ const ProductDetail = ({navigation, route}) => {
                 idUser: CurrentUser._id,
     
             };
-            const url='http://192.168.1.7:3000/carts';
+            const url=`${SERVER_URL}/carts`;
             axios.post(url, {idProduct: _id, itemNum: count, idUser: CurrentUser._id})
             .then(()=>{
                 ToastAndroid.showWithGravity(
@@ -130,7 +131,7 @@ const ProductDetail = ({navigation, route}) => {
     const handleAddToFavorite=()=>{
         //console.log(Favorite)
         if(CurrentUser){
-            const url='http://192.168.1.7:3000/favorites';
+            const url=`${SERVER_URL}/favorites`;
             axios.post(url, {idProduct: _id, idUser: CurrentUser._id})
             .then(()=>{
                 handleResetFavorite();
@@ -271,7 +272,7 @@ const ProductDetail = ({navigation, route}) => {
                                 <View style={{ height: 210 }}>
                                     {/* Food Image */}
                                     <Image
-                                        source={{uri: `http://192.168.1.7:3000/images/${item}`}}
+                                        source={{uri: `${SERVER_URL}/images/${item}`}}
                                         resizeMode="cover"
                                         style={{
                                             width: SIZES.width,

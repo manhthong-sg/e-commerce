@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { Image, ActivityIndicator,SafeAreaView, StyleSheet, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import getProducts from '../api/getProducts';
+import SERVER_URL from '../api'
 import axios from 'axios';
 
 const CategoriesContainer = ({route, navigation}) => {
@@ -47,7 +47,7 @@ const CategoriesContainer = ({route, navigation}) => {
     
     //call api product and get all products
     const fetchProducts = async () => {
-        const res = await axios.get(`http://192.168.1.7:3000/products`).catch((err) => { console.log("Fetch API failed!! " + err); }); 
+        const res = await axios.get(`${SERVER_URL}/products`).catch((err) => { console.log("Fetch API failed!! " + err); }); 
         //const res = await getProducts.getAllProduct(); 
         if (!res) return;
 
@@ -115,7 +115,7 @@ const CategoriesContainer = ({route, navigation}) => {
     //onPress category
     const onSelectCategory = async (category) =>{
         //filter restaurant
-        let productsList = await axios.get(`http://192.168.1.7:3000/products/categories/${category.id}`)
+        let productsList = await axios.get(`${SERVER_URL}/products/categories/${category.id}`)
         
         setProducts(productsList["data"])
         setSelectedCategory(category)

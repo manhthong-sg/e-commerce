@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image, ToastAndroid} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { COLORS , SIZES, icons, } from '../constants'
+import SERVER_URL from '../api'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 
@@ -19,11 +20,12 @@ const Favorite = ({navigation}) => {
         type: 'SET_FAVORITE', 
         payload: cart
     })
+
     
     const dispatch = useDispatch();
 
     const handleResetFavorite=()=>{
-        axios.get(`http://192.168.1.7:3000/favorites/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/favorites/${CurrentUser._id}`)
                 .then((data)=>{
                     setFavorite(data["data"])
                     //setFavoriteData(data["data"]);
@@ -34,7 +36,7 @@ const Favorite = ({navigation}) => {
     const handleAddToFavorite=(idProduct)=>{
         //console.log(Favorite)
         if(CurrentUser){
-            const url='http://192.168.1.7:3000/favorites';
+            const url=`${SERVER_URL}/favorites`;
             axios.post(url, {idProduct: idProduct, idUser: CurrentUser._id})
             .then(()=>{
                 handleResetFavorite();
@@ -89,7 +91,7 @@ const Favorite = ({navigation}) => {
                     }}>
                         <View style={styles.ImageCart}>
                             <Image 
-                                source={{uri: `http://192.168.1.7:3000/images/${item.image[0]}`}}
+                                source={{uri: `${SERVER_URL}/images/${item.image[0]}`}}
                                 style={{
                                     width: 70,
                                     height: 70,

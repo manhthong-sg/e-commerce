@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image, T
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import SERVER_URL from '../api'
 import { useSelector, useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -22,7 +23,7 @@ const Cart = ({navigation}) => {
     const dispatch = useDispatch();
 
     const handleResetCart=()=>{
-        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                 .then((data)=>{
                     //setCartData(data["data"]);
                     setCart(data["data"])
@@ -31,7 +32,7 @@ const Cart = ({navigation}) => {
     }
     //handle detele from cart
     const handleDeleteFromCart=(idProduct)=>{
-        const url=`http://192.168.1.7:3000/carts/delete/${idProduct}`;
+        const url=`${SERVER_URL}/carts/delete/${idProduct}`;
         axios.post(url)
         .then(()=>{
             ToastAndroid.showWithGravity(
@@ -109,7 +110,7 @@ const Cart = ({navigation}) => {
                     }}>
                         <View style={styles.ImageCart}>
                             <Image 
-                                source={{uri: `http://192.168.1.7:3000/images/${item["idProduct"].image[0]}`}}
+                                source={{uri: `${SERVER_URL}/images/${item["idProduct"].image[0]}`}}
                                 style={{
                                     width: 70,
                                     height: 70,

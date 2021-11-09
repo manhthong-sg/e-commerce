@@ -1,5 +1,4 @@
-import axios from "axios";
+const SERVER_URL = 'http://192.168.1.4:3000'
 
 
-//[POST] register user
-export const registerUser=({user})=> axios.post('http://192.168.1.11:3000/users', user);
+export default SERVER_URL;
