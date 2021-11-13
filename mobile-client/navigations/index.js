@@ -11,6 +11,7 @@ import Login from '../screens/Login'
 import Register from '../screens/Register'
 import Me from '../screens/Me'
 import Cart from '../screens/Cart'
+import Payment from '../screens/Payment'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -42,3 +43,17 @@ const MeNavigation = () => {
     )
 }
 export {MeNavigation}
+
+const CartNavigation = () => {
+    const Stack=createStackNavigator();
+    const screenOptions={
+        headerShown: false,
+    }
+    return (
+            <Stack.Navigator initialRouteName='Cart' screenOptions={screenOptions}>
+                <Stack.Screen name = 'Cart' component = {Cart} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'Payment' component = {Payment} screenOptions={screenOptions}/>
+            </Stack.Navigator>
+    )
+}
+export {CartNavigation}

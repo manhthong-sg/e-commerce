@@ -171,7 +171,7 @@ const Cart = ({navigation}) => {
                                     height: 30,
                                     // backgroundColor: COLORS.orange,
                                     alignItems: 'center',
-                                    marginLeft: 140
+                                    marginLeft: 130
                                 }}>
                                     <TouchableOpacity style={{
                                         width: 20,
@@ -250,17 +250,21 @@ const Cart = ({navigation}) => {
                     //backgroundColor: COLORS.xam2
                 }}>
                     <Text style={{
-                        width: '90%',
-                        fontSize: 16,
-                        letterSpacing: 1
+                        width: '80%',
+                        // maxwidth: '80%',
+                        //minwidth: '80%',
+                        fontSize: 17,
+                        letterSpacing: 1,
+                        // fontWeight: 'bold'
                     }}>Order Amount:</Text>
                     <Text
                         style={{
-                            fontSize: 16,
+                            fontSize: 17,
                             letterSpacing: 1,
-                            textAlign: 'right'
+                            textAlign: 'right',
+                            // fontWeight: 'bold'
                         }}
-                    >0$</Text>
+                    >{Cart.total}$</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -335,6 +339,7 @@ const Cart = ({navigation}) => {
                 </View>
                 <TouchableOpacity 
                     style={styles.Button}
+                    onPress={()=> navigation.navigate('Payment')}
                 >
                     <Text style={{
                         color: COLORS.primary, 

@@ -9,9 +9,13 @@ import { COLORS } from '../constants';
 import Me from '../screens/Me';
 import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
-import {HomeNavigation, MeNavigation} from './index'
+import {HomeNavigation, MeNavigation, CartNavigation} from './index'
 import { useSelector, useDispatch } from 'react-redux'
+import Payment from '../screens/Payment';
+import {createStackNavigator} from '@react-navigation/stack'
 
+
+const Stack=createStackNavigator();
 const Tab = createBottomTabNavigator();
 const screenOptions={
     headerShown: false,
@@ -98,8 +102,8 @@ const BottomNavigation = () => {
             
             {/* Cart Screen  */}
             <Tab.Screen 
-                name="Cart" 
-                component={Cart} 
+                name="CartContainer" 
+                component={CartNavigation} 
                 options={
                     {headerShown: false, tabBarIcon: ({focused})=>(
                         <View style={{
