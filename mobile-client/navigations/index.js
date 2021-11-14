@@ -11,7 +11,7 @@ import Login from '../screens/Login'
 import Register from '../screens/Register'
 import Me from '../screens/Me'
 import Cart from '../screens/Cart'
-import Payment from '../screens/Payment'
+import Payment from '../screens/Order'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={

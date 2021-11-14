@@ -20,6 +20,11 @@ export const student2=require("../assets/icons/student2.png");
 export const gaming=require("../assets/icons/gaming.png");
 export const do_hoa=require("../assets/icons/do_hoa.png");
 
+//icon voucher
+export const voucher=require("../assets/icons/voucher.png");
+export const payment=require("../assets/icons/payment.png");
+export const message=require("../assets/icons/message.png");
+
 const icons={
         logo,
         logo2,
@@ -37,6 +42,9 @@ const icons={
         student2,
         gaming,
         do_hoa,
+        voucher,
+        payment,
+        message
     }
 
 export default icons

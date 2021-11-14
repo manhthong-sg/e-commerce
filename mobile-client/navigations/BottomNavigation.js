@@ -11,7 +11,7 @@ import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
 import {HomeNavigation, MeNavigation, CartNavigation} from './index'
 import { useSelector, useDispatch } from 'react-redux'
-import Payment from '../screens/Payment';
+import Payment from '../screens/Order';
 import {createStackNavigator} from '@react-navigation/stack'
 
 

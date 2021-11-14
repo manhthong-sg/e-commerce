@@ -445,7 +445,7 @@ const CategoriesContainer = ({route, navigation}) => {
                             />    
                     </TouchableOpacity>
                     <Image
-                        source={{uri: `http://192.168.1.7:3000/images/${item.image[0]}`}}
+                        source={{uri: `${SERVER_URL}/images/${item.image[0]}`}}
                         resizeMode="cover"
                         style={{
                             width: '100%',

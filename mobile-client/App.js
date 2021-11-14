@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Platform, LogBox  } from 'react-native';
+import { StyleSheet, Text, View, Platform, LogBox } from 'react-native';
 import {COLORS} from './constants/index' 
 import Home from './screens/Home';
 import Login from './screens/Login'
@@ -20,6 +20,7 @@ export default function App() {
   return (
     <ReduxProvider store={store}>
       <View style={styles.container}>
+      <StatusBar translucent backgroundColor="transparent" />
           <NavigationContainer>
               <BottomNavigation/>
           </NavigationContainer>
