@@ -339,14 +339,14 @@ const Cart = ({navigation}) => {
                 </View>
                 <TouchableOpacity 
                     style={styles.Button}
-                    onPress={()=> navigation.navigate('Payment')}
+                    onPress={()=> navigation.navigate('Order')}
                 >
                     <Text style={{
                         color: COLORS.primary, 
                         fontSize: 15,
                         fontWeight: 'bold'
                     }}>
-                        Payment
+                        Order
                     </Text>
                 </TouchableOpacity>
             </View>

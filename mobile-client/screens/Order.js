@@ -66,7 +66,10 @@ const Order = ({navigation}) => {
     //render your info and address
     const MyInfo = ()=> {
         return (
-            <TouchableOpacity style={styles.MyInfoContainer}>
+            <TouchableOpacity 
+                style={styles.MyInfoContainer}
+                onPress={()=> navigation.navigate("EditDeliveryInfo")}    
+            >
                 <FontAwesome5 
                     name="map-marker-alt"
                     size={18}
@@ -526,7 +529,6 @@ const Order = ({navigation}) => {
                 <MyPaymentMethod/>
                 <TotalPayment/>
                 <ButtonPayment/>
-                {/* <ButtonPayment/> */}
 
             </ScrollView>
 
