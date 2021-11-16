@@ -10,7 +10,7 @@ const CategoriesContainer = ({route, navigation}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user);
     const Favorite = useSelector(state=> state.favoriteReducer.favorite);
     var favoriteData=[];
-    if(CurrentUser){
+    if(CurrentUser && Favorite.items[0] !== undefined){
         //lay ra id nhung item da them vao favorite de hien ra
         Favorite.items[0].idProduct.forEach(item=>{
             favoriteData.push(item._id)

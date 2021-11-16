@@ -25,7 +25,7 @@ const ProductDetail = ({navigation, route}) => {
     const [total, setTotal]=useState(price);
     const [isFavorite, setIsFavorite]=useState(()=>{
         let flag=false;
-        if(CurrentUser){
+        if(CurrentUser && Favorite[0] !== undefined){
             Favorite[0].idProduct.forEach(item => {
                 if(item._id == _id){
                     flag=true;
@@ -34,15 +34,7 @@ const ProductDetail = ({navigation, route}) => {
             
         }
         return flag;
-        // if(Favorite[0].idProduct.includes(_id)){
-        //     return true
-        // }
-        // else{
-        //     return false;
-        // }
     });
-    //console.log(isFavorite);
-    //console.log(description);
     const setCart=(cart)=> dispatch({
         type: 'SET_CART', 
         payload: cart

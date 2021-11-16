@@ -59,7 +59,7 @@ const Favorite = ({navigation}) => {
     useEffect(() => {
         //console.log(getCart());
         // console.log(Favorite[0].idProduct)
-        if(CurrentUser && Favorite !== undefined){
+        if(CurrentUser && Favorite.items[0] !== undefined){
             setFavoriteData(Favorite.items[0].idProduct)
 
         }

@@ -1,45 +1,65 @@
-const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const User=new Schema({
-      fullName: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        lowercase: true,
-        //required: true,
-      },
-      password: {
-        type: String,
-        required: true,
-      },
-      phone: {
-        type: String,
-        // enum: 10,
-        //default: '',
-        unique: true,
-        required: true,
-      },
-      dateOfBirth: {
+const User = new Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      lowercase: true,
+      //required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      // enum: 10,
+      //default: '',
+      unique: true,
+      required: true,
+    },
+    dateOfBirth: {
+      type: String,
+      // minlength: 6,
+      default: "1/1/2000",
+    },
+    address: {
+      province: {
         type: String,
         // minlength: 6,
-        default: '1/1/2000',
+        default: "default",
       },
-      address: {
+      district: {
         type: String,
         // minlength: 6,
-        default: '',
+        default: "default",
       },
-      profilePicture: {
+      ward: {
         type: String,
-        default: '',
+        // minlength: 6,
+        default: "default",
       },
-      // cart: [{
-      //   type: String,
-      //   ref: "Cart"
-      // }]
-}, {versionKey: false} )//bỏ __v trong document in mongoose
+      apartmentAddress: {
+        type: String,
+        // minlength: 6,
+        default: "default",
+      },
+    },
+    profilePicture: {
+      type: String,
+      default: "",
+    },
+    // cart: [{
+    //   type: String,
+    //   ref: "Cart"
+    // }]
+  },
+  { versionKey: false }
+); //bỏ __v trong document in mongoose
 
-module.exports=mongoose.model('User', User, 'User')
+module.exports = mongoose.model("User", User, "User");

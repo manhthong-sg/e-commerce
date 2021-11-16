@@ -20,15 +20,18 @@ let userReducer= (state = defaultState, action)=>{
                 password: action.payload.password,
                 phone: action.payload.phone,
                 dateOfBirth: action.payload.dateOfBirth,
-                address: action.payload.address,
+                address: {
+                    province: action.payload.address.province,
+                    district: action.payload.address.district,
+                    ward: action.payload.address.ward,
+                    apartmentAddress: action.payload.address.apartmentAddress,
+                },
                 profilePicture: action.payload.profilePicture,
             };
             console.log(newState);
             return newState;
         }
-        // case 'USER_LOGOUT':{
-        //     return defaultState
-        // }
+        
         default: 
             return state;
     }

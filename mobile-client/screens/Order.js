@@ -4,12 +4,19 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { COLORS , SIZES, icons, images } from '../constants'
 import { useSelector, useDispatch } from 'react-redux';
 import SERVER_URL from '../api'
+import axios from 'axios';
+
 const Order = ({navigation}) => {
     // get current user 
     const CurrentUser = useSelector(state=> state.userReducer.user);
     const Cart = useSelector(state=> state.cartReducer.cart);
     
     const [cartData, setCartData]=useState(null);
+
+    //address usestate
+    const [province, setProvince]= useState(CurrentUser.address.province);
+    const [district, setDistrict]= useState(CurrentUser.address.district);
+    const [ward, setWard]= useState(CurrentUser.address.ward);
     useEffect(() => {
         //console.log(getCart());
         setCartData(Cart.items)
@@ -63,6 +70,26 @@ const Order = ({navigation}) => {
         )
     }
 
+    useEffect(() => {
+        axios.get(`https://provinces.open-api.vn/api/p/${CurrentUser.address.province}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    // setCart(data["data"])
+                    setProvince(data["data"].name);
+                })
+        axios.get(`https://provinces.open-api.vn/api/d/${CurrentUser.address.district}`)
+        .then((data)=>{
+            //setCartData(data["data"]);
+            // setCart(data["data"])
+            setDistrict(data["data"].name);
+        })
+        axios.get(`https://provinces.open-api.vn/api/w/${CurrentUser.address.ward}`)
+        .then((data)=>{
+            //setCartData(data["data"]);
+            // setCart(data["data"])
+            setWard(data["data"].name);
+        })
+    }, [CurrentUser])
     //render your info and address
     const MyInfo = ()=> {
         return (
@@ -88,18 +115,25 @@ const Order = ({navigation}) => {
                     }}>
                         Delivery address
                     </Text>
-                    <Text>{CurrentUser.fullName} | {CurrentUser.phone}</Text>
-                    {CurrentUser.address == "" && (
+                    <Text>{CurrentUser.fullName} || {CurrentUser.phone}</Text>
+                    {province == "default" && (
                         <Text style={{
                         paddingBottom: 10
                         }}>Please choose your address</Text>
                     )}
-                    {CurrentUser.address !== "" && (
-                        <Text style={{
-                            paddingBottom: 10
-                        }}>
-                            {CurrentUser.address}
-                        </Text>
+                    {province !== "default" && (
+                        <View>
+                            <Text style={{
+                                //paddingBottom: 10
+                            }}>
+                                {CurrentUser.address.apartmentAddress}, {ward}
+                            </Text>
+                            <Text style={{
+                                // paddingBottom: 10
+                            }}>
+                                {district}, {province}
+                            </Text>
+                        </View>
                     )}
                 </View>
                 <FontAwesome5 
@@ -551,6 +585,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: COLORS.white,
         elevation: 2,
+        paddingBottom: 5,
     },
     Info:{
         marginLeft: 15,

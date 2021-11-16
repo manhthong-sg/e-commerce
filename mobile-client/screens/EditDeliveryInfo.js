@@ -10,28 +10,45 @@ import {
   ScrollView,
   ToastAndroid,
   TextInput,
+  Alert,
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { COLORS, SIZES, icons } from "../constants";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import SERVER_URL from '../api'
+
 
 const EditDeliveryInfo = ({ navigation }) => {
   const CurrentUser = useSelector((state) => state.userReducer.user);
 
   const [recipientName, setRecipientName] = useState(CurrentUser.fullName);
   const [recipientPhone, setRecipientPhone] = useState(CurrentUser.phone);
-
-  const [selectedProvince, setSelectedProvince] = useState("default");
+    
+  const [selectedProvince, setSelectedProvince] = useState(Number(CurrentUser.address.province));
   const [dataProvince, setDataProvince] = useState(null);
 
-  const [selectedDistrict, setSelectedDistrict] = useState("default");
+  const [selectedDistrict, setSelectedDistrict] = useState(Number(CurrentUser.address.district));
   const [dataDistrict, setDataDistrict] = useState(null);
   
-  const [selectedWard, setSelectedWard] = useState("default");
+  const [selectedWard, setSelectedWard] = useState(Number(CurrentUser.address.ward));
   const [dataWard, setDataWard] = useState(null);
   
-  const [appartmentNumber, setAparmentNumber] =useState();
+  const dispatch = useDispatch();
+
+  const setUser=(user)=> dispatch({
+        type: 'SET_USER', 
+        payload: user
+    })
+  const handleResetUser=()=>{
+        axios.get(`${SERVER_URL}/users/${CurrentUser._id}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    setUser(data["data"])
+                    // console.log(data["data"]);
+                })
+    }
+  const [apartmentAddress, setAparmentAddress] =useState(CurrentUser.address.apartmentAddress);
   useEffect(() => {
     //get all province from this api
     axios.get(`https://provinces.open-api.vn/api/?p==1`).then((res) => {
@@ -98,6 +115,38 @@ const EditDeliveryInfo = ({ navigation }) => {
       </View>
     );
   };
+ 
+ const handleConfirmSave = () =>{
+    const url=`${SERVER_URL}/users/updateAddress/${CurrentUser._id}`;
+    // console.log(url);
+    axios.post(url, {
+        province: selectedProvince,
+        district: selectedDistrict, 
+        ward: selectedWard, 
+        apartmentAddress: apartmentAddress
+    })
+    .then((res)=>{
+        handleResetUser();
+        navigation.navigate('Order')
+    })
+    .catch((err)=> {
+        console.log("Update address fail");
+    })
+ }
+ const handleSave=()=>{
+    Alert.alert(
+        "Are you sure?",
+        "Are you sure you want update your delivery address?",
+        [
+          {
+            text: "CANCEL",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "SAVE", onPress: handleConfirmSave }
+        ]
+      );
+ }
 
   return (
     <View style={styles.EditDeliveryInfo}>
@@ -160,13 +209,12 @@ const EditDeliveryInfo = ({ navigation }) => {
             elevation: 1,
             borderWidth: 0.8,
             borderColor: COLORS.xam2,
+            // width: '100%'
           }}
         >
           <Picker
             selectedValue={selectedProvince}
             style={{
-              //height: 100,
-              // width: 200,
               fontSize: 18,
               color: COLORS.brand,
               fontWeight: "bold",
@@ -176,10 +224,14 @@ const EditDeliveryInfo = ({ navigation }) => {
               setSelectedProvince(itemValue)
             }}
           >
-            <Picker.Item
-                  value="default"
-                  label="Choose Your Province"
-                />
+            {/* {
+                selectedProvince == "default" && (
+                     <Picker.Item
+                        value="default"
+                        label="Choose Your Province"
+                        />
+                    )
+            } */}
             {dataProvince &&
               dataProvince.map((province) => (
                 <Picker.Item
@@ -214,10 +266,10 @@ const EditDeliveryInfo = ({ navigation }) => {
               setSelectedDistrict(itemValue)
             }}
           >
-            <Picker.Item
+            {/* <Picker.Item
                 value="default"
                 label="Your Districts"
-            />
+            /> */}
             {dataDistrict &&
               dataDistrict.map((district) => (
                 <Picker.Item
@@ -257,10 +309,10 @@ const EditDeliveryInfo = ({ navigation }) => {
                 );
             }}
           >
-            <Picker.Item
+            {/* <Picker.Item
                   value="default"
                   label="Your Ward"
-                />
+                /> */}
             {dataWard &&
               dataWard.map((ward) => (
                 <Picker.Item
@@ -272,9 +324,9 @@ const EditDeliveryInfo = ({ navigation }) => {
           </Picker>
         </View>
         <TextInput
-          placeholder="Enter your apartment number . ."
-          onChangeText={(address) => setAparmentNumber(address)}
-          value={appartmentNumber}
+          placeholder="Enter your apartment address . ."
+          onChangeText={(address) => setAparmentAddress(address)}
+          value={apartmentAddress}
           style={{
             backgroundColor: COLORS.white,
             elevation: 2,
@@ -288,7 +340,7 @@ const EditDeliveryInfo = ({ navigation }) => {
         />
         <TouchableOpacity 
             style={styles.Button}
-            onPress={()=> navigation.navigate('Order')}
+            onPress={handleSave}
         >
             <Text style={{
                 color: COLORS.primary, 

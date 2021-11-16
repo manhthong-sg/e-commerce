@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const Me = ({route, navigation}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user);
     //const [userId, setUserId] = useState(CurrentUser._id);
-    //console.log(CurrentUser);
+    // console.log(CurrentUser);
     // const [fullName, setFullName]=useState();
     // const getUser = async () => {
     //     try {
