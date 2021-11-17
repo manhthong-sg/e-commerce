@@ -250,7 +250,7 @@ const Cart = ({navigation}) => {
                     //backgroundColor: COLORS.xam2
                 }}>
                     <Text style={{
-                        width: '80%',
+                        width: '70%',
                         // maxwidth: '80%',
                         //minwidth: '80%',
                         fontSize: 17,
@@ -259,6 +259,7 @@ const Cart = ({navigation}) => {
                     }}>Order Amount:</Text>
                     <Text
                         style={{
+                            width: '25%',
                             fontSize: 17,
                             letterSpacing: 1,
                             textAlign: 'right',

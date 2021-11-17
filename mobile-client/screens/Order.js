@@ -17,12 +17,20 @@ const Order = ({navigation}) => {
     const [province, setProvince]= useState(CurrentUser.address.province);
     const [district, setDistrict]= useState(CurrentUser.address.district);
     const [ward, setWard]= useState(CurrentUser.address.ward);
+
+    const [deliveryFee, setDeliveryFee]= useState();
+    
     useEffect(() => {
+        if(CurrentUser.address.province=="79"){
+            setDeliveryFee(Cart.total*0.03)
+        }else{
+            setDeliveryFee(Cart.total*0.05)
+        }
         //console.log(getCart());
         setCartData(Cart.items)
-    },)
+    }, [CurrentUser])
 
-
+  
     //render header of this screens
     const Header = () => {
         return (
@@ -205,7 +213,7 @@ const Order = ({navigation}) => {
                     //elevation: 2,
                     alignItems: 'center',
                     alignSelf: 'flex-end',
-                    paddingRight: 10,
+                    paddingRight: 20,
                 }}>
                     <Text style={{
                         fontSize: 17,
@@ -451,30 +459,6 @@ const Order = ({navigation}) => {
                 marginTop: 20
                 // backgroundColor: COLORS.white
             }}>
-                {/* <View style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    paddingLeft:15,
-                    paddingRight: 15,
-                    marginTop: 10,
-                    elevation: 1,
-                    // backgroundColor: COLORS.white
-                }}>
-                    <Text style={{
-                        width: '80%',
-                        fontSize: 17,
-                        letterSpacing: 1,
-                        fontWeight: 'bold'
-                    }}>Total amount:</Text>
-                    <Text
-                        style={{
-                            fontSize: 17,
-                            letterSpacing: 1,
-                            textAlign: 'right',
-                            fontWeight: 'bold'
-                        }}
-                    >{Cart.total}$</Text>
-                </View> */}
                 <View style={{
                     flexDirection: 'row',
                     width: '100%',
@@ -486,20 +470,48 @@ const Order = ({navigation}) => {
                 }}>
                     <Text style={{
                         width: '70%',
-                        fontSize: 17,
+                        fontSize: 16,
+                        letterSpacing: 1,
+                    }}>Discount:</Text>
+                    <Text
+                        style={{
+                            width: '25%',
+                            fontSize: 16,
+                            letterSpacing: 1,
+                            textAlign: 'right',
+                            // backgroundColor: COLORS.xam1,
+                        }}
+                    >0$</Text>
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    paddingLeft:15,
+                    // paddingRight: 15,
+                    marginTop: 10,
+                    elevation: 1,
+                    // backgroundColor: COLORS.white
+                }}>
+                    <Text style={{
+                        width: '70%',
+                        fontSize: 16,
                         letterSpacing: 1,
                         // fontWeight: 'bold'
                     }}>Delivery fee:</Text>
                     <Text
                         style={{
                             width: '25%',
-                            fontSize: 17,
+                            fontSize: 16,
                             letterSpacing: 1,
                             textAlign: 'right',
                             // backgroundColor: COLORS.xam1,
                             // fontWeight: 'bold'
                         }}
-                    >{Cart.total*0.05}$</Text>
+                    >
+                        {
+                            deliveryFee
+                        }$
+                    </Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -525,7 +537,7 @@ const Order = ({navigation}) => {
                             fontWeight: 'bold',
                             // backgroundColor: COLORS.xam1,
                         }}
-                    >{Cart.total*1.05}$</Text>
+                    >{Cart.total+deliveryFee}$</Text>
                 </View>
             </View>
         )
