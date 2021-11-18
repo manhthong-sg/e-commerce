@@ -228,7 +228,7 @@ const Order = ({navigation}) => {
             return (
                 <TouchableOpacity
                     style={{
-                        backgroundColor: COLORS.xam1,
+                        backgroundColor: COLORS.lightGray,
                         alignItems: "center",
                         justifyContent: 'center',
                         elevation: 0.3 ,
@@ -607,7 +607,7 @@ const styles = StyleSheet.create({
     ImageCart: {
         width: 80,
         height: 80,
-        backgroundColor: COLORS.xam1,
+        backgroundColor: COLORS.white,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',

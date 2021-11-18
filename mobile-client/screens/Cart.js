@@ -159,24 +159,28 @@ const Cart = ({navigation}) => {
                                 <Text style={{
                                     fontWeight: 'bold',
                                     paddingLeft: 10,
-                                    maxWidth: 60,
+                                    width: '65%',
+                                    maxWidth: 100,
                                     minWidth: 60,
                                     fontSize: 17,
+                                    justifyContent:'center',
                                     // backgroundColor: COLORS.xam1,
-                                    alignItems: 'flex-end'
+                                    alignSelf: 'flex-end'
                                 }}>{item["idProduct"].price}$</Text>
                                 {/* //edit increase or decrease  */}
                                 <View style={{
+                                    width: '25%',
                                     flexDirection: 'row',
                                     height: 30,
                                     // backgroundColor: COLORS.orange,
                                     alignItems: 'center',
-                                    marginLeft: 130
+                                    alignSelf: 'flex-end',
+                                    marginLeft: 110
                                 }}>
                                     <TouchableOpacity style={{
                                         width: 20,
                                         height: 20,
-                                        backgroundColor: COLORS.xam2,
+                                        backgroundColor: COLORS.xam1,
                                         borderRadius: 5,
                                         justifyContent: 'center',
                                         alignItems: 'center',

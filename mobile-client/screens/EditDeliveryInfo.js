@@ -165,8 +165,9 @@ const EditDeliveryInfo = ({ navigation }) => {
           placeholder="Enter the recipient's name . ."
           onChangeText={(input) => setRecipientName(input)}
           value={recipientName}
+          editable={false}
           style={{
-            backgroundColor: COLORS.white,
+            backgroundColor: COLORS.xam1,
             elevation: 2,
             height: 50,
             borderStyle: "dashed",
@@ -174,14 +175,16 @@ const EditDeliveryInfo = ({ navigation }) => {
             marginTop: 5,
             paddingLeft: 20,
             fontSize: 18,
+            color: COLORS.brand
           }}
         />
         <TextInput
           placeholder="Enter the recipient's phone . ."
           onChangeText={(input) => setRecipientPhone(input)}
           value={recipientPhone}
+          editable={false}
           style={{
-            backgroundColor: COLORS.white,
+            backgroundColor: COLORS.xam1,
             elevation: 2,
             height: 50,
             borderStyle: "dashed",
@@ -189,6 +192,7 @@ const EditDeliveryInfo = ({ navigation }) => {
             marginTop: 2,
             paddingLeft: 20,
             fontSize: 18,
+            color: COLORS.brand
           }}
         />
         <Text

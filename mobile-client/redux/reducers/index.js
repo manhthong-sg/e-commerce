@@ -3,11 +3,14 @@ import { combineReducers } from "redux";
 import userReducer  from "./userReducer";
 import cartReducer  from "./cartReducer";
 import favoriteReducer  from "./favoriteReducer";
+import orderReducer  from "./orderReducer";
 
 let reducers =combineReducers({
     userReducer: userReducer,
     cartReducer: cartReducer,
     favoriteReducer: favoriteReducer,
+    orderReducer: orderReducer,
+
 })
 
 const rootReducer = (state, action ) => {

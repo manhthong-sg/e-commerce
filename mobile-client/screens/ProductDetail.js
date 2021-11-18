@@ -139,7 +139,7 @@ const ProductDetail = ({navigation, route}) => {
             //setCart(item)
         }else{
             ToastAndroid.showWithGravity(
-                "Sorry, you must LOGIN to add to cart",
+                "Sorry, you must LOGIN to add to Favorite",
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
               );
