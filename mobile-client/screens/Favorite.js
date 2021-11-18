@@ -160,7 +160,7 @@ const Favorite = ({navigation}) => {
             )
         }
         return (
-            <View style={{width: '95%', marginTop: 20, height: SIZES.height-430}}> 
+            <View style={{width: '95%', marginTop: 20, height: SIZES.height-170}}> 
                 <FlatList
                     data={favoriteData}
                     style={{

@@ -4,7 +4,6 @@ import { COLORS , SIZES, icons, images } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 import SERVER_URL from '../api'
-import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 
 const ProductDetail = ({navigation, route}) => {
@@ -18,6 +17,7 @@ const ProductDetail = ({navigation, route}) => {
         image,
         description,
         price,
+        star,
         remaining,
     }=route.params;
     
@@ -307,7 +307,27 @@ const ProductDetail = ({navigation, route}) => {
                 }}>
                     {name}
                 </Text>
-
+                <View style={{
+                    flexDirection: 'row',
+                    paddingLeft: 22,
+                    width: '100%',
+                    height: 20,
+                    // backgroundColor: COLORS.xam1,
+                    alignItems: 'center'
+                }}>
+                    {
+                        [1, 2, 3, 4, 5].map((rate)=>(
+                            <FontAwesome5 
+                                size={10} 
+                                solid name='star' 
+                                color={(rate <= star) ? COLORS.orange : COLORS.xam2}
+                                style={{
+                                    marginLeft: 3
+                                }}
+                            />
+                        ))
+                    }
+                </View>
                 <Text style={{
                     fontWeight: 'bold', 
                     paddingLeft: 25,
