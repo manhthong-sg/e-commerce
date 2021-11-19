@@ -10,7 +10,17 @@ class OrdersController {
             .catch((err)=> console.log("Log orders FAIL!"+err));
     }
 
-    
+    // [POST] /orders 
+    createOrder(req, res) {
+        var newOrder=Order(req.body);
+        console.log(newOrder);
+        newOrder.save()
+        .then(()=> {
+            console.log("Create new order SUCCESSFULLY!");
+            res.redirect('/orders')
+        })
+        .catch((err)=> res.json({msg: "Create new order FAIL!"}))  
+    }
 
 }
 

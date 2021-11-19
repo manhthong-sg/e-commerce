@@ -2,8 +2,8 @@ const express = require('express');
 const router=express.Router();
 const ordersController=require('../app/controllers/OrdersController');
 
-//post /carts/
-// router.post('/', cartsController.addToCart)
+// post /carts/
+router.post('/', ordersController.createOrder)
 
 
 

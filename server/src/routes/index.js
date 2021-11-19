@@ -40,7 +40,7 @@ function route(app){
     //Define route default
     app.use('/', (req, res) => {
         return res.send(`
-          <h2>Đây là trang chủ</h2>
+          <h2>Đây là trang chủ E-laptop</h2>
         `);
     })
 

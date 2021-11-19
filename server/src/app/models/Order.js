@@ -36,9 +36,21 @@ const Order=new Schema({
           },
         }
       },
-      OrderItems: {
-        type: Array,
-      },
+      OrderItems: [{
+        idProduct: {
+          type: String,
+          ref: 'Product'
+        },
+        itemNum: {
+          type: Number,
+        },
+        priceATT:{ //price at that time
+          type: Number,
+        }
+      }],
+      // OrderItems: {
+      //   type: Array
+      // },
       Voucher: {
         type: String,
         ref: "Voucher"
