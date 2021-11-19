@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://192.168.1.4:3000'
+const SERVER_URL = 'https://e-laptop.herokuapp.com'
 
 
 export default SERVER_URL;
