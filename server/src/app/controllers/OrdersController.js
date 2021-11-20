@@ -1,4 +1,5 @@
-const Order = require('../models/Order')
+const Order = require('../models/Order');
+const Product = require('../models/Product');
 
 
 class OrdersController {
@@ -12,8 +13,18 @@ class OrdersController {
 
     // [POST] /orders 
     createOrder(req, res) {
-        // console.log(req.body);
         var newOrder=Order(req.body);
+        //craete 1 arr save all product that u order
+        var productsOrderArr=req.body.OrderItems
+        //find the minus product number in warehouse
+        productsOrderArr.forEach(item => {
+            Product.findOne({_id: item.idProduct._id})
+            .then((product)=>{
+                product.remaining=product.remaining-item.itemNum;
+                product.save()
+            })
+        });
+        //save new order
         newOrder.save()
         .then(()=> {
             console.log("Create new order SUCCESSFULLY!");

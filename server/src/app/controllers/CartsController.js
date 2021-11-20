@@ -61,5 +61,17 @@ class CartsController {
         })
 
     }
+
+    //[POST] /carts/clear/:idUser
+    clearCartById(req, res){
+        Cart.deleteMany({idUser: req.params.idUser})
+        .then(cart => {
+            console.log('Clear cart successfully!');
+            res.redirect('/carts')
+        })
+        .catch((err)=>{
+            console.log("error clear cart: ", err);
+        })
+    }
 }
 module.exports=new CartsController;
