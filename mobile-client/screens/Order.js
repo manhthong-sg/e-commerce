@@ -21,6 +21,12 @@ const Order = ({navigation}) => {
     const [deliveryFee, setDeliveryFee]= useState();
     // const [voucher, setVoucher] = useState(null);
 
+    const setCart=(cart)=> dispatch({
+        type: 'SET_CART', 
+        payload: cart
+    })
+    const dispatch = useDispatch();
+    
     //order container data
     const orderContainer={
         idUser:"",
@@ -583,6 +589,7 @@ const Order = ({navigation}) => {
             orderContainer.DeliveryFee=deliveryFee;
             orderContainer.Total=Cart.total+deliveryFee;
         }
+        
         const handleResetCart=()=>{
             axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                     .then((data)=>{
@@ -594,12 +601,12 @@ const Order = ({navigation}) => {
         const handleCreateOrder=()=>{
             const url=`${SERVER_URL}/orders`;
             axios.post(url, orderContainer)
-            // .then(()=>{
-
-            //     // handleResetCart();
-
-            // })
             .then(()=>{
+                let url=`${SERVER_URL}/carts/clear/${CurrentUser._id}`;
+                axios.post(url)
+            })
+            .then(()=>{
+                handleResetCart();
                 ToastAndroid.showWithGravity(
                     "Order Successfully",
                     ToastAndroid.LONG,
