@@ -583,14 +583,42 @@ const Order = ({navigation}) => {
             orderContainer.DeliveryFee=deliveryFee;
             orderContainer.Total=Cart.total+deliveryFee;
         }
+        const handleResetCart=()=>{
+            axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
+                    .then((data)=>{
+                        //setCartData(data["data"]);
+                        setCart(data["data"])
+                        // console.log(data["data"]);
+                    })
+        }
+        const handleCreateOrder=()=>{
+            const url=`${SERVER_URL}/orders`;
+            axios.post(url, orderContainer)
+            // .then(()=>{
+
+            //     // handleResetCart();
+
+            // })
+            .then(()=>{
+                ToastAndroid.showWithGravity(
+                    "Order Successfully",
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM
+                  );
+            })
+            .catch((err)=> {
+                console.log(err+ " :ERROR!");
+            })
+        }
         const handleSubmitOrder =()=>{
             if(orderContainer.PaymentMethod == 'shipCOD'){
                 setInfoOrder();
-                console.log(orderContainer);
+                handleCreateOrder();
+                // console.log(orderContainer);
                 
             }else if (orderContainer.PaymentMethod == 'default'){
                 ToastAndroid.showWithGravity(
-                    `Please choose the payment method!`,
+                    `Please choose your payment method!`,
                     ToastAndroid.LONG,
                     ToastAndroid.BOTTOM
                   );
