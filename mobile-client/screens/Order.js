@@ -14,12 +14,31 @@ const Order = ({navigation}) => {
     const [cartData, setCartData]=useState(null);
 
     //address usestate
-    const [province, setProvince]= useState(CurrentUser.address.province);
-    const [district, setDistrict]= useState(CurrentUser.address.district);
-    const [ward, setWard]= useState(CurrentUser.address.ward);
+    const [province, setProvince]= useState();
+    const [district, setDistrict]= useState();
+    const [ward, setWard]= useState();
 
     const [deliveryFee, setDeliveryFee]= useState();
-    
+    // const [voucher, setVoucher] = useState(null);
+
+    //order container data
+    const orderContainer={
+        idUser:"",
+        DeliveryInfo:{
+            name: "",
+            phone: "",
+            address: ""
+        },
+        OrderItems: [],
+        Message: "",
+        Voucher: "",
+        DeliveryFee: 0,
+        Total: 0,
+        PaymentMethod: "",
+        PaymentDetail: "",
+        Status: "Preparing",
+    }
+
     useEffect(() => {
         if(CurrentUser.address.province=="79"){
             setDeliveryFee(Cart.total*0.03)
@@ -30,7 +49,7 @@ const Order = ({navigation}) => {
         setCartData(Cart.items)
     }, [CurrentUser])
 
-  
+    
     //render header of this screens
     const Header = () => {
         return (
@@ -100,6 +119,7 @@ const Order = ({navigation}) => {
     }, [CurrentUser])
     //render your info and address
     const MyInfo = ()=> {
+        
         return (
             <TouchableOpacity 
                 style={styles.MyInfoContainer}
@@ -162,11 +182,14 @@ const Order = ({navigation}) => {
     }
 
     //show all cart that you wanna buy
-    const MyItemsCart = () =>{
+    const MyItemsCart = ({orderContainer}) =>{
 
         //message for seller
-        const MyMessage = () => {
-            const [myMessage, setMyMessage]=useState();
+        const MyMessage = ({orderContainer}) => {
+            const [myMessage, setMyMessage]=useState("");
+            useEffect(() => {
+                orderContainer.Message=myMessage;
+            }, [myMessage])
             return (
                 <View style={{
                     height: 50,
@@ -350,15 +373,17 @@ const Order = ({navigation}) => {
                     contentContainerStyle={{}}
                 />
                 <TotalItems/>
-                <MyMessage/>
+                <MyMessage  orderContainer={orderContainer}/>
             </View>
         )
     }
 
     //voucher container
-    const MyVoucher = () => {
-        const [voucher, setVoucher] = useState(null);
-
+    const MyVoucher = ({orderContainer}) => {
+        const [voucher, setVoucher] = useState("");
+        useEffect(() => {
+            orderContainer.Voucher=voucher
+        }, [voucher])
         return (
             <View style={{
                 height: 50,
@@ -382,6 +407,7 @@ const Order = ({navigation}) => {
                     paddingLeft: 15
                 }}>Voucher: </Text>
                 <TextInput
+                    value={voucher}
                     placeholder="Type your voucher here . ."
                     autoCapitalize="characters"
                     onChangeText= {input => setVoucher(input)}
@@ -398,8 +424,11 @@ const Order = ({navigation}) => {
     }
     
     //payment method container
-    const MyPaymentMethod = () => {
+    const MyPaymentMethod = ({orderContainer}) => {
         const [selectedPayment, setSelectedPayment] = useState("default");
+        useEffect(() => {
+            orderContainer.PaymentMethod=selectedPayment;
+        }, [selectedPayment])
         return (
             <View style={{
                 height: 60,
@@ -544,11 +573,40 @@ const Order = ({navigation}) => {
     }
 
     //button payment
-    const ButtonPayment = () =>{
+    const ButtonPayment = ({orderContainer,apartmentAddress, district, ward, province, deliveryFee}) =>{
+        const setInfoOrder=()=>{
+            orderContainer.idUser=CurrentUser._id;
+            orderContainer.DeliveryInfo.name=CurrentUser.fullName;
+            orderContainer.DeliveryInfo.phone=CurrentUser.phone;
+            orderContainer.DeliveryInfo.address=`${apartmentAddress}, ${ward}, ${district}, ${province}`;
+            orderContainer.OrderItems=Cart.items;
+            orderContainer.DeliveryFee=deliveryFee;
+            orderContainer.Total=Cart.total+deliveryFee;
+        }
+        const handleSubmitOrder =()=>{
+            if(orderContainer.PaymentMethod == 'shipCOD'){
+                setInfoOrder();
+                console.log(orderContainer);
+                
+            }else if (orderContainer.PaymentMethod == 'default'){
+                ToastAndroid.showWithGravity(
+                    `Please choose the payment method!`,
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM
+                  );
+            }
+            else{
+                ToastAndroid.showWithGravity(
+                    `Waiting for payment online UI . . .`,
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM
+                  );
+            }
+        }
         return(
             <TouchableOpacity 
                     style={styles.Button}
-                    //onPress={()=> navigation.navigate('Payment')}
+                    onPress={handleSubmitOrder}
                 >
                     <Text style={{
                         color: COLORS.primary, 
@@ -570,11 +628,24 @@ const Order = ({navigation}) => {
             <Header/>
             <ScrollView style={styles.Ordercontainer}>
                 <MyInfo/>
-                <MyItemsCart/>
-                <MyVoucher/>
-                <MyPaymentMethod/>
+                <MyItemsCart 
+                    orderContainer={orderContainer}
+                />
+                <MyVoucher 
+                    orderContainer={orderContainer}
+                />
+                <MyPaymentMethod 
+                    orderContainer={orderContainer}
+                />
                 <TotalPayment/>
-                <ButtonPayment/>
+                <ButtonPayment
+                    orderContainer={orderContainer}
+                    apartmentAddress={CurrentUser.address.apartmentAddress} 
+                    ward={ward} 
+                    district={district}
+                    province={province}
+                    deliveryFee={deliveryFee}
+                />
 
             </ScrollView>
 

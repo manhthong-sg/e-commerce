@@ -12,8 +12,8 @@ class OrdersController {
 
     // [POST] /orders 
     createOrder(req, res) {
+        // console.log(req.body);
         var newOrder=Order(req.body);
-        console.log(newOrder);
         newOrder.save()
         .then(()=> {
             console.log("Create new order SUCCESSFULLY!");

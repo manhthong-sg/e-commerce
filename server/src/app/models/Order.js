@@ -17,40 +17,13 @@ const Order=new Schema({
           required: true,
         },
         address: {
-          province: {
-            type: String,
-            required: true,
-          },
-          district: {
-            type: String,
-            required: true,
-          },
-          ward: {
-            type: String,
-            required: true,
-
-          },
-          apartmentAddress: {
-            type: String,
-            required: true,
-          },
-        }
+          type: String
+          }
       },
-      OrderItems: [{
-        idProduct: {
-          type: String,
-          ref: 'Product'
-        },
-        itemNum: {
-          type: Number,
-        },
-        priceATT:{ //price at that time
-          type: Number,
-        }
-      }],
-      // OrderItems: {
-      //   type: Array
-      // },
+      OrderItems: {
+        type: Array
+      },
+      Message: String,
       Voucher: {
         type: String,
         ref: "Voucher"
@@ -69,7 +42,6 @@ const Order=new Schema({
       },
       PaymentDetail:{
         type: String,
-        required: true,
         ref: "Payment"
       },
       Status: {
