@@ -5,6 +5,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SERVER_URL from '../api'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
+import LottieView from "lottie-react-native";
 
 const CategoriesContainer = ({route, navigation}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user);
@@ -512,11 +513,18 @@ const CategoriesContainer = ({route, navigation}) => {
             {renderSort()}
             {productsData ? renderProducts() : (
                     <View style={{
+                            marginTop: 100,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}
                     >
-                        <ActivityIndicator size ="large" color ={COLORS.brand}/>
+                        <LottieView
+                            source={require("../components/AnimationIcons/itemsLoading.json")}
+                            autoPlay
+                            loop={true}
+                            resizeMode='contain'
+                            style={{ height: 130 }}
+                        />
                     </View>
                 )
             }

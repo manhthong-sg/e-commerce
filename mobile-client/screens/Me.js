@@ -1,29 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native'
 import React , {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, Alert } from 'react-native'
+import { StyleSheet, Text, View, Alert, StatusBar, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { COLORS } from '../constants'
+import { COLORS, icons } from '../constants'
 import { useSelector, useDispatch } from 'react-redux'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Me = ({route, navigation}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user);
-    //const [userId, setUserId] = useState(CurrentUser._id);
-    // console.log(CurrentUser);
-    // const [fullName, setFullName]=useState();
-    // const getUser = async () => {
-    //     try {
-    //       const value = await AsyncStorage.getItem('USER')
-    //       if(value !== null) {
-    //         // value previously stored
-    //         console.log("xin chao: ",value);
-    //       }
-    //     } catch(e) {
-    //       // error reading value
-    //     }
-    //   }
-    useEffect(() => {
-        //getUser();
-    }, )
 
     const dispatch = useDispatch();
     const setLogout=()=> dispatch({
@@ -48,35 +32,145 @@ const Me = ({route, navigation}) => {
     }
     return (
         <View style={styles.container}>
-            <Text style={{
-                fontSize: 30,
-                fontWeight: 'bold',
-            }}>Me</Text>
+            
             {
                 !CurrentUser && (
-                    <View style={{flexDirection: 'row'}}>
-                        <Text>Not yet login, please </Text>
-                        <TouchableOpacity
-                            onPress={()=> navigation.navigate('Login') }
-                        >
-                            <Text style={{
-                                fontWeight: 'bold',
-                                color: COLORS.brand,
-                                textDecorationLine: 'underline',
-                            }}>Login</Text>
-                        </TouchableOpacity>
+                    <View style={{
+                        flex: 1, 
+                        justifyContent:'center',
+                        alignItems:'center',
+                    }}>
+                        <Text style={{
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            width: '100%',
+                            alignSelf: 'center',
+                            justifyContent:'center',
+                            alignItems:'center',
+                            // textAlign: 'center',
+                        }}>Me</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text>Not yet login, please </Text>
+                            <TouchableOpacity
+                                onPress={()=> navigation.navigate('Login') }
+                            >
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                    color: COLORS.brand,
+                                    textDecorationLine: 'underline',
+                                }}>Login</Text>
+                            </TouchableOpacity>
+                        </View>
+
                     </View>
                 )
             }
             {
                 CurrentUser && (
-                    <View>
+                    <View style={styles.MeContainer}>
+                        <Image
+                            source={icons.defaultAvatar_male}
+                            resizeMode="contain"
+                            style={{
+                                width: 100,
+                                height: 100,
+                                alignSelf: 'center'
+                            }}
+                        />
                         <Text style={{
-                            fontSize: 35,
-                            fontWeight: 'bold'
+                            fontSize: 24,
+                            fontWeight: 'bold',
+                            alignSelf: 'center'
                         }}>
-                            Xin chào {CurrentUser.fullName}
+                           {CurrentUser.fullName}
                         </Text>
+                        <Text style={{
+                            fontSize: 16,
+                            color: COLORS.xam2,
+                            alignSelf: 'center',
+                        }}>
+                           Phone number: {CurrentUser.phone}
+                        </Text>
+                        <Text 
+                            style={{
+                                marginBottom: 10,
+                                color: COLORS.xam1,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            _________________________________________________
+                        </Text>
+
+                        {/* //my profile folder */}
+                        <TouchableOpacity style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            height: 40,
+                        
+                            // backgroundColor: COLORS.orange,
+                        }}>
+                            <FontAwesome5
+                                solid
+                                name="user-circle"
+                                size={24}
+                                resizeMode="contain"
+                                color= {COLORS.xam3}
+                            />
+                            <Text style={{
+                                alignSelf: 'auto',
+                                fontSize: 16,
+                                color: COLORS.xam3,
+                                fontWeight: 'bold',
+                                left: -60,
+                                // backgroundColor: COLORS.orange
+                            }}>Edit my profile</Text>
+                            <FontAwesome5
+                                solid
+                                name="angle-right"
+                                size={24}
+                                resizeMode="contain"
+                                color= {COLORS.xam3}
+                            />
+                        </TouchableOpacity>
+
+                        {/* //my orders folder */}
+                        <TouchableOpacity style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            height: 40,
+                            // backgroundColor: COLORS.orange,
+                        }}>
+                            <FontAwesome5
+                                solid
+                                name="receipt"
+                                size={24}
+                                resizeMode="contain"
+                                color= {COLORS.xam3}
+                                style={{
+                                    marginLeft: 2,
+                                }}
+                            />
+                            <Text style={{
+                                alignItems: 'flex-start',
+                                fontSize: 16,
+                                color: COLORS.xam3,
+                                fontWeight: 'bold',
+                                left: -75,
+                                // backgroundColor: COLORS.orange
+                            }}>My orders</Text>
+                            <FontAwesome5
+                                solid
+                                name="angle-right"
+                                size={24}
+                                resizeMode="contain"
+                                color= {COLORS.xam3}
+                            />
+                        </TouchableOpacity>
+
+                        {/* //button sign out  */}
                         <TouchableOpacity 
                             style={styles.Button}
                             onPress={handelLogout}
@@ -100,6 +194,10 @@ const Me = ({route, navigation}) => {
 export default Me
 
 const styles = StyleSheet.create({
+    MeContainer: {
+        flex: 1,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    },
     container: {
         flex: 1,
         marginTop: 50,
@@ -109,6 +207,7 @@ const styles = StyleSheet.create({
         
     },
     Button:{
+        marginTop: 20,
         padding: 15,
         backgroundColor: COLORS.do2,
         justifyContent: 'center',
@@ -116,6 +215,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginVertical: 5,
         //marginTop: 10,
-        height: 60,
+        height: 50,
     },
 })

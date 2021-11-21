@@ -25,6 +25,11 @@ export const voucher=require("../assets/icons/voucher.png");
 export const payment=require("../assets/icons/payment.png");
 export const message=require("../assets/icons/message.png");
 
+//avatar default
+export const defaultAvatar_male=require("../assets/icons/defaultAvatar_male.png");
+export const defaultAvatar_female=require("../assets/icons/defaultAvatar_female.png");
+
+
 const icons={
         logo,
         logo2,
@@ -44,7 +49,9 @@ const icons={
         do_hoa,
         voucher,
         payment,
-        message
+        message,
+        defaultAvatar_male,
+        defaultAvatar_female
     }
 
 export default icons

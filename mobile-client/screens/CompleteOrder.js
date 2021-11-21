@@ -22,7 +22,10 @@ const CompleteOrder = ({navigation}) => {
             <Text style={styles.TextCuscom}>We will confirm your order as soon as possible!</Text>
             <TouchableOpacity 
                     style={styles.Button}
-                    onPress={()=>navigation.navigate("Home")}
+                    onPress={()=>{
+                        navigation.navigate("Cart")
+                        navigation.navigate("Home")
+                    }}
                 >
                     <Text style={{
                         color: COLORS.brand, 
