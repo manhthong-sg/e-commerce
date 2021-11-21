@@ -13,6 +13,7 @@ import Me from '../screens/Me'
 import Cart from '../screens/Cart'
 import Order from '../screens/Order'
 import EditDeliveryInfo from '../screens/EditDeliveryInfo'
+import CompleteOrder from '../screens/CompleteOrder'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -55,6 +56,7 @@ const CartNavigation = () => {
                 <Stack.Screen name = 'Cart' component = {Cart} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'Order' component = {Order} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'EditDeliveryInfo' component = {EditDeliveryInfo} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'CompleteOrder' component = {CompleteOrder} screenOptions={screenOptions}/>
             </Stack.Navigator>
     )
 }

@@ -42,7 +42,7 @@ const Order = ({navigation}) => {
         Total: 0,
         PaymentMethod: "",
         PaymentDetail: "",
-        Status: "Preparing",
+        Status: "Waiting for comfirm",
     }
 
     useEffect(() => {
@@ -620,7 +620,8 @@ const Order = ({navigation}) => {
         const handleSubmitOrder =()=>{
             if(orderContainer.PaymentMethod == 'shipCOD'){
                 setInfoOrder();
-                handleCreateOrder();
+                // handleCreateOrder();
+                navigation.navigate('CompleteOrder');
                 // console.log(orderContainer);
                 
             }else if (orderContainer.PaymentMethod == 'default'){
@@ -650,7 +651,7 @@ const Order = ({navigation}) => {
                     }}>
                         Payment
                     </Text>
-                </TouchableOpacity>
+            </TouchableOpacity>
         )
     }
 
