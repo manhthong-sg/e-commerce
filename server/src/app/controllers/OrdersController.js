@@ -4,9 +4,17 @@ const Product = require('../models/Product');
 
 class OrdersController {
 
-    //[GET] /products
+    //[GET] /orders
     index(req, res){
         Order.find({})
+            .then(order=> res.json(order))
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+    }
+
+    //[GET] /orders
+    getOrdersByIdAndStatus(req, res){
+        let {idUser, statusOrder} = req.params;
+        Order.find({idUser: idUser, Status:  statusOrder})
             .then(order=> res.json(order))
             .catch((err)=> console.log("Log orders FAIL!"+err));
     }

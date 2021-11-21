@@ -17,7 +17,6 @@ const CategoriesContainer = ({route, navigation}) => {
             favoriteData.push(item._id)
         })
     }
-    //console.log(favoriteData);
     // data categories 
     const categoryData = [
         {
@@ -117,15 +116,6 @@ const CategoriesContainer = ({route, navigation}) => {
         // else return;
         
     }, [selectedCategory]);
-    
-    
-
-    
-    
-    
-    
-    //add to favorite
-    const [selectedFavorite, setSelectedFavorite]=useState([])
     
     //products
     

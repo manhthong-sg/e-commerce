@@ -2,15 +2,13 @@ const express = require('express');
 const router=express.Router();
 const ordersController=require('../app/controllers/OrdersController');
 
-// post /carts/
+// post /orders/
 router.post('/', ordersController.createOrder)
 
+// get /orders/:idUser/:statusOrder
+router.get('/:idUser/:statusOrder', ordersController.getOrdersByIdAndStatus)
 
-
-// get /carts/:id
-// router.get('/:idUser', cartsController.getCartById)
-
-// get /carts/
+// get /orders/
 router.get('/', ordersController.index)
 
 module.exports=router;

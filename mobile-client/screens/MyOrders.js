@@ -5,47 +5,69 @@ import SERVER_URL from '../api'
 import axios from 'axios';
 import { COLORS , SIZES, icons, images } from '../constants'
 import { useSelector, useDispatch } from 'react-redux'
+import LottieView from "lottie-react-native";
 
 const MyOrders = ({navigation}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user);
+
+    var [ordersData, setOrdersData]=useState(null);
     
     const [statusData, setStatusData] = useState([
         {
-            id: 1,
+            id: 0,
             name: "Waiting Confirm",
         },
         {
-            id: 2,
+            id: 1,
             name: "Preparing",
         },
         {
-            id: 3,
+            id: 2,
             name: "Delivering",
         },
         {
-            id: 4,
+            id: 3,
             name: "Completed",
         },
         {
-            id: 5,
+            id: 4,
             name: "Cancelled",
         },
         {
-            id: 6,
+            id: 5,
             name: "Return Refund",
         },
     ])
-    const [selectedStatus, setSelectedStatus] = useState({
-        id: 1,
-        name: "Waiting Confirm",
-    })
-    //onPress category
-    const onSelectStatus = async (status) =>{
-        //filter restaurant
-        // let productsList = await axios.get(`${SERVER_URL}/products/categories/${category.id}`)
-        
-        // setProducts(productsList["data"])
-        setSelectedStatus(status)
+    const [selectedStatus, setSelectedStatus] = useState(statusData[0])
+
+    //onPress tab status
+    const onSelectStatus = (status) =>{
+        //filter orders
+        axios.get(`${SERVER_URL}/orders/${CurrentUser._id}/${selectedStatus.id}`)
+        .then((ordersList)=>{
+            // console.log(ordersList["data"]);
+            setOrdersData(ordersList["data"])
+            setSelectedStatus(status)
+        })
+        // setOrdersData(prev => {
+        // })
     }
+
+    useEffect(() => {
+        axios.get(`${SERVER_URL}/orders/${CurrentUser._id}/${selectedStatus.id}`)
+        .then(()=>{
+            setOrdersData(ordersList["data"])
+        })
+        // // console.log(ordersList["data"]);
+        // if(!ordersList) return;
+    }, [])
+    useEffect(() => {
+        //fetch products data
+        // if (products)
+            onSelectStatus(selectedStatus);
+        // else return;
+        
+    }, [selectedStatus]);
     //render header of this screens
     const Header = () => {
         return (
@@ -58,14 +80,14 @@ const MyOrders = ({navigation}) => {
                     }}
                     onPress={()=> {
                         
-                        navigation.goBack();
+                        navigation.navigate("Me");
                     }}
-                >
+                    >
                     <FontAwesome5
                         name="arrow-left"
                         resizeMode="contain"
                         size={25}
-                    />
+                        />
                 </TouchableOpacity>
     
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -79,7 +101,7 @@ const MyOrders = ({navigation}) => {
                             borderRadius: SIZES.radius,
                             marginRight: 30,
                         }}
-                    >
+                        >
                         <Text style={{
                             fontWeight: 'bold', 
                             fontSize: 25,
@@ -101,8 +123,6 @@ const MyOrders = ({navigation}) => {
                     style={{
                         padding: SIZES.padding,
                         marginLeft: 10,
-                        // backgroundColor: (selectedCategory?.id == item.id) ? COLORS.brand : null,
-                        // borderRadius: SIZES.radius,
                         alignItems: "center",
                         justifyContent: "center",
                         marginRight: SIZES.padding,
@@ -130,8 +150,6 @@ const MyOrders = ({navigation}) => {
         
         return (
             <View style={{
-                // borderBottomWidth: 1,
-                // backgroundColor: COLORS.white,
                 bottom:10,
                 elevation: 1,
             }}>
@@ -151,6 +169,180 @@ const MyOrders = ({navigation}) => {
         )
     }
 
+    //render orders
+    const renderOrders = ()=>{
+        const renderOrderItem = ({ item }) => {
+            // console.log(item.Message);
+
+            return (
+                <TouchableOpacity style={{
+                    flex: 1,
+                    backgroundColor: COLORS.white,
+                    elevation: 2,
+                    marginTop: 10,
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: 5,
+                    }}>
+                        <Text style={{
+                            // fontSize: 14,
+                            fontWeight: 'bold',
+                            marginLeft: 10,
+                        }}>Order ID:</Text>
+                        <Text style={{
+                            paddingLeft: 5
+
+                        }}>{item._id}</Text>
+                        <View style={{
+                            backgroundColor: COLORS.orange,
+                            borderRadius: 3,
+                            marginLeft: 20,
+                            paddingLeft:5,
+                            paddingRight: 5,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <Text style={{
+                                color: COLORS.white,
+                            }}>{selectedStatus.name}</Text>
+                        </View>
+                    </View>
+                    <View
+                        style={{
+                            backgroundColor: COLORS.white,
+                            alignItems: "center",
+                            justifyContent: 'center',
+                            elevation: 1.5,
+                            height: 100,
+                        }}
+                        // onPress={() =>navigation.navigate("ProductDetail", item)}
+                    > 
+                        <View style={{
+                            flexDirection: 'row',
+                            //left: -95,
+
+                        }}>
+                            <View style={styles.ImageCart}>
+                                <Image 
+                                    source={{uri: `${SERVER_URL}/images/${item.OrderItems[0].idProduct.image[0]}`}}
+                                    style={{
+                                        width: 70,
+                                        height: 70,
+                                    }}
+                                    resizeMode="contain"
+                                    
+                                />
+                            </View>
+                            <View style={{width: '65%',}}>
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                    paddingLeft: 10,
+                                    fontSize: 16,
+                                    width: '100%',
+                                    // backgroundColor: COLORS.xam1
+                                }}>{item.OrderItems[0].idProduct.name}</Text>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    paddingLeft: 7,
+                                    width: '100%',
+                                    height: 20,
+                                    // backgroundColor: COLORS.xam1,
+                                    alignItems: 'center'
+                                }}>
+                                {
+                                    [1, 2, 3, 4, 5].map((star)=>(
+                                        <FontAwesome5 
+                                            size={10} 
+                                            solid name='star' 
+                                            color={(star <= item.OrderItems[0].idProduct.star) ? COLORS.orange : COLORS.xam2}
+                                            style={{
+                                                marginLeft: 3
+                                            }}
+                                        />
+                                    ))
+                                }
+                                </View>
+                                    <View style={{
+                                        flexDirection: 'row'
+                                    }}>
+                                        <Text style={{
+                                            fontWeight: 'bold',
+                                            paddingLeft: 10,
+                                            minWidth: 60,
+                                            fontSize: 17,
+                                            marginTop: 10,
+                                            // backgroundColor: COLORS.xam1,
+                                            alignItems: 'flex-end'
+                                        }}>{item.OrderItems[0].idProduct.price}$</Text>
+                                        <Text style={{
+                                            minWidth: 60,
+                                            fontSize: 15,
+                                            marginTop: 10,
+                                            color: COLORS.xam2,
+                                            alignItems: 'flex-end'
+                                        }}>x{item.OrderItems[0].itemNum}</Text>
+
+                                    </View>
+                            </View>
+                        </View>
+                        {
+                            item.ItemsNum > 1 && (
+                                <View style={{
+                                    height: 20,
+                                    justifyContent: 'center',
+                                    alignItems:'center'
+                                }}>
+                                    <Text style={{
+                                        color: COLORS.xam2,
+                                        letterSpacing: 1.2,
+                                        // paddingBottom: 10,
+                                    }}>-- See all --</Text>
+                                </View>
+                            )
+                        }
+                    </View>
+                    <View style={{
+                        height: 40,
+                        flexDirection: 'row',
+                        // backgroundColor: COLORS.white,
+                        //elevation: 2,
+                        alignItems: 'center',
+                        alignSelf: 'flex-end',
+                        paddingRight: 20,
+                    }}>
+                        
+                        <Text style={{
+                            fontSize: 15,
+                            letterSpacing: 0.5,
+                            fontWeight: 'bold'
+                        }}>Total amount </Text>
+                        <Text>({item.ItemsNum} items): </Text>
+                        <Text style={{fontSize: 17}}>{item.Total}$</Text>
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+        return (
+
+            <View style={{}}>
+                
+                <FlatList
+                        data={ordersData}
+                        style={{
+                            
+                        }}
+                        vertical
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={item => `${item._id}`}
+                        renderItem={renderOrderItem}
+                        contentContainerStyle={{}}
+                />
+                
+            </View>
+        
+        )
+    }
     //render main My Orders
     return (
         <View style={{
@@ -163,12 +355,36 @@ const MyOrders = ({navigation}) => {
             }}>
                 <Header/>
                 <TabOrdersStatus/>
-
             </View>
+            {ordersData ? renderOrders(): (
+                <View style={{
+                    marginTop: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+                >
+                    <LottieView
+                        source={require("../components/AnimationIcons/itemsLoading.json")}
+                        autoPlay
+                        loop={true}
+                        resizeMode='contain'
+                        style={{ height: 130 }}
+                    />
+                </View>
+            )}
         </View>
     )
 }
 
 export default MyOrders
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    ImageCart: {
+        width: 80,
+        height: 80,
+        backgroundColor: COLORS.xam1,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+})

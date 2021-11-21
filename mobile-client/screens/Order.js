@@ -19,7 +19,6 @@ const Order = ({navigation}) => {
     const [ward, setWard]= useState();
 
     const [deliveryFee, setDeliveryFee]= useState();
-    // const [voucher, setVoucher] = useState(null);
 
     const setCart=(cart)=> dispatch({
         type: 'SET_CART', 
@@ -39,10 +38,11 @@ const Order = ({navigation}) => {
         Message: "",
         Voucher: "",
         DeliveryFee: 0,
+        ItemsNum: 0,
         Total: 0,
         PaymentMethod: "",
         PaymentDetail: "",
-        Status: "Waiting for comfirm",
+        Status: "0",
     }
 
     useEffect(() => {
@@ -580,16 +580,6 @@ const Order = ({navigation}) => {
 
     //button payment
     const ButtonPayment = ({orderContainer,apartmentAddress, district, ward, province, deliveryFee}) =>{
-        const setInfoOrder=()=>{
-            orderContainer.idUser=CurrentUser._id;
-            orderContainer.DeliveryInfo.name=CurrentUser.fullName;
-            orderContainer.DeliveryInfo.phone=CurrentUser.phone;
-            orderContainer.DeliveryInfo.address=`${apartmentAddress}, ${ward}, ${district}, ${province}`;
-            orderContainer.OrderItems=Cart.items;
-            orderContainer.DeliveryFee=deliveryFee;
-            orderContainer.Total=Cart.total+deliveryFee;
-        }
-        
         const handleResetCart=()=>{
             axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                     .then((data)=>{
@@ -617,10 +607,20 @@ const Order = ({navigation}) => {
                 console.log(err+ " :ERROR!");
             })
         }
+        const setInfoOrder=()=>{
+            orderContainer.idUser=CurrentUser._id;
+            orderContainer.DeliveryInfo.name=CurrentUser.fullName;
+            orderContainer.DeliveryInfo.phone=CurrentUser.phone;
+            orderContainer.DeliveryInfo.address=`${apartmentAddress}, ${ward}, ${district}, ${province}`;
+            orderContainer.OrderItems=Cart.items;
+            orderContainer.DeliveryFee=deliveryFee;
+            orderContainer.ItemsNum=Cart.itemNum;
+            orderContainer.Total=Cart.total+deliveryFee;
+        }
         const handleSubmitOrder =()=>{
             if(orderContainer.PaymentMethod == 'shipCOD'){
                 setInfoOrder();
-                // handleCreateOrder();
+                handleCreateOrder();
                 navigation.navigate('CompleteOrder');
                 // console.log(orderContainer);
                 
