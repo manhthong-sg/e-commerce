@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Image, ActivityIndicator,SafeAreaView, StyleSheet, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
+import { Image,SafeAreaView, StyleSheet, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SERVER_URL from '../api'
@@ -167,17 +167,6 @@ const CategoriesContainer = ({route, navigation}) => {
         setProducts(productsList["data"])
         setSelectedCategory(category)
     }
-
-    //onPress favorite
-    function onSelectFavorite(item) {
-        //filter restaurant
-        //let categoriesList = categoryData.filter(a => a.categories.includes(category.id))
-
-        //setRestaurants(categoriesList)
-        //console.log((oldDta)=> [...oldDta, {}])
-        setSelectedFavorite(prev=> [...prev,item])
-        console.log(selectedFavorite)
-    } 
 
     //render header of this screens
     function renderHeader() {

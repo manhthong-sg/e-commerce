@@ -142,7 +142,9 @@ const Me = ({route, navigation}) => {
                             alignItems: 'center',
                             height: 40,
                             // backgroundColor: COLORS.orange,
-                        }}>
+                        }}
+                            onPress={()=>navigation.navigate("MyOrders")}
+                        >
                             <FontAwesome5
                                 solid
                                 name="receipt"
