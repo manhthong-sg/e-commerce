@@ -2,16 +2,17 @@ import React, {useEffect, useState} from 'react'
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image, ToastAndroid} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { COLORS , SIZES, icons, } from '../constants'
+import SERVER_URL from '../api'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 
-const Favorite = () => {
+const Favorite = ({navigation}) => {
     //get current user
     const CurrentUser = useSelector(state=> state.userReducer.user);
 
     const Cart = useSelector(state1=> state1.cartReducer.cart);
 
-    const Favorite = useSelector(state=> state.favoriteReducer.favorite.items);
+    const Favorite = useSelector(state=> state.favoriteReducer.favorite);
 
     const [favoriteData, setFavoriteData]=useState(null);
     const [isFavorite, setIsFavorite] =useState(true);
@@ -19,11 +20,12 @@ const Favorite = () => {
         type: 'SET_FAVORITE', 
         payload: cart
     })
+
     
     const dispatch = useDispatch();
 
     const handleResetFavorite=()=>{
-        axios.get(`http://192.168.1.7:3000/favorites/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/favorites/${CurrentUser._id}`)
                 .then((data)=>{
                     setFavorite(data["data"])
                     //setFavoriteData(data["data"]);
@@ -34,7 +36,7 @@ const Favorite = () => {
     const handleAddToFavorite=(idProduct)=>{
         //console.log(Favorite)
         if(CurrentUser){
-            const url='http://192.168.1.7:3000/favorites';
+            const url=`${SERVER_URL}/favorites`;
             axios.post(url, {idProduct: idProduct, idUser: CurrentUser._id})
             .then(()=>{
                 handleResetFavorite();
@@ -57,13 +59,16 @@ const Favorite = () => {
     useEffect(() => {
         //console.log(getCart());
         // console.log(Favorite[0].idProduct)
-        setFavoriteData(Favorite[0].idProduct)
+        if(CurrentUser && Favorite.items[0] !== undefined){
+            setFavoriteData(Favorite.items[0].idProduct)
+
+        }
     },)
 
-    const ListCartItems=()=>{
+    const ListFavoriteItems=()=>{
         const renderItem = ({ item }) => {
             return (
-                <View
+                <TouchableOpacity
                     style={{
                         backgroundColor: COLORS.white,
                         alignItems: "center",
@@ -77,7 +82,7 @@ const Favorite = () => {
                         borderRadius: 10,
                         //zIndex: -1,
                     }}
-                    //onPress={() =>navigation.navigate("ProductDetail", item)}
+                    onPress={() =>navigation.navigate("ProductDetail", item)}
                 > 
                     <View style={{
                         flexDirection: 'row',
@@ -86,7 +91,7 @@ const Favorite = () => {
                     }}>
                         <View style={styles.ImageCart}>
                             <Image 
-                                source={{uri: `http://192.168.1.7:3000/images/${item.image[0]}`}}
+                                source={{uri: `${SERVER_URL}/images/${item.image[0]}`}}
                                 style={{
                                     width: 70,
                                     height: 70,
@@ -151,11 +156,11 @@ const Favorite = () => {
                             
                         </View>
                     </View>
-                </View>    
+                </TouchableOpacity>    
             )
         }
         return (
-            <View style={{width: '95%', marginTop: 20, height: SIZES.height-430}}> 
+            <View style={{width: '95%', marginTop: 20, height: SIZES.height-170}}> 
                 <FlatList
                     data={favoriteData}
                     style={{
@@ -230,9 +235,9 @@ const Favorite = () => {
                             paddingLeft: 20,
                             letterSpacing: 1,
                         }}>
-                                {/* {Cart.itemNum} Item */}
+                                {Favorite.itemsNum} Items
                         </Text>
-                        <ListCartItems/>
+                        <ListFavoriteItems/>
                     </View>
 
                 )

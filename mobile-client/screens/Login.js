@@ -5,6 +5,7 @@ import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import axios from 'axios'
+import SERVER_URL from '../api'
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -37,29 +38,29 @@ const Login = ({navigation}) => {
         setMessage(message);
         setMessageType(type);
     }
-    const storeUser = async (value) => {
-        try {
-          //const jsonValue = JSON.stringify(value)
-          await AsyncStorage.setItem('USER', value)
-        } catch (e) {
-          // saving error
-          console.log("Error: ", e);
-        }
-      }
+    // const storeUser = async (value) => {
+    //     try {
+    //       //const jsonValue = JSON.stringify(value)
+    //       await AsyncStorage.setItem('USER', value)
+    //     } catch (e) {
+    //       // saving error
+    //       console.log("Error: ", e);
+    //     }
+    //   }
     //handle login
     const handleLogin=(credentials, setSubmitting)=>{
         const{phone, password}=credentials
         
         
         handleMessage(null);
-        const url='http://192.168.1.7:3000/users/auth';
+        const url=`${SERVER_URL}/users/auth`;
         axios.post(url, {phone: phone, password: password})
         .then((res)=>{
             let {user, msg}=res.data; //get user from res data
             userClone=res.data.user;
             //console.log(user);
             setUser(user)
-            storeUser("Thong")
+            // storeUser("Thong")
             handleMessage("Login Successfully", "SUCCESS");
             setSubmitting(false)
             navigation.goBack();
@@ -67,7 +68,7 @@ const Login = ({navigation}) => {
         })
         .then(()=>{
             // fetch api cart items from id user 
-            axios.get(`http://192.168.1.7:3000/carts/${userClone._id}`)
+            axios.get(`${SERVER_URL}/carts/${userClone._id}`)
             .then((data)=>{
                 //setCartData(data["data"]);
                 setCart(data["data"])
@@ -77,7 +78,7 @@ const Login = ({navigation}) => {
             .catch(err=>console.log(err))
 
             // fetch api favorite items from id user
-            axios.get(`http://192.168.1.7:3000/favorites/${userClone._id}`)
+            axios.get(`${SERVER_URL}/favorites/${userClone._id}`)
             .then((data)=>{
                 //setCartData(data["data"]);
                 setFavorite(data["data"])

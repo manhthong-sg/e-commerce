@@ -20,6 +20,16 @@ export const student2=require("../assets/icons/student2.png");
 export const gaming=require("../assets/icons/gaming.png");
 export const do_hoa=require("../assets/icons/do_hoa.png");
 
+//icon voucher
+export const voucher=require("../assets/icons/voucher.png");
+export const payment=require("../assets/icons/payment.png");
+export const message=require("../assets/icons/message.png");
+
+//avatar default
+export const defaultAvatar_male=require("../assets/icons/defaultAvatar_male.png");
+export const defaultAvatar_female=require("../assets/icons/defaultAvatar_female.png");
+
+
 const icons={
         logo,
         logo2,
@@ -37,6 +47,11 @@ const icons={
         student2,
         gaming,
         do_hoa,
+        voucher,
+        payment,
+        message,
+        defaultAvatar_male,
+        defaultAvatar_female
     }
 
 export default icons

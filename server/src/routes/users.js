@@ -5,6 +5,9 @@ const usersController=require('../app/controllers/UsersController');
 //post /users/
 router.post('/', usersController.register)
 
+//post /users/updateAddress
+router.post('/updateAddress/:idUser', usersController.updateAddress)
+
 //get form register from /users/register
 router.get('/register', (req, res)=>{
     return res.send(`
@@ -26,6 +29,9 @@ router.get('/register', (req, res)=>{
 
 // Post /users/auth 
 router.post('/auth', usersController.auth)
+
+// get /users/:idUser
+router.get('/:idUser', usersController.getUserByID)
 
 // get /users/
 router.get('/', usersController.index)

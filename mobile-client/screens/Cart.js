@@ -3,16 +3,17 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity, FlatList, Image, T
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import SERVER_URL from '../api'
 import { useSelector, useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Cart = ({navigation}) => {
     //get current user
     const CurrentUser = useSelector(state=> state.userReducer.user); 
-    const Cart = useSelector(state1=> state1.cartReducer.cart);
+    const Cart = useSelector(state=> state.cartReducer.cart);
     
-    const [count, setCount]=useState(1);
     const [cartData, setCartData]=useState(null);
+    const [count, setCount]=useState(1);
 
     const setCart=(cart)=> dispatch({
         type: 'SET_CART', 
@@ -22,7 +23,7 @@ const Cart = ({navigation}) => {
     const dispatch = useDispatch();
 
     const handleResetCart=()=>{
-        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                 .then((data)=>{
                     //setCartData(data["data"]);
                     setCart(data["data"])
@@ -31,7 +32,7 @@ const Cart = ({navigation}) => {
     }
     //handle detele from cart
     const handleDeleteFromCart=(idProduct)=>{
-        const url=`http://192.168.1.7:3000/carts/delete/${idProduct}`;
+        const url=`${SERVER_URL}/carts/delete/${idProduct}`;
         axios.post(url)
         .then(()=>{
             ToastAndroid.showWithGravity(
@@ -55,38 +56,40 @@ const Cart = ({navigation}) => {
         setCartData(Cart.items)
     },)
 
-    //handle decrease product
-    const handleIncreaseCount=()=>{
-        if(count>remaining-1){
-            ToastAndroid.showWithGravity(
-                "Only "+remaining +" products left!",
-                ToastAndroid.LONG,
-                ToastAndroid.BOTTOM
-              );
-        }else{
-            setCount(count+1)
-            
-            setTotal(total+price)
-        }
-    }
-    //handle increase product
-    const handleDecreaseCount=()=>{
-        if(count>1){
-            setCount(count-1); 
-            setTotal(total-price)
-        }else{
-            ToastAndroid.showWithGravity(
-                "Minimum is 1",
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM
-              );
-        }
-    }
+    
 
     const ListCartItems=()=>{
         const renderItem = ({ item }) => {
+            
+            //handle decrease product
+            const handleIncreaseCount=()=>{
+                if(count>remaining-1){
+                    ToastAndroid.showWithGravity(
+                        "Only "+remaining +" products left!",
+                        ToastAndroid.LONG,
+                        ToastAndroid.BOTTOM
+                    );
+                }else{
+                    setCount(count+1)
+                    
+                    // setTotal(total+price)
+                }
+            }
+            //handle increase product
+            const handleDecreaseCount=()=>{
+                if(count>1){
+                    setCount(count-1); 
+                    // setTotal(total-price)
+                }else{
+                    ToastAndroid.showWithGravity(
+                        "Minimum is 1",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.BOTTOM
+                    );
+                }
+            }
             return (
-                <View
+                <TouchableOpacity
                     style={{
                         backgroundColor: COLORS.white,
                         alignItems: "center",
@@ -100,7 +103,7 @@ const Cart = ({navigation}) => {
                         borderRadius: 10,
                         //zIndex: -1,
                     }}
-                    //onPress={() =>navigation.navigate("ProductDetail", item)}
+                    onPress={() =>navigation.navigate("ProductDetail", item.idProduct)}
                 > 
                     <View style={{
                         flexDirection: 'row',
@@ -109,7 +112,7 @@ const Cart = ({navigation}) => {
                     }}>
                         <View style={styles.ImageCart}>
                             <Image 
-                                source={{uri: `http://192.168.1.7:3000/images/${item["idProduct"].image[0]}`}}
+                                source={{uri: `${SERVER_URL}/images/${item["idProduct"].image[0]}`}}
                                 style={{
                                     width: 70,
                                     height: 70,
@@ -156,29 +159,33 @@ const Cart = ({navigation}) => {
                                 <Text style={{
                                     fontWeight: 'bold',
                                     paddingLeft: 10,
-                                    maxWidth: 60,
+                                    width: '65%',
+                                    maxWidth: 100,
                                     minWidth: 60,
                                     fontSize: 17,
+                                    justifyContent:'center',
                                     // backgroundColor: COLORS.xam1,
-                                    alignItems: 'flex-end'
+                                    alignSelf: 'flex-end'
                                 }}>{item["idProduct"].price}$</Text>
                                 {/* //edit increase or decrease  */}
                                 <View style={{
+                                    width: '25%',
                                     flexDirection: 'row',
                                     height: 30,
                                     // backgroundColor: COLORS.orange,
                                     alignItems: 'center',
-                                    marginLeft: 140
+                                    alignSelf: 'flex-end',
+                                    marginLeft: 110
                                 }}>
                                     <TouchableOpacity style={{
                                         width: 20,
                                         height: 20,
-                                        backgroundColor: COLORS.xam2,
+                                        backgroundColor: COLORS.xam1,
                                         borderRadius: 5,
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                     }}
-                                        //onPress={handleDecreaseCount}
+                                        onPress={handleDecreaseCount}
                                     >
                                         <Text style={styles.updown}>-</Text>
                                     </TouchableOpacity>
@@ -191,7 +198,7 @@ const Cart = ({navigation}) => {
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                     }}
-                                        //onPress={handleIncreaseCount}
+                                        onPress={handleIncreaseCount}
                                     >
                                         <Text style={styles.updown}>+</Text>
                                     </TouchableOpacity>         
@@ -210,7 +217,7 @@ const Cart = ({navigation}) => {
                             
                         </View>
                     </View>
-                </View>    
+                </TouchableOpacity>    
             )
         }
         return (
@@ -247,17 +254,22 @@ const Cart = ({navigation}) => {
                     //backgroundColor: COLORS.xam2
                 }}>
                     <Text style={{
-                        width: '90%',
-                        fontSize: 16,
-                        letterSpacing: 1
+                        width: '70%',
+                        // maxwidth: '80%',
+                        //minwidth: '80%',
+                        fontSize: 17,
+                        letterSpacing: 1,
+                        // fontWeight: 'bold'
                     }}>Order Amount:</Text>
                     <Text
                         style={{
-                            fontSize: 16,
+                            width: '25%',
+                            fontSize: 17,
                             letterSpacing: 1,
-                            textAlign: 'right'
+                            textAlign: 'right',
+                            // fontWeight: 'bold'
                         }}
-                    >0$</Text>
+                    >{Cart.total}$</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -332,13 +344,14 @@ const Cart = ({navigation}) => {
                 </View>
                 <TouchableOpacity 
                     style={styles.Button}
+                    onPress={()=> navigation.navigate('Order')}
                 >
                     <Text style={{
                         color: COLORS.primary, 
                         fontSize: 15,
                         fontWeight: 'bold'
                     }}>
-                        Payment
+                        Order
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -401,7 +414,7 @@ const Cart = ({navigation}) => {
                             paddingLeft: 20,
                             letterSpacing: 1,
                         }}>
-                                {Cart.itemNum} Item
+                                {Cart.itemNum} Items
                         </Text>
                         <ListCartItems/>
                         <PaymentContainer/>

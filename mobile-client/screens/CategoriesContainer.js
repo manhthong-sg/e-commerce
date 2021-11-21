@@ -1,12 +1,22 @@
 import React, {useEffect, useState} from 'react'
-import { Image, ActivityIndicator,SafeAreaView, StyleSheet, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
+import { Image,SafeAreaView, StyleSheet, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS , SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import getProducts from '../api/getProducts';
+import SERVER_URL from '../api'
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
+import LottieView from "lottie-react-native";
 
 const CategoriesContainer = ({route, navigation}) => {
-    
+    const CurrentUser = useSelector(state=> state.userReducer.user);
+    const Favorite = useSelector(state=> state.favoriteReducer.favorite);
+    var favoriteData=[];
+    if(CurrentUser && Favorite.items[0] !== undefined){
+        //lay ra id nhung item da them vao favorite de hien ra
+        Favorite.items[0].idProduct.forEach(item=>{
+            favoriteData.push(item._id)
+        })
+    }
     // data categories 
     const categoryData = [
         {
@@ -36,18 +46,54 @@ const CategoriesContainer = ({route, navigation}) => {
         },
     ]
     
+    const setFavorite=(fav)=> dispatch({
+        type: 'SET_FAVORITE', 
+        payload: fav
+    })
+    const dispatch = useDispatch();
+    const handleResetFavorite=()=>{
+        axios.get(`${SERVER_URL}/favorites/${CurrentUser._id}`)
+                .then((data)=>{
+                    //setCartData(data["data"]);
+                    setFavorite(data["data"])
+                    // console.log(data["data"]);
+                })
+    }
+    //handle add to favorite 
+    const handleAddToFavorite=(idProduct)=>{
+        //console.log(Favorite)
+        if(CurrentUser){
+            const url=`${SERVER_URL}/favorites`;
+            axios.post(url, {idProduct: idProduct, idUser: CurrentUser._id})
+            .then(()=>{
+                handleResetFavorite();
+                setIsFavorite(!isFavorite)
+                //setCount(1)
+            })
+            .catch((err)=> {
+                console.log(err+ " :ERROR!");
+            })
+            //setCart(item)
+        }else{
+            ToastAndroid.showWithGravity(
+                "Sorry, you must LOGIN to add to Favorite",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+        }
+    }
     const initialSelectedCategory = route.params;
     //console.log(initialSelectedCategory);
     var [productsData, setProductData]=useState(null);
     const [products, setProducts] = useState(null);
     const [categories, setCategories] = useState(categoryData)
     const [selectedCategory, setSelectedCategory] = useState(initialSelectedCategory)
-    
+    const [isFavorite, setIsFavorite]=useState(false);
     
     
     //call api product and get all products
     const fetchProducts = async () => {
-        const res = await axios.get(`http://192.168.1.7:3000/products`).catch((err) => { console.log("Fetch API failed!! " + err); }); 
+        const res = await axios.get(`${SERVER_URL}/products`).catch((err) => { console.log("Fetch API failed!! " + err); }); 
         //const res = await getProducts.getAllProduct(); 
         if (!res) return;
 
@@ -70,15 +116,6 @@ const CategoriesContainer = ({route, navigation}) => {
         // else return;
         
     }, [selectedCategory]);
-    
-    
-
-    
-    
-    
-    
-    //add to favorite
-    const [selectedFavorite, setSelectedFavorite]=useState([])
     
     //products
     
@@ -115,22 +152,11 @@ const CategoriesContainer = ({route, navigation}) => {
     //onPress category
     const onSelectCategory = async (category) =>{
         //filter restaurant
-        let productsList = await axios.get(`http://192.168.1.7:3000/products/categories/${category.id}`)
+        let productsList = await axios.get(`${SERVER_URL}/products/categories/${category.id}`)
         
         setProducts(productsList["data"])
         setSelectedCategory(category)
     }
-
-    //onPress favorite
-    function onSelectFavorite(item) {
-        //filter restaurant
-        //let categoriesList = categoryData.filter(a => a.categories.includes(category.id))
-
-        //setRestaurants(categoriesList)
-        //console.log((oldDta)=> [...oldDta, {}])
-        setSelectedFavorite(prev=> [...prev,item])
-        console.log(selectedFavorite)
-    } 
 
     //render header of this screens
     function renderHeader() {
@@ -169,23 +195,6 @@ const CategoriesContainer = ({route, navigation}) => {
                         <Text style={{fontWeight: 'bold', fontSize: 25, color: COLORS.xam4}}>Main Categories</Text>
                     </View>
                 </View>
-
-                {/* <TouchableOpacity
-                    style={{
-                        width: 50,
-                        paddingRight: SIZES.padding * 2,
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Image
-                        source={icons.basket}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
-                </TouchableOpacity> */}
             </View>
         )
     }
@@ -405,18 +414,18 @@ const CategoriesContainer = ({route, navigation}) => {
                             right: 0,
 
                         }}
-                        //onPress={() => onSelectFavorite(item)}
+                        onPress={()=>handleAddToFavorite(item._id)}
                     >
                         <FontAwesome5
                                 solid
                                 //solid={(selectedFavorite[item.id].id == item.id) ? true : false}
                                 name="heart"
                                 size={20}
-                                color={(selectedFavorite[4]?.id == item.id) ? COLORS.white : COLORS.xam2} 
+                                color={(favoriteData.includes(item._id)) ? COLORS.do2 : COLORS.white} 
                             />    
                     </TouchableOpacity>
                     <Image
-                        source={{uri: `http://192.168.1.7:3000/images/${item.image[0]}`}}
+                        source={{uri: `${SERVER_URL}/images/${item.image[0]}`}}
                         resizeMode="cover"
                         style={{
                             width: '100%',
@@ -483,11 +492,18 @@ const CategoriesContainer = ({route, navigation}) => {
             {renderSort()}
             {productsData ? renderProducts() : (
                     <View style={{
+                            marginTop: 100,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}
                     >
-                        <ActivityIndicator size ="large" color ={COLORS.brand}/>
+                        <LottieView
+                            source={require("../components/AnimationIcons/itemsLoading.json")}
+                            autoPlay
+                            loop={true}
+                            resizeMode='contain'
+                            style={{ height: 130 }}
+                        />
                     </View>
                 )
             }

@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const dotenv = require('dotenv')
 const route=require('./routes/index')
+
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -20,6 +23,7 @@ const db=require('./config/db/index.js')
 db.connect();
 
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`)
+app.listen(PORT, () => {
+  // console.log(process.env.PORT);
+  console.log(`Server listening at http://localhost:${PORT}`)
 })

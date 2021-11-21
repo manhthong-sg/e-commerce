@@ -3,7 +3,7 @@ import { StyleSheet, Text, Image, View, StatusBar, TouchableOpacity, Animated, T
 import { COLORS , SIZES, icons, images } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
-import { ScrollView } from 'react-native-gesture-handler';
+import SERVER_URL from '../api'
 import { useSelector, useDispatch } from 'react-redux';
 
 const ProductDetail = ({navigation, route}) => {
@@ -17,6 +17,7 @@ const ProductDetail = ({navigation, route}) => {
         image,
         description,
         price,
+        star,
         remaining,
     }=route.params;
     
@@ -24,21 +25,16 @@ const ProductDetail = ({navigation, route}) => {
     const [total, setTotal]=useState(price);
     const [isFavorite, setIsFavorite]=useState(()=>{
         let flag=false;
-        Favorite[0].idProduct.forEach(item => {
-            if(item._id == _id){
-                flag=true;
-            }
-        });
+        if(CurrentUser && Favorite[0] !== undefined){
+            Favorite[0].idProduct.forEach(item => {
+                if(item._id == _id){
+                    flag=true;
+                }
+            });
+            
+        }
         return flag;
-        // if(Favorite[0].idProduct.includes(_id)){
-        //     return true
-        // }
-        // else{
-        //     return false;
-        // }
     });
-    //console.log(isFavorite);
-    //console.log(description);
     const setCart=(cart)=> dispatch({
         type: 'SET_CART', 
         payload: cart
@@ -50,7 +46,7 @@ const ProductDetail = ({navigation, route}) => {
     const dispatch = useDispatch();
 
     const handleResetCart=()=>{
-        axios.get(`http://192.168.1.7:3000/carts/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                 .then((data)=>{
                     //setCartData(data["data"]);
                     setCart(data["data"])
@@ -58,7 +54,7 @@ const ProductDetail = ({navigation, route}) => {
                 })
     }
     const handleResetFavorite=()=>{
-        axios.get(`http://192.168.1.7:3000/favorites/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/favorites/${CurrentUser._id}`)
                 .then((data)=>{
                     //setCartData(data["data"]);
                     setFavorite(data["data"])
@@ -102,7 +98,7 @@ const ProductDetail = ({navigation, route}) => {
                 idUser: CurrentUser._id,
     
             };
-            const url='http://192.168.1.7:3000/carts';
+            const url=`${SERVER_URL}/carts`;
             axios.post(url, {idProduct: _id, itemNum: count, idUser: CurrentUser._id})
             .then(()=>{
                 ToastAndroid.showWithGravity(
@@ -130,7 +126,7 @@ const ProductDetail = ({navigation, route}) => {
     const handleAddToFavorite=()=>{
         //console.log(Favorite)
         if(CurrentUser){
-            const url='http://192.168.1.7:3000/favorites';
+            const url=`${SERVER_URL}/favorites`;
             axios.post(url, {idProduct: _id, idUser: CurrentUser._id})
             .then(()=>{
                 handleResetFavorite();
@@ -143,7 +139,7 @@ const ProductDetail = ({navigation, route}) => {
             //setCart(item)
         }else{
             ToastAndroid.showWithGravity(
-                "Sorry, you must LOGIN to add to cart",
+                "Sorry, you must LOGIN to add to Favorite",
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
               );
@@ -271,7 +267,7 @@ const ProductDetail = ({navigation, route}) => {
                                 <View style={{ height: 210 }}>
                                     {/* Food Image */}
                                     <Image
-                                        source={{uri: `http://192.168.1.7:3000/images/${item}`}}
+                                        source={{uri: `${SERVER_URL}/images/${item}`}}
                                         resizeMode="cover"
                                         style={{
                                             width: SIZES.width,
@@ -311,7 +307,27 @@ const ProductDetail = ({navigation, route}) => {
                 }}>
                     {name}
                 </Text>
-
+                <View style={{
+                    flexDirection: 'row',
+                    paddingLeft: 22,
+                    width: '100%',
+                    height: 20,
+                    // backgroundColor: COLORS.xam1,
+                    alignItems: 'center'
+                }}>
+                    {
+                        [1, 2, 3, 4, 5].map((rate)=>(
+                            <FontAwesome5 
+                                size={10} 
+                                solid name='star' 
+                                color={(rate <= star) ? COLORS.orange : COLORS.xam2}
+                                style={{
+                                    marginLeft: 3
+                                }}
+                            />
+                        ))
+                    }
+                </View>
                 <Text style={{
                     fontWeight: 'bold', 
                     paddingLeft: 25,

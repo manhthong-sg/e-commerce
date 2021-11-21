@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 async function connect(){
    try{
-       await mongoose.connect('mongodb://localhost:27017/testMongoDB',{
+       await mongoose.connect('mongodb+srv://admin:admin123@cluster0.gtenp.mongodb.net/ElaptopDB?retryWrites=true&w=majority',{
            useNewUrlParser: true,
            useUnifiedTopology: true,
        })

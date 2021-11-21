@@ -9,7 +9,29 @@ class UsersController {
             .then(user=> res.json(user))
             .catch((err)=> console.log("Log user FAIL!"+err));
     }
-    
+    //[GET] get user by id
+    getUserByID(req, res){
+        User.findOne({_id: req.params.idUser})
+        .then((user) => res.json(user))
+        .catch((err) => console.log(err))
+    }
+    //[POST] /users/updateAddress/:idUser
+    updateAddress (req, res){
+        console.log(req.params.idUser);
+        console.log(req.body);
+        User.findOne({_id: req.params.idUser})
+            .then(user=> {
+                // console.log(user);
+                user.address.province=req.body.province,
+                user.address.district=req.body.district,
+                user.address.ward=req.body.ward,
+                user.address.apartmentAddress=req.body.apartmentAddress,
+                user.save();
+                console.log("Update your address SUCCESSFULLY!");
+                res.json(user)
+            })
+            .catch((err)=> console.log("Update address FAIL!"+err));
+    }
     //[POST] /users
     async register(req, res){ 
         const passwordHash = await bcrypt.hash(req.body.password, 10)

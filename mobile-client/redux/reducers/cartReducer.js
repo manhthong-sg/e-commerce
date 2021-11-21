@@ -4,7 +4,7 @@ let defaultState= {
     cart: {
         items: [],
         itemNum: 0,
-        total: 100,
+        total: 0,
     },
 }
 

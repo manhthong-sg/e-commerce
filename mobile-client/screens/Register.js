@@ -5,9 +5,10 @@ import { Formik } from 'formik'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
-import { registerUser as RegisterUser } from '../api'
+import SERVER_URL from '../api'
 import axios from 'axios'
 const Register = ({navigation}) => {
+    //console.log(SERVER_URL);
     const [hidePassword, setHidePassword]=useState(true);
     
     // handle select canlendar
@@ -53,7 +54,8 @@ const Register = ({navigation}) => {
         
         
         handleMessage(null);
-        const url='http://192.168.1.7:3000/users';
+        const url=`${SERVER_URL}/users`;
+        // console.log(url);
         axios.post(url, {fullName: fullName, phone: phone, password: password})
         .then((res)=>{
             handleMessage("Register Successfully", "SUCCESS");
