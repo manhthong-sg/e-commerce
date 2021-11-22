@@ -49,23 +49,10 @@ const MyOrders = ({navigation}) => {
             setOrdersData(ordersList["data"])
             setSelectedStatus(status)
         })
-        // setOrdersData(prev => {
-        // })
     }
 
     useEffect(() => {
-        axios.get(`${SERVER_URL}/orders/${CurrentUser._id}/${selectedStatus.id}`)
-        .then(()=>{
-            setOrdersData(ordersList["data"])
-        })
-        // // console.log(ordersList["data"]);
-        // if(!ordersList) return;
-    }, [])
-    useEffect(() => {
-        //fetch products data
-        // if (products)
-            onSelectStatus(selectedStatus);
-        // else return;
+        onSelectStatus(selectedStatus);
         
     }, [selectedStatus]);
     //render header of this screens
@@ -180,7 +167,9 @@ const MyOrders = ({navigation}) => {
                     backgroundColor: COLORS.white,
                     elevation: 2,
                     marginTop: 10,
-                }}>
+                }}
+                    onPress={()=> navigation.navigate("OrderDetails", item)}
+                >
                     <View style={{
                         flexDirection: 'row',
                         marginBottom: 5,
@@ -316,7 +305,7 @@ const MyOrders = ({navigation}) => {
                             fontSize: 15,
                             letterSpacing: 0.5,
                             fontWeight: 'bold'
-                        }}>Total amount </Text>
+                        }}>Order Total </Text>
                         <Text>({item.ItemsNum} items): </Text>
                         <Text style={{fontSize: 17}}>{item.Total}$</Text>
                     </View>

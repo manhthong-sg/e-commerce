@@ -351,7 +351,7 @@ const Order = ({navigation}) => {
                     <Text style={{
                         fontWeight: 'bold',
                         fontSize: 16
-                        }}>Your Cart</Text>
+                        }}>Your Items</Text>
                     <View style={{
                         backgroundColor: COLORS.orange,
                         borderRadius: 3,
