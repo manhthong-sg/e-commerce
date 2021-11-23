@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, StatusBar, Text, View, TouchableOpacity, Picker, ScrollView, ToastAndroid, Image, FlatList, TextInput } from 'react-native'
+import { StyleSheet, StatusBar, Text, View, TouchableOpacity, Alert, ScrollView, ToastAndroid, Image, FlatList, TextInput } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { COLORS , SIZES, icons, images } from '../constants'
 import { useSelector, useDispatch } from 'react-redux';
 import SERVER_URL from '../api'
 import LottieView from "lottie-react-native";
+import axios from 'axios';
 
 const OrderDetails = ({navigation, route}) => {
     const {
@@ -544,17 +545,40 @@ const OrderDetails = ({navigation, route}) => {
     }
     //button payment
     const CancelOrder = () =>{
+        const handleConfirmYes =()=>{
+            const url=`${SERVER_URL}/orders/cancel/${_id}`;
+            axios.post(url)
+            .then(()=>{
+                ToastAndroid.showWithGravity(
+                    "Cancel order successfully!",
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM
+                  );
+                navigation.navigate("MyOrders")
+            })
+            .catch((err)=> {
+                console.log(err+ " :ERROR!");
+            })
+        }
+        const handleCancelOrder =()=>{
+            Alert.alert(
+                "Are you sure?",
+                "You want to cancel your order?",
+                [
+                  {
+                    text: "NO",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  { text: "YES", onPress: handleConfirmYes }
+                ]
+              );
+        }
         return(
             <TouchableOpacity 
                 style={styles.Button}
+                onPress={handleCancelOrder}
             >
-                {/* <LottieView
-                    source={require("../components/AnimationIcons/messageOrderDetails.json")}
-                    autoPlay
-                    loop={true}
-                    resizeMode='contain'
-                    style={{ height: 60 }}
-                /> */}
                 <Text style={{
                     color: COLORS.xam3, 
                     fontSize: 15,
