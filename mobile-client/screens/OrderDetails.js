@@ -77,6 +77,48 @@ const OrderDetails = ({navigation, route}) => {
             </View>
         )
     }
+    //when status =0 (waiting confirm)
+    const OnCancelStatus=()=>{
+        return (
+            <View style={{
+                height: 120,
+                backgroundColor: COLORS.red,
+                marginBottom: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingLeft: 20,
+            }}>
+                <View>
+                    <Text style={{
+                        fontWeight: "bold",
+                        color: COLORS.primary,
+                        width: 230,
+                    }}>
+                        Order cancelled
+                    </Text>
+                    <Text style={{
+                        width: 230,
+                        color: COLORS.primary,
+                        marginTop: 15,
+                        fontSize: 13,
+                    }}>
+                        You have cancelled this order. We are sorry about that. 
+                    </Text>
+                </View>
+                <LottieView
+                source={require("../components/AnimationIcons/cancelStatus.json")}
+                autoPlay
+                loop={false}
+                resizeMode='contain'
+                style={{ 
+                    width: 80, 
+                    paddingLeft: 20,
+                 }}
+            />
+            </View>
+        )
+    }
+    //when status order = 4 (cancel)
     const OnWaitingConfirm=()=>{
         return (
             <View style={{
@@ -647,29 +689,10 @@ const OrderDetails = ({navigation, route}) => {
             </View>
         )
     }
-    //screen return
-    return (
-        <View style={{
-            flex: 1,
-            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
-        }}>
-            <Header/>
-            <ScrollView style={styles.Ordercontainer}>
-                {
-                    Status == "0" && (
-                        <OnWaitingConfirm/>
-                    )
-                }
-                <MyInfo/>
-                <MyItemsOrder/>
-                <MyVoucher/>
-                <MyPaymentMethod/>
-                <OrderTotal/>
-                <OrderIdContainer/>
-                <CancelOrder/>
-                <ContactUs/>
 
-            </ScrollView>
+    //return-refund received order container
+    const RefundReceivedContainer =()=>{
+        return(
             <View style={{
                 flexDirection: 'row',
             }}>
@@ -696,6 +719,45 @@ const OrderDetails = ({navigation, route}) => {
                         </Text>
                 </TouchableOpacity>
             </View>
+        )
+    }
+    //screen return
+    return (
+        <View style={{
+            flex: 1,
+            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+        }}>
+            <Header/>
+            <ScrollView style={styles.Ordercontainer}>
+                {
+                    Status == "0" && (
+                        <OnWaitingConfirm/>
+                    )
+                }
+                {
+                    Status == "4" && (
+                        <OnCancelStatus/>
+                    )
+                }
+                <MyInfo/>
+                <MyItemsOrder/>
+                <MyVoucher/>
+                <MyPaymentMethod/>
+                <OrderTotal/>
+                <OrderIdContainer/>
+                {
+                   (Status == "0" || Status == "1" ) && (
+                       <CancelOrder/>
+                   )
+                }
+                <ContactUs/>
+
+            </ScrollView>
+            {
+                (Status == "2" || Status == "3" ) && (
+                    <RefundReceivedContainer/>
+                )
+            }
         </View>
     )
 }
@@ -704,6 +766,7 @@ export default OrderDetails
 const styles = StyleSheet.create({
     Ordercontainer:{
         flex: 1,
+        marginBottom: 60,
     },
     updown:{
         fontWeight: 'bold',
@@ -741,6 +804,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         paddingRight: 20,
+        // marginBottom: 30,
     },
     ButtonReturn:{
         width: '45%',

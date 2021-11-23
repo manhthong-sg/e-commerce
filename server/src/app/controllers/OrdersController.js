@@ -43,9 +43,11 @@ class OrdersController {
 
     //[POST] cancel order
     cancelOrderById(req, res){
-        Order.findOneAndRemove({_id: req.params.idOrder})
-        .then(()=> {
-            console.log("remove order SUCCESSFULLY!");
+        Order.findOne({_id: req.params.idOrder})
+        .then((order)=> {
+            order.Status="4";
+            order.save();
+            console.log("cancel order SUCCESSFULLY!");
             res.redirect('/orders')
         })
     }
