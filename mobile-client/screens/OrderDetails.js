@@ -155,33 +155,40 @@ const OrderDetails = ({navigation, route}) => {
     }
 
     //show all cart that you wanna buy
-    const MyItemsCart = () =>{
+    const MyItemsOrder = () =>{
 
         //message for seller
         const MyMessage = () => {
             return (
                 <View style={{
+                    flex: 1,
                     height: 50,
                     flexDirection: 'row',
                     backgroundColor: COLORS.white,
                     elevation: 2,
                     alignItems: 'center',
                     marginBottom:5,
+                    paddingLeft: 15,
                 }}>
                     <Image
                         source={icons.message}
                         style={{
-                            width: 33,
-                            height: 33,
-                            marginLeft:15,
+                            width: 28,
+                            height: 28,
+                            // marginLeft:15,
                         }}
                     />
                     <Text style={{
-                        fontSize: 16,
+                        width: '30%',
+                        fontSize: 15,
                         fontWeight: 'bold',
                         paddingLeft: 15
                     }}>Message: </Text>
-                    <Text style={{width: 250, paddingLeft: 20}}>{Message}</Text>
+                    <Text style={{
+                        textAlign: 'right',
+                        width: '60%',
+                        color: COLORS.brand,
+                    }}>{Message}</Text>
                 </View>
             )
         }
@@ -320,6 +327,7 @@ const OrderDetails = ({navigation, route}) => {
     const MyVoucher = () => {
         return (
             <View style={{
+                flex: 1,
                 height: 50,
                 flexDirection: 'row',
                 backgroundColor: COLORS.white,
@@ -329,18 +337,23 @@ const OrderDetails = ({navigation, route}) => {
             }}>
                 <Image
                     source={icons.voucher}
-                    size={20}
+                    size={17}
                     style={{
-                        width: 30,
-                        height: 30,
+                        width: 25,
+                        height: 25,
                     }}
                 />
                 <Text style={{
-                    fontSize: 17,
+                    width: '30%',
+                    fontSize: 15,
                     fontWeight: 'bold',
                     paddingLeft: 15
                 }}>Voucher: </Text>
-                <Text style={{textAlign: 'right', paddingLeft: 20}}>{Voucher ? Voucher : "No voucher was used"}</Text>
+                <Text style={{
+                    width: '60%',
+                    textAlign: 'right',
+                    color: COLORS.brand
+                }}>{Voucher ? Voucher : "No voucher was used"}</Text>
                     
             </View>
         )
@@ -350,6 +363,7 @@ const OrderDetails = ({navigation, route}) => {
     const MyPaymentMethod = () => {
         return (
             <View style={{
+                flex: 1,
                 height: 60,
                 flexDirection: 'row',
                 backgroundColor: COLORS.white,
@@ -360,18 +374,24 @@ const OrderDetails = ({navigation, route}) => {
             }}>
                 <Image
                     source={icons.payment}
-                    size={20}
+                    size={19}
                     style={{
-                        width: 28,
-                        height: 28,
+                        width: 25,
+                        height: 25,
                     }}
                 />
                 <Text style={{
-                    fontSize: 17,
+                    width: '40%',
+                    fontSize: 14,
                     fontWeight: 'bold',
                     paddingLeft: 15
                 }}>Payment method: </Text>
-                <Text style={{paddingLeft: 20}}>{PaymentMethod}</Text>
+                <Text style={{
+                    width: '50%',
+                    paddingLeft: 20,
+                    color: COLORS.brand,
+                    textAlign: 'right',
+                }}>{PaymentMethod}</Text>
             </View>
         )
     }
@@ -459,25 +479,26 @@ const OrderDetails = ({navigation, route}) => {
                 {/* //order total  */}
                 <View style={{
                     flex: 1,
-                    // height: 40,
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: 20,
                 }}>
                     <Text style={{
-                        // width: '30%',
+                        // width: '25%',
                         fontSize: 15,
                         letterSpacing: 0.5,
                         fontWeight: 'bold',
                         marginLeft: 10,
                     }}>Order Total </Text>
                     <Text style={{
-                        width: '55%',
+                        width: '25%',
                     }}>({ItemsNum} items): </Text>
                     <TouchableOpacity
                         style={{
+                            width: '53%',
                             marginLeft: 5,
-                            flexDirection: 'row'
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end'
                         }}
                         onPress={()=> setHide(!hide)}
                         >
@@ -517,6 +538,29 @@ const OrderDetails = ({navigation, route}) => {
                     fontWeight: 'bold'
                 }}>
                     Contact us
+                </Text>
+            </TouchableOpacity>
+        )
+    }
+    //button payment
+    const CancelOrder = () =>{
+        return(
+            <TouchableOpacity 
+                style={styles.Button}
+            >
+                {/* <LottieView
+                    source={require("../components/AnimationIcons/messageOrderDetails.json")}
+                    autoPlay
+                    loop={true}
+                    resizeMode='contain'
+                    style={{ height: 60 }}
+                /> */}
+                <Text style={{
+                    color: COLORS.xam3, 
+                    fontSize: 15,
+                    fontWeight: 'bold'
+                }}>
+                    Cancel Order
                 </Text>
             </TouchableOpacity>
         )
@@ -593,11 +637,12 @@ const OrderDetails = ({navigation, route}) => {
                     )
                 }
                 <MyInfo/>
-                <MyItemsCart/>
+                <MyItemsOrder/>
                 <MyVoucher/>
                 <MyPaymentMethod/>
                 <OrderTotal/>
                 <OrderIdContainer/>
+                <CancelOrder/>
                 <ContactUs/>
 
             </ScrollView>

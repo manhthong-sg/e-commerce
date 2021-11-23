@@ -47,9 +47,9 @@ const Order = ({navigation}) => {
 
     useEffect(() => {
         if(CurrentUser.address.province=="79"){
-            setDeliveryFee(Cart.total*0.03)
+            setDeliveryFee(Math.ceil(Cart.total*0.03 * 100)/100)
         }else{
-            setDeliveryFee(Cart.total*0.05)
+            setDeliveryFee(Math.ceil(Cart.total*0.05 * 100)/100)
         }
         //console.log(getCart());
         setCartData(Cart.items)
