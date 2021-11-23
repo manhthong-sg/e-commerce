@@ -41,6 +41,15 @@ class OrdersController {
         .catch((err)=> res.json({msg: "Create new order FAIL!"}))  
     }
 
+    //[POST] cancel order
+    cancelOrderById(req, res){
+        Order.findOneAndRemove({_id: req.params.idOrder})
+        .then(()=> {
+            console.log("remove order SUCCESSFULLY!");
+            res.redirect('/orders')
+        })
+    }
+
 }
 
 module.exports=new OrdersController;
