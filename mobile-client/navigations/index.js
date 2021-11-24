@@ -16,6 +16,7 @@ import EditDeliveryInfo from '../screens/EditDeliveryInfo'
 import CompleteOrder from '../screens/CompleteOrder'
 import MyOrders from '../screens/MyOrders'
 import OrderDetails from '../screens/OrderDetails'
+import Search from '../screens/Search'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -27,6 +28,7 @@ const HomeNavigation = () => {
                 <Stack.Screen name = 'CategoriesContainer' component = {CategoriesContainer} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'BrandsContainer' component = {BrandsContainer} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'ProductDetail' component = {ProductDetail} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'Search' component = {Search} screenOptions={screenOptions}/>
             </Stack.Navigator>
     )
 }

@@ -283,7 +283,7 @@ const Home = ({navigation}) => {
         // <KeyboardAvoidingWrapper>
             <View style={styles.container}>
                 
-                <HomeHeader/>
+                <HomeHeader navigation={navigation} />
                 {renderCategories()}
                 {renderBrand()}
             </View>
