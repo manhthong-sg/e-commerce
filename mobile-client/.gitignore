@@ -1,4 +1,4 @@
-../mobile-client/api/index.js
+api/
 node_modules/
 .expo/
 npm-debug.*
