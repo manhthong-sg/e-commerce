@@ -19,7 +19,8 @@ const OrderDetails = ({navigation, route}) => {
         Status,
         Total,
         Voucher,
-        createdAt
+        createdAt,
+        CancelDate
     }=route.params;
     
     var date = new Date(createdAt);
@@ -634,10 +635,12 @@ const OrderDetails = ({navigation, route}) => {
     const OrderIdContainer=()=>{
         return(
             <View style={{
-                height: 100,
+                // height: 100,
                 backgroundColor: COLORS.white,
+                justifyContent: 'space-around',
                 elevation: 1,
                 marginTop: 10,
+                paddingVertical: 10
             }}>
                 <View style={{
                     flex: 1,
@@ -661,7 +664,7 @@ const OrderDetails = ({navigation, route}) => {
                 </View>
                 <View style={{
                     flex: 1,
-                    height: 40,
+                    // height: 40,
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: 20,
@@ -669,7 +672,7 @@ const OrderDetails = ({navigation, route}) => {
                     
                     <Text style={{
                         width: '30%',
-                        fontSize: 15,
+                        fontSize: 14,
                         letterSpacing: 0.5,
                         marginLeft: 10,
                     }}>Order time</Text>
@@ -686,6 +689,34 @@ const OrderDetails = ({navigation, route}) => {
                     }
                     </Text>
                 </View>
+                {
+                    Status=="4" && (
+                        <View style={{
+                            flex: 1,
+                            // height: 40,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            paddingRight: 20,
+                        }}>
+                            
+                            <Text style={{
+                                width: '30%',
+                                fontSize: 14,
+                                letterSpacing: 0.5,
+                                marginLeft: 10,
+                            }}>Cancel time</Text>
+                            <Text style={{
+                                width: '70%',
+                                textAlign: 'right',
+                            }}>
+                            {
+                                CancelDate
+                            }
+                            </Text>
+                        </View>
+
+                    )
+                }
             </View>
         )
     }

@@ -43,9 +43,13 @@ class OrdersController {
 
     //[POST] cancel order
     cancelOrderById(req, res){
+        // get date time now format "dd-mm-yyyy hh:mm"
+        let today = new Date();
+        let date = today.getDate()+ '-'+(today.getMonth()+1)+'-'+today.getFullYear()+ " "+ today.getHours() + ":" + today.getMinutes();
         Order.findOne({_id: req.params.idOrder})
         .then((order)=> {
             order.Status="4";
+            order.CancelDate=date;
             order.save();
             console.log("cancel order SUCCESSFULLY!");
             res.redirect('/orders')

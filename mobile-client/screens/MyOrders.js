@@ -42,6 +42,7 @@ const MyOrders = ({navigation}) => {
 
     //onPress tab status
     const onSelectStatus = (status) =>{
+        setOrdersData(null);
         //filter orders
         axios.get(`${SERVER_URL}/orders/${CurrentUser._id}/${selectedStatus.id}`)
         .then((ordersList)=>{
@@ -321,6 +322,7 @@ const MyOrders = ({navigation}) => {
                         style={{
                             
                         }}
+                        inverted={true}
                         vertical
                         showsVerticalScrollIndicator={false}
                         keyExtractor={item => `${item._id}`}

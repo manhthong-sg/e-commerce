@@ -477,7 +477,7 @@ const Order = ({navigation}) => {
                     }}
                 >
                     <Picker.Item label="Choose your payment method" value="default" />
-                    <Picker.Item label="Ship COD" value="shipCOD" />
+                    <Picker.Item label="Cash on Delivery" value="Cash" />
                     <Picker.Item label="Paypal" value="paypal" />
                     <Picker.Item label="Credit Card" value="creditCard" />
                 </Picker>
@@ -618,7 +618,7 @@ const Order = ({navigation}) => {
             orderContainer.Total=Cart.total+deliveryFee;
         }
         const handleSubmitOrder =()=>{
-            if(orderContainer.PaymentMethod == 'shipCOD'){
+            if(orderContainer.PaymentMethod == 'Cash'){
                 setInfoOrder();
                 handleCreateOrder();
                 navigation.navigate('CompleteOrder');
