@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {StyleSheet, Text, View, ToastAndroid, TextInput, Image, FlatList, TouchableOpacity, ScrollView,} from 'react-native'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import { COLORS, SIZES, images } from '../constants'
@@ -7,7 +7,7 @@ import axios from 'axios';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector, useDispatch } from 'react-redux'
 import LottieView from "lottie-react-native";
-
+import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 const Search = ({navigation}) => {
     // Redux 
     const CurrentUser = useSelector(state=> state.userReducer.user);
@@ -41,6 +41,7 @@ const Search = ({navigation}) => {
     useEffect(() => {
         if(searchKey==""){
             setSearchData(null)
+            setItemsNum(0)
         }
         else if(productsData && searchKey !== ""){
             const newData= productsData.filter((product)=>{
@@ -186,6 +187,7 @@ const Search = ({navigation}) => {
                 </View>
                 <TextInput
                     // autoFocus
+                    autoFocus
                     value={searchKey}
                     style = {styles.TextInput}
                     onChangeText= {(text)=> setSearchKey(text)}
