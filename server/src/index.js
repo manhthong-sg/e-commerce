@@ -1,11 +1,9 @@
 const express = require('express')
 const app = express()
-const dotenv = require('dotenv')
+const path = require('path');
 const route=require('./routes/index')
-
-dotenv.config();
+require('dotenv').config({path:__dirname+'/.env'})
 const PORT = process.env.PORT || 3000;
-var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.urlencoded({extended: true}))
