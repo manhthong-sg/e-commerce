@@ -5,7 +5,7 @@ const route=require('./routes/index')
 require('dotenv').config({path:__dirname+'/.env'})
 const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, 'public')));
-
+// console.log(process.env.STRIPE_KEY);
 app.use(express.urlencoded({extended: true}))
 //app.use (express.urlencoded())
 app.use(express.json())

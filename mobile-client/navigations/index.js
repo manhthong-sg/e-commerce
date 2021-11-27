@@ -17,6 +17,9 @@ import CompleteOrder from '../screens/CompleteOrder'
 import MyOrders from '../screens/MyOrders'
 import OrderDetails from '../screens/OrderDetails'
 import Search from '../screens/Search'
+import Payment from '../screens/Payment'
+import PaymentTest from '../screens/PaymentTest'
+import PaymentTest1 from '../screens/PaymentTest1'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -60,6 +63,9 @@ const CartNavigation = () => {
             <Stack.Navigator initialRouteName='Cart' screenOptions={screenOptions}>
                 <Stack.Screen name = 'Cart' component = {Cart} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'Order' component = {Order} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'Payment' component = {Payment} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'PaymentTest' component = {PaymentTest} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'PaymentTest1' component = {PaymentTest1} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'EditDeliveryInfo' component = {EditDeliveryInfo} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'CompleteOrder' component = {CompleteOrder} screenOptions={screenOptions}/>
             </Stack.Navigator>

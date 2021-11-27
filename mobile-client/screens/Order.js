@@ -637,6 +637,8 @@ const Order = ({navigation}) => {
                     ToastAndroid.LONG,
                     ToastAndroid.BOTTOM
                   );
+                setInfoOrder();
+                navigation.navigate("Payment", orderContainer)
             }
         }
         return(
