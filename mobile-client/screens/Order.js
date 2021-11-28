@@ -478,7 +478,7 @@ const Order = ({navigation}) => {
                 >
                     <Picker.Item label="Choose your payment method" value="default" />
                     <Picker.Item label="Cash on Delivery" value="Cash" />
-                    <Picker.Item label="Paypal" value="paypal" />
+                    {/* <Picker.Item label="Paypal" value="paypal" /> */}
                     <Picker.Item label="Credit Card" value="creditCard" />
                 </Picker>
             </View>

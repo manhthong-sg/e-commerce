@@ -27,7 +27,7 @@ router.post("/create-payment-intent", async (req, res) => {
         amount: req.body.total*100, //lowest denomination of particular currency
         currency: "usd",
         payment_method_types: ["card"], //by default
-        description: req.body.idUser
+        description:"A E-laptop customer with name: "+req.body.DeliveryInfo.name+ " was paid"
         // client_secret: "acct_1JzgurFjDAOe92Vr"
       });
   

@@ -16,13 +16,14 @@ const OrderDetails = ({navigation, route}) => {
         Message,
         OrderItems,
         PaymentMethod,
+        PaymentDetail,
         Status,
         Total,
         Voucher,
         createdAt,
         CancelDate
     }=route.params;
-    
+    console.log(PaymentDetail);
     var date = new Date(createdAt);
 
     // console.log("Date: "+date.getDate()+
@@ -662,6 +663,38 @@ const OrderDetails = ({navigation, route}) => {
                         fontWeight: 'bold',
                     }}>{_id}</Text>
                 </View>
+                {
+                    (PaymentDetail[0] !== "") && (
+
+                        <View style={{
+                            flex: 1,
+                            // height: 40,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            paddingRight: 20,
+                        }}>
+                            
+                            <Text style={{
+                                width: '30%',
+                                fontSize: 14,
+                                letterSpacing: 0.5,
+                                marginLeft: 10,
+                            }}>Payment time</Text>
+                            <Text style={{
+                                width: '70%',
+                                textAlign: 'right',
+                            }}>
+                            {
+                                date.getDate()+
+                                    "-"+(date.getMonth()+1)+
+                                    "-"+date.getFullYear()+
+                                    " "+date.getHours()+
+                                    ":"+(date.getMinutes()-1)+""
+                            }
+                            </Text>
+                        </View>
+                    )
+                }
                 <View style={{
                     flex: 1,
                     // height: 40,

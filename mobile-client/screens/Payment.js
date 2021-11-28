@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet,TextInput, Button, Alert, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet,TextInput, Button, Alert, Text, ToastAndroid, StatusBar, View, TouchableOpacity } from 'react-native'
 import { CardField, useStripe, useConfirmPayment } from '@stripe/stripe-react-native';
 import { COLORS , SIZES, icons, images } from '../constants'
 import SERVER_URL from '../api'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
 import { CardView } from "react-native-credit-card-input-view";
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Payment = ({navigation, route}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user);
@@ -16,6 +17,12 @@ const Payment = ({navigation, route}) => {
 
     const orderContainer=route.params;
     // console.log(orderContainer);
+    const setCart=(cart)=> dispatch({
+        type: 'SET_CART', 
+        payload: cart
+    })
+    const dispatch = useDispatch();
+
     const handleCreateOrder=()=>{
         const url=`${SERVER_URL}/orders`;
         axios.post(url, orderContainer)
@@ -54,7 +61,7 @@ const Payment = ({navigation, route}) => {
         };
         //2.Fetch the intent client secret from the backend
         const url=`${SERVER_URL}/stripe/create-payment-intent`;
-        axios.post(url, {total: orderContainer.Total, idUser: orderContainer.idUser})
+        axios.post(url, {total: orderContainer.Total, DeliveryInfo: orderContainer.DeliveryInfo})
         .then( async (res)=>{
             // response= res;
             const{clientSecret, error} = res["data"];
@@ -70,9 +77,11 @@ const Payment = ({navigation, route}) => {
                 if (error) {
                 alert(`Payment Confirmation Error ${error.message}`);
                 } else if (paymentIntent) {
+                    orderContainer.PaymentDetail=[paymentIntent]
+                    // console.log(orderContainer);
                     handleCreateOrder();
                     navigation.navigate("CompleteOrder")
-                    console.log("Payment successful ", paymentIntent);
+                    // console.log("Payment successful ", paymentIntent);
                 }
             }
 
@@ -82,61 +91,109 @@ const Payment = ({navigation, route}) => {
         })
         //3.Confirm the payment with the card details
       };
-
-    return (
-        <View style={styles.PaymentContainer}>
-            {/* <CardView
-                number={number}
-                cvc="121"
-                expiry={expiryMonth+"/"+expiryYear}
-                brand="visa"
-                name="Arun Ahuja"
-                display={true}
-                flipDirection="h"
-                onPressfunc={() => alert('clicked')}
-                onLongPressfunc={() => alert('Long clicked')} /> */}
-            <TextInput
-                autoCapitalize="none"
-                placeholder="E-mail"
-                keyboardType="email-address"
-                onChangeText={value => setEmail(value)}
-                style={styles.input}
-            />
-            <CardField
-                postalCodeEnabled={true}
-                placeholder={{
-                    number: '4242 4242 4242 4242',
-                }}
-                cardStyle={{
-                    backgroundColor: '#FFFFFF',
-                    textColor: '#000000',
-                }}
-                style={{
-                    width: '100%',
-                    height: 50,
-                    marginVertical: 30,
-                }}
-                onCardChange={(cardDetails) => {
-                    setCardDetails(cardDetails)
-                    console.log('cardDetails', cardDetails);
-                }}
-                onFocus={(focusedField) => {
-                    console.log('focusField', focusedField);
-                }}
-            />
-            <Button onPress={handlePayPress} title="Pay" disabled={loading} />
-            {/* <TouchableOpacity 
-                    style={styles.Button}
-                    onPress={handlePayPress}
+    //render header of this screens
+    const Header = () => {
+        return (
+            <View style={{ flexDirection: 'row', height: 50, elevation: 2 }}>
+                <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingLeft: SIZES.padding * 2,
+                        justifyContent: 'center'
+                    }}
+                    onPress={()=> {
+                        
+                        navigation.goBack();
+                    }}
                 >
-                    <Text style={{
-                        color: COLORS.primary, 
-                        fontSize: 15,
-                        fontWeight: 'bold'
-                    }}>
-                        Payment
-                    </Text>
-            </TouchableOpacity> */}
+                    <FontAwesome5
+                        name="arrow-left"
+                        resizeMode="contain"
+                        size={25}
+                    />
+                </TouchableOpacity>
+    
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View
+                        style={{
+                            width: '70%',
+                            height: "100%",
+                            //backgroundColor: COLORS.lightGray3,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: SIZES.radius,
+                            marginRight: 30,
+                        }}
+                    >
+                        <Text style={{
+                            fontWeight: 'bold', 
+                            fontSize: 25,
+                            color: COLORS.xam4
+                        }}>
+                            Credit Card Payment
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+    return (
+        <View style={{flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
+            <Header/>
+            <View style={styles.PaymentContainer}>
+                {/* <CardView
+                    number={number}
+                    cvc="121"
+                    expiry={expiryMonth+"/"+expiryYear}
+                    brand="visa"
+                    name="Arun Ahuja"
+                    display={true}
+                    flipDirection="h"
+                    onPressfunc={() => alert('clicked')}
+                    onLongPressfunc={() => alert('Long clicked')} /> */}
+                <TextInput
+                    autoCapitalize="none"
+                    placeholder="E-mail"
+                    keyboardType="email-address"
+                    onChangeText={value => setEmail(value)}
+                    style={styles.input}
+                />
+                <CardField
+                    postalCodeEnabled={true}
+                    placeholder={{
+                        number: '4242 4242 4242 4242',
+                    }}
+                    cardStyle={{
+                        backgroundColor: '#FFFFFF',
+                        textColor: '#000000',
+                    }}
+                    style={{
+                        width: '100%',
+                        height: 50,
+                        marginVertical: 30,
+                    }}
+                    onCardChange={(cardDetails) => {
+                        setCardDetails(cardDetails)
+                        console.log('cardDetails', cardDetails);
+                    }}
+                    onFocus={(focusedField) => {
+                        console.log('focusField', focusedField);
+                    }}
+                />
+                <Button onPress={handlePayPress} title="Pay" disabled={loading} />
+                {/* <TouchableOpacity 
+                        style={styles.Button}
+                        onPress={handlePayPress}
+                    >
+                        <Text style={{
+                            color: COLORS.primary, 
+                            fontSize: 15,
+                            fontWeight: 'bold'
+                        }}>
+                            Payment
+                        </Text>
+                </TouchableOpacity> */}
+            </View>
         </View>
     )
 }

@@ -45,7 +45,7 @@ const Order=new Schema({
         required: true,
       },
       PaymentDetail:{
-        type: String,
+        type: Array,
         ref: "Payment"
       },
       CancelDate: String,
