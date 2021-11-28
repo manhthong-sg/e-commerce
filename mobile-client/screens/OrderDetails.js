@@ -590,19 +590,43 @@ const OrderDetails = ({navigation, route}) => {
     //button payment
     const CancelOrder = () =>{
         const handleConfirmYes =()=>{
-            const url=`${SERVER_URL}/orders/cancel/${_id}`;
-            axios.post(url)
-            .then(()=>{
-                ToastAndroid.showWithGravity(
-                    "Cancel order successfully!",
-                    ToastAndroid.LONG,
-                    ToastAndroid.BOTTOM
-                  );
-                navigation.navigate("MyOrders")
-            })
-            .catch((err)=> {
-                console.log(err+ " :ERROR!");
-            })
+            if(PaymentDetail[0] == ""){
+                const url=`${SERVER_URL}/orders/cancel/${_id}`;
+                axios.post(url)
+                .then(()=>{
+                    ToastAndroid.showWithGravity(
+                        "Cancel order successfully!",
+                        ToastAndroid.LONG,
+                        ToastAndroid.BOTTOM
+                      );
+                    navigation.navigate("MyOrders")
+                })
+                .catch((err)=> {
+                    console.log(err+ " :ERROR!");
+                })
+            }else{
+
+                const url=`${SERVER_URL}/stripe/v1/refunds`;
+                axios.post(url, {paymentIntent: PaymentDetail[0].paymentIntent.id})
+                .then((refundsInfo)=>{
+                    const url=`${SERVER_URL}/orders/cancel/${_id}`;
+                    axios.post(url, refundsInfo)
+                    .then(()=>{
+                        ToastAndroid.showWithGravity(
+                            "Cancel order successfully!",
+                            ToastAndroid.LONG,
+                            ToastAndroid.BOTTOM
+                        );
+                        navigation.navigate("MyOrders")
+                    })
+                    .catch((err)=> {
+                        console.log(err+ " :ERROR!");
+                    })
+                })
+                .catch((err)=> {
+                    console.log(err+ " :ERROR!");
+                })
+            }
         }
         const handleCancelOrder =()=>{
             Alert.alert(

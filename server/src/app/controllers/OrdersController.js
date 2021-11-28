@@ -43,6 +43,7 @@ class OrdersController {
 
     //[POST] cancel order
     cancelOrderById(req, res){
+        // console.log(req.body.data);
         // get date time now format "dd-mm-yyyy hh:mm"
         let today = new Date();
         let date = today.getDate()+ '-'+(today.getMonth()+1)+'-'+today.getFullYear()+ " "+ today.getHours() + ":" + today.getMinutes();
@@ -50,8 +51,11 @@ class OrdersController {
         .then((order)=> {
             order.Status="4";
             order.CancelDate=date;
+            if(order.PaymentDetail[0]!==""){
+                order.PaymentDetail=[...order.PaymentDetail, {refund: req.body.data}]
+            }
             order.save();
-            console.log("cancel order SUCCESSFULLY!");
+            console.log("Cancel order SUCCESSFULLY!");
             res.redirect('/orders')
         })
     }

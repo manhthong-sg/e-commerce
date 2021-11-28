@@ -572,7 +572,7 @@ const Order = ({navigation}) => {
                             fontWeight: 'bold',
                             // backgroundColor: COLORS.xam1,
                         }}
-                    >{Cart.total+deliveryFee}$</Text>
+                    >{Math.ceil((Cart.total+deliveryFee )* 100)/100}$</Text>
                 </View>
             </View>
         )
@@ -615,7 +615,7 @@ const Order = ({navigation}) => {
             orderContainer.OrderItems=Cart.items;
             orderContainer.DeliveryFee=deliveryFee;
             orderContainer.ItemsNum=Cart.itemNum;
-            orderContainer.Total=Cart.total+deliveryFee;
+            orderContainer.Total=Math.ceil((Cart.total+deliveryFee )* 100)/100;
         }
         const handleSubmitOrder =()=>{
             if(orderContainer.PaymentMethod == 'Cash'){

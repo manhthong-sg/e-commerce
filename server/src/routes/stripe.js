@@ -20,6 +20,7 @@ router.post('/payment', (req,res)=>{
     })
 })
 
+//get a secret key to create payment intent
 router.post("/create-payment-intent", async (req, res) => {
   // console.log(req.body);
     try {
@@ -41,5 +42,15 @@ router.post("/create-payment-intent", async (req, res) => {
       res.json({ error: e.message });
     }
   });
+
+  //refund order
+router.post("/v1/refunds", async (req, res) =>{
+  const refund = await stripe.refunds.create({
+    payment_intent: req.body.paymentIntent,
+  });
+  console.log(refund);
+  res.json(refund)
+
+})
 
 module.exports=router;
