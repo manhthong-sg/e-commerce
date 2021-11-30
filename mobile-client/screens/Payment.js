@@ -32,11 +32,6 @@ const Payment = ({navigation, route}) => {
         })
         .then(()=>{
             handleResetCart();
-            ToastAndroid.showWithGravity(
-                "Order Successfully",
-                ToastAndroid.LONG,
-                ToastAndroid.BOTTOM
-              );
         })
         .catch((err)=> {
             console.log(err+ " :ERROR!");

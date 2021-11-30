@@ -56,6 +56,7 @@ const MyOrders = ({navigation}) => {
         onSelectStatus(selectedStatus);
         
     }, [selectedStatus]);
+    
     //render header of this screens
     const Header = () => {
         return (
@@ -310,6 +311,23 @@ const MyOrders = ({navigation}) => {
                         <Text>({item.ItemsNum} items): </Text>
                         <Text style={{fontSize: 17}}>{item.Total}$</Text>
                     </View>
+                    <TouchableOpacity style={{
+                        width: 60,
+                        height: 30,
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        backgroundColor: COLORS.red,
+                        elevation: 2,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                        top: 128,
+                        left: 20,
+                    }}
+                        onPress={()=> navigation.navigate("RatingProducts", item)}
+                    >
+                        <Text style={{fontSize: 15, color: COLORS.white}}>Rate</Text>
+                    </TouchableOpacity>
                 </TouchableOpacity>
             )
         }

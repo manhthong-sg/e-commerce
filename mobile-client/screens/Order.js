@@ -632,11 +632,6 @@ const Order = ({navigation}) => {
                   );
             }
             else{
-                ToastAndroid.showWithGravity(
-                    `Waiting for payment online UI . . .`,
-                    ToastAndroid.LONG,
-                    ToastAndroid.BOTTOM
-                  );
                 setInfoOrder();
                 navigation.navigate("Payment", orderContainer)
             }

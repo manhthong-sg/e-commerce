@@ -16,6 +16,7 @@ import EditDeliveryInfo from '../screens/EditDeliveryInfo'
 import CompleteOrder from '../screens/CompleteOrder'
 import MyOrders from '../screens/MyOrders'
 import OrderDetails from '../screens/OrderDetails'
+import RatingProducts from '../screens/RatingProducts'
 import Search from '../screens/Search'
 import Payment from '../screens/Payment'
 import PaymentTest from '../screens/PaymentTest'
@@ -49,6 +50,7 @@ const MeNavigation = () => {
                 <Stack.Screen name = 'Register' component = {Register} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'MyOrders' component = {MyOrders} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'OrderDetails' component = {OrderDetails} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'RatingProducts' component = {RatingProducts} screenOptions={screenOptions}/>
             </Stack.Navigator>
     )
 }

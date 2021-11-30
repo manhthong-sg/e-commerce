@@ -25,6 +25,7 @@
     "react-native-credit-card-input": "^0.4.1",
     "react-native-credit-card-input-view": "0.0.7",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-ratings": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.6",
     "react-timer-mixin": "^0.13.4",

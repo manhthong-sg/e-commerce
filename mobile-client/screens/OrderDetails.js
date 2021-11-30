@@ -824,7 +824,7 @@ const OrderDetails = ({navigation, route}) => {
                 }
                 {
                     Status == "4" && (
-                        <OnCancelStatus/>
+                        <OnCancelStatus/> 
                     )
                 }
                 <MyInfo/>
