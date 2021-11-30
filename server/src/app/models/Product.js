@@ -26,6 +26,10 @@ const Product = new Schema({
         // minlength: 6,
         default: 5,
       },
+      rating: {
+        type: Array,
+        
+      },
       remaining: { // la so luong con trong kho
         type: Number,
         default: 10,
