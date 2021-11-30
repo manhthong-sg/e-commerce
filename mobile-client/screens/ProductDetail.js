@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, Text, Image, View, StatusBar, TouchableOpacity, Animated, ToastAndroid } from 'react-native'
+import { StyleSheet, Text, Image, View, FlatList, StatusBar, TouchableOpacity, Animated, ToastAndroid, TextInput, ScrollView } from 'react-native'
 import { COLORS , SIZES, icons, images } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
@@ -18,6 +18,7 @@ const ProductDetail = ({navigation, route}) => {
         description,
         price,
         star,
+        rating,
         remaining,
     }=route.params;
     
@@ -318,15 +319,21 @@ const ProductDetail = ({navigation, route}) => {
                     {
                         [1, 2, 3, 4, 5].map((rate)=>(
                             <FontAwesome5 
-                                size={10} 
-                                solid name='star' 
-                                color={(rate <= star) ? COLORS.orange : COLORS.xam2}
-                                style={{
-                                    marginLeft: 3
-                                }}
+                            size={10} 
+                            solid name='star' 
+                            color={(rate <= star) ? COLORS.orange : COLORS.xam2}
+                            style={{
+                                marginLeft: 3
+                            }}
                             />
-                        ))
+                            ))
                     }
+                    <Text style={{
+                        color: COLORS.brand,
+                        marginLeft: 10,
+                        fontSize: 15,
+                        // fontWeight: 'bold'
+                    }}>({rating.length} rates)</Text>
                 </View>
                 <Text style={{
                     fontWeight: 'bold', 
@@ -410,6 +417,195 @@ const ProductDetail = ({navigation, route}) => {
         )
     }
 
+    //renderRatingComment
+    const renderRatingComment = () => {
+      const renderItem = ({ item }) => {
+        return (
+          <View
+            style={{
+              backgroundColor: COLORS.lightGray,
+              alignItems: "center",
+              justifyContent: "center",
+              elevation: 0.3,
+              paddingTop: 10,
+              marginBottom: 5,
+              borderRadius: 5,
+              elevation: 0.8,
+              paddingBottom: 10,
+            }}
+            //onPress={() =>navigation.navigate("ProductDetail", item.idProduct)}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <View style={styles.ImageCart}>
+                <Image
+                  source={icons.defaultAvatar_male}
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                  resizeMode="contain"
+                />
+              </View>
+              <View style={{ width: "70%" }}>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    paddingLeft: 10,
+                    fontSize: 16,
+                    width: "100%",
+                    // backgroundColor: COLORS.xam1
+                  }}
+                >
+                  {item.user.name} 
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingLeft: 7,
+                    width: "100%",
+                    height: 20,
+                    // backgroundColor: COLORS.xam1,
+                    alignItems: "center",
+                  }}
+                >
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <FontAwesome5
+                      size={10}
+                      solid
+                      name="star"
+                      color={star <= item.star ? COLORS.orange : COLORS.xam2}
+                      style={{
+                        marginLeft: 3,
+                      }}
+                    />
+                  ))}
+                  <Text style={{color: COLORS.brand}}>   {item.star}/5</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    alignItems: "center",
+                    flex: 1,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: COLORS.xam3,
+                      marginLeft: 5,
+                      minHeight: 30,
+                    }}
+                  >
+                    {item.comment}
+                  </Text>
+                </View>
+                <Text
+                style={{
+                    color: COLORS.xam3,
+                    marginLeft: 5,
+                }}
+                >
+                {item.time}
+                </Text>
+              </View>
+              <View>
+
+              </View>
+            </View>
+          </View>
+        );
+      };
+      return (
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.lightGray,
+              elevation: 1,
+              marginTop: 20,
+              height: 60,
+              justifyContent: "space-around",
+            }}
+          >
+            <View
+              style={{
+                marginLeft: 20,
+                flexDirection: "row",
+                // justifyContent: 'center',
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  width: "85%",
+                }}
+              >
+                Product Ratings
+              </Text>
+              <TouchableOpacity style={{}}>
+                <Text>See all</Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingLeft: 22,
+                width: "100%",
+                height: 20,
+                // backgroundColor: COLORS.xam1,
+                alignItems: "center",
+              }}
+            >
+              {[1, 2, 3, 4, 5].map((rate) => (
+                <FontAwesome5
+                  size={10}
+                  solid
+                  name="star"
+                  color={rate <= star ? COLORS.orange : COLORS.xam2}
+                  style={{
+                    marginLeft: 3,
+                  }}
+                />
+              ))}
+              <Text
+                style={{
+                  color: COLORS.brand,
+                  marginLeft: 10,
+                  fontSize: 15,
+                  // fontWeight: 'bold'
+                }}
+              >
+                {star}/5 ({rating.length} rates)
+              </Text>
+            </View>
+          </View>
+          <FlatList
+            data={rating}
+            style={{
+              //height: 210,
+              backgroundColor: COLORS.white,
+              // maxHeight: 210,
+            }}
+            vertical
+            numColumns={1}
+            //showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => `${item._id}`}
+            renderItem={renderItem}
+            contentContainerStyle={{}}
+          />
+        </View>
+      );
+    };
+
     //render add to cart
     function renderAddToCart(){
         return (
@@ -486,8 +682,11 @@ const ProductDetail = ({navigation, route}) => {
         // <ScrollView style={{flex: 1}}>
             <View style={styles.container}>
                 {renderHeader()}
-                {randerImagesProduct()}
-                {renderDescription()}
+                <ScrollView style={{flex: 1, marginBottom: 120}}>
+                    {randerImagesProduct()}
+                    {renderDescription()}
+                    {renderRatingComment()}
+                </ScrollView>
                 {renderAddToCart()}
             </View>
         // </ScrollView>
