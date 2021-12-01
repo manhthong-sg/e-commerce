@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, StatusBar, FlatList, Image, Button,  } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { COLORS , SIZES, icons, images } from '../constants'
 import SERVER_URL from '../api'
 import axios from 'axios';
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import { useSelector, useDispatch } from 'react-redux';
 
 const RatingProducts = ({navigation, route}) => {
+    // get current user 
+    const CurrentUser = useSelector(state=> state.userReducer.user);
 
     const {
         _id,
@@ -23,11 +26,6 @@ const RatingProducts = ({navigation, route}) => {
         createdAt,
         CancelDate
     }=route.params;
-
-    // let ratingContent =[]; //this will temp store your ratin before post to server
-    let ratingCompleted = (rating) => {
-        console.log("Rating is: " + rating)
-      }
 
     //render header of this screens
     const Header = () => {
@@ -97,8 +95,34 @@ const RatingProducts = ({navigation, route}) => {
     //show all cart that you wanna buy
     const MyItemsOrder = () =>{
 
+        const[comment, setComment] =useState("");
 
         const renderItem = ({ item }) => {
+            let star=3;
+            // handle rating and comment after done an order 
+            const handleRating=()=>{
+                let url=`${SERVER_URL}/products/rating`;
+                console.log({
+                    idProduct: item["idProduct"]._id,
+                    user:{
+                        image: CurrentUser.profilePicture,
+                        name: CurrentUser.fullName,
+                    },
+                    star: star,
+                    comment: comment,
+                });
+                axios.post(url, {
+                    idProduct: item["idProduct"]._id,
+                    idOrder: item._id,
+                    user:{
+                        image: CurrentUser.profilePicture,
+                        name: CurrentUser.fullName,
+                    },
+                    star: star,
+                    comment: comment,
+
+                })
+            }
             return (
                 <View
                     style={{
@@ -186,6 +210,7 @@ const RatingProducts = ({navigation, route}) => {
                 <AirbnbRating 
                     showRating
                     ratingCount
+                    onFinishRating={sao=> star=sao}
                 />
 
                 <View style={{
@@ -201,6 +226,8 @@ const RatingProducts = ({navigation, route}) => {
                         marginTop: 20,
                     }}
                         placeholder="Please give us your experience for this product."
+                        onChangeText={cmt=> setComment(cmt)}
+                        value={comment}
                     />
                     <TouchableOpacity 
                         style={{
@@ -212,6 +239,7 @@ const RatingProducts = ({navigation, route}) => {
                             alignItems: 'center',
                             marginTop: 20,
                         }}
+                        onPress={handleRating}
                     >
                         <Text style={{color: COLORS.primary}}>Send</Text>
                     </TouchableOpacity>

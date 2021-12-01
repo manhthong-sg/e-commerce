@@ -17,9 +17,9 @@ const ProductDetail = ({navigation, route}) => {
         image,
         description,
         price,
+        remaining,
         star,
         rating,
-        remaining,
     }=route.params;
     
     const [count, setCount]=useState(1);
@@ -658,23 +658,56 @@ const ProductDetail = ({navigation, route}) => {
                                 {total}$
                         </Text>
                     </View>
-                    <TouchableOpacity style={{
-                        width: 150,
-                        backgroundColor: COLORS.orange,
-                        borderRadius: 2,
-                        height: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginRight: 20
-                    }}
-                        onPress={handleAddToCart}
-                    >
-                        <Text style={{
-                            color: COLORS.white,
-                            fontWeight: 'bold',
+                    {
+                        remaining>0 && (
+                            <TouchableOpacity style={{
+                                width: 150,
+                                backgroundColor: COLORS.orange,
+                                borderRadius: 2,
+                                height: 50,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginRight: 20
+                            }}
+                                onPress={handleAddToCart}
+                            >
+                                <Text style={{
+                                    color: COLORS.white,
+                                    fontWeight: 'bold',
 
-                        }}>ADD TO CART</Text>
-                    </TouchableOpacity>
+                                }}>ADD TO CART</Text>
+                            </TouchableOpacity>
+
+                        )
+                    }
+                    {
+                        remaining<1 && (
+                            <TouchableOpacity style={{
+                                width: 150,
+                                backgroundColor: COLORS.do2,
+                                borderRadius: 2,
+                                height: 50,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginRight: 20
+                            }}
+                                onPress={()=>{
+                                    ToastAndroid.showWithGravity(
+                                        "We so sorry it sold out. Please choose another item.",
+                                        ToastAndroid.LONG,
+                                        ToastAndroid.BOTTOM
+                                      );
+                                }}
+                            >
+                                <Text style={{
+                                    color: COLORS.white,
+                                    fontWeight: 'bold',
+
+                                }}>SOLD OUT</Text>
+                            </TouchableOpacity>
+
+                        )
+                    }
                 </View>
         )
     }
