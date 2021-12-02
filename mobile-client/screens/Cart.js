@@ -12,7 +12,7 @@ const Cart = ({navigation}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user); 
     const Cart = useSelector(state=> state.cartReducer.cart);
     
-    const [cartData, setCartData]=useState(null);
+    const [cartData, setCartData]=useState(Cart.items);
     const [count, setCount]=useState(1);
 
     const setCart=(cart)=> dispatch({
@@ -54,7 +54,7 @@ const Cart = ({navigation}) => {
     useEffect(() => {
         //console.log(getCart());
         setCartData(Cart.items)
-    },)
+    }, [Cart])
 
     
 
@@ -392,7 +392,7 @@ const Cart = ({navigation}) => {
                 )
             }
             {
-                (!cartData && CurrentUser) && (
+                (cartData.length<1 && CurrentUser) && (
                     <Text style={{
                         fontSize: 28, 
                         flex: 1, 
@@ -401,7 +401,7 @@ const Cart = ({navigation}) => {
                 )
             }
             {
-                (cartData &&CurrentUser) && (
+                (cartData.length >0 && CurrentUser) && (
                     <View style={{
                         width: '100%',
                         marginLeft: 15,
@@ -423,8 +423,6 @@ const Cart = ({navigation}) => {
 
                 )
             }
-            
-            {/* payment  */}
         </View>
     )
 }

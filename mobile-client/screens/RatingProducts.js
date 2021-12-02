@@ -39,7 +39,7 @@ const RatingProducts = ({navigation, route}) => {
                     }}
                     onPress={()=> {
                         
-                        navigation.navigate("Me");
+                        navigation.navigate("MyOrders");
                     }}
                     >
                     <FontAwesome5
@@ -76,6 +76,7 @@ const RatingProducts = ({navigation, route}) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
+                    onPress={()=> navigation.navigate("MyOrders")}
                 >
                     <Text style={{
                         fontSize: 16,

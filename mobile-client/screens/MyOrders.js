@@ -311,42 +311,67 @@ const MyOrders = ({navigation}) => {
                         <Text>({item.ItemsNum} items): </Text>
                         <Text style={{fontSize: 17}}>{item.Total}$</Text>
                     </View>
-                    <TouchableOpacity style={{
-                        width: 60,
-                        height: 30,
-                        flexDirection: 'row',
-                        position: 'absolute',
-                        backgroundColor: COLORS.red,
-                        elevation: 2,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                        top: 128,
-                        left: 20,
-                    }}
-                        onPress={()=> navigation.navigate("RatingProducts", item)}
-                    >
-                        <Text style={{fontSize: 15, color: COLORS.white}}>Rate</Text>
-                    </TouchableOpacity>
+                    {
+                        item.Status == "3" && (
+                            <TouchableOpacity style={{
+                                width: 60,
+                                height: 30,
+                                flexDirection: 'row',
+                                position: 'absolute',
+                                backgroundColor: COLORS.red,
+                                elevation: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                                top: 128,
+                                left: 20,
+                            }}
+                                onPress={()=> navigation.navigate("RatingProducts", item)}
+                            >
+                                <Text style={{fontSize: 15, color: COLORS.white}}>Rate</Text>
+                            </TouchableOpacity>
+                        )
+                    }
                 </TouchableOpacity>
             )
         }
         return (
 
             <View style={{}}>
-                
-                <FlatList
-                        data={ordersData}
-                        style={{
-                            
-                        }}
-                        inverted={true}
-                        vertical
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={item => `${item._id}`}
-                        renderItem={renderOrderItem}
-                        contentContainerStyle={{}}
-                />
+                {
+                    ordersData.length>0 && (
+                        <FlatList
+                                data={ordersData}
+                                style={{
+                                    
+                                }}
+                                inverted={true}
+                                vertical
+                                showsVerticalScrollIndicator={false}
+                                keyExtractor={item => `${item._id}`}
+                                renderItem={renderOrderItem}
+                                contentContainerStyle={{}}
+                        />
+                    )
+                }
+                {
+                    ordersData.length<1 && (
+                        <View style={{
+                            flex:1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: 200,
+
+                        }}>
+                            <Text style={{
+                                fontSize: 23, 
+                                // fontWeight: 'bold'
+                            }}>
+                                Empty
+                            </Text>
+                        </View>
+                    )
+                }
                 
             </View>
         

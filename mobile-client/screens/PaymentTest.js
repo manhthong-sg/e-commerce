@@ -5,16 +5,17 @@ import { COLORS } from '../constants';
 import { CardField, useStripe, useConfirmPayment } from '@stripe/stripe-react-native';
 import SERVER_URL from '../api'
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
 
-const PaymentTest = () => {
+const PaymentTest = ({route}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user);
+
     // _onChange => form => console.log(form);
     const [cardDetails, setCardDetails] = useState()
     const { confirmPayment, loading }= useConfirmPayment();
     const { createPaymentMethod, handleCardAction } = useStripe();
-    const _onChange =(data) => {
-        // setCardDataComplete(cardDetails.complete);
-        setCardDetails(data)
-      }
+    const orderContainer=route.params;
+    
     const handlePayPress = async () => {
         //1.Gather the customer's billing information (e.g., email)
         if (!cardDetails?.valid) {
@@ -22,11 +23,11 @@ const PaymentTest = () => {
           return;
         }
         const billingDetails = {
-          email: "thong@gmail.com",
+          email: "huy@gmail.com",
         };
         //2.Fetch the intent client secret from the backend
         const url=`${SERVER_URL}/stripe/create-payment-intent`;
-        axios.post(url)
+        axios.post(url, {total: orderContainer.Total, DeliveryInfo: orderContainer.DeliveryInfo})
         .then( async (res)=>{
             // response= res;
             const{clientSecret, error} = res["data"];
@@ -71,7 +72,7 @@ const PaymentTest = () => {
                         Pay
                     </Text>
             </TouchableOpacity>
-            <CreditCardInput requiresName style={styles.Pay} onChange={(cardDetails)=>setCardDetails(cardDetails)} />
+            <CreditCardInput style={styles.Pay} onChange={(cardDetails)=>setCardDetails(cardDetails)} />
         </View>
     )
 }
