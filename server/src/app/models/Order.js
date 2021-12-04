@@ -52,6 +52,9 @@ const Order=new Schema({
       Status: {
         type: String,
         required: true,
+      },
+      rating: {
+        type: Array,
       }
 }, {timestamps: true, versionKey: false} )//bỏ __v trong document in mongoose
 
