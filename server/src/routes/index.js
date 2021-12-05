@@ -10,6 +10,9 @@ function route(app){
 
     //define route /carts
     app.use('/carts', cartsRoute)
+
+    //define route /vouchers
+    app.use('/vouchers', cartsRoute)
     
     //define route /stripe
     app.use('/stripe', stripeRoute)
