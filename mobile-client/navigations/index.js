@@ -21,6 +21,7 @@ import Search from '../screens/Search'
 import Payment from '../screens/Payment'
 import PaymentTest from '../screens/PaymentTest'
 import PaymentTest1 from '../screens/PaymentTest1'
+import Voucher from '../screens/Voucher'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -65,6 +66,7 @@ const CartNavigation = () => {
             <Stack.Navigator initialRouteName='Cart' screenOptions={screenOptions}>
                 <Stack.Screen name = 'Cart' component = {Cart} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'Order' component = {Order} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'Voucher' component = {Voucher} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'Payment' component = {Payment} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'PaymentTest' component = {PaymentTest} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'PaymentTest1' component = {PaymentTest1} screenOptions={screenOptions}/>

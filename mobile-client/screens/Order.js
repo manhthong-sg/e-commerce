@@ -6,7 +6,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import SERVER_URL from '../api'
 import axios from 'axios';
 
-const Order = ({navigation}) => {
+const Order = ({navigation, route}) => {
+    //route data
+    // const voucherContainer = route.params;
+    // console.log(voucherContainer);
     // get current user 
     const CurrentUser = useSelector(state=> state.userReducer.user);
     const Cart = useSelector(state=> state.cartReducer.cart);
@@ -391,14 +394,16 @@ const Order = ({navigation}) => {
             orderContainer.Voucher=voucher
         }, [voucher])
         return (
-            <View style={{
+            <TouchableOpacity style={{
                 height: 50,
                 flexDirection: 'row',
                 backgroundColor: COLORS.white,
                 elevation: 2,
                 paddingLeft: 15,
                 alignItems: 'center'
-            }}>
+            }}
+                onPress={()=> navigation.navigate("Voucher")}
+            >
                 <Image
                     source={icons.voucher}
                     size={20}
@@ -410,9 +415,10 @@ const Order = ({navigation}) => {
                 <Text style={{
                     fontSize: 17,
                     fontWeight: 'bold',
-                    paddingLeft: 15
+                    paddingLeft: 15,
+                    width: '40%',
                 }}>Voucher: </Text>
-                <TextInput
+                {/* <TextInput
                     value={voucher}
                     placeholder="Type your voucher here . ."
                     autoCapitalize="characters"
@@ -423,9 +429,26 @@ const Order = ({navigation}) => {
                         fontSize: 16,
                         
                     }}
+                /> */}
+                <Text style={{
+                    fontSize: 14.5,
+                    color: COLORS.brand,
+                }}>Choose your voucher here</Text>
+                <FontAwesome5 
+                    name="angle-right"
+                    color={COLORS.xam1}
+                    size={22}
+                    style={{
+                        width: "10%",
+                        //backgroundColor: COLORS.xam1,
+                        height: '100%',
+                        textAlign: 'left',
+                        textAlignVertical: 'center',
+                        marginLeft: 20,
+                    }}
                 />
                     
-            </View>
+            </TouchableOpacity>
         )
     }
     
@@ -583,9 +606,7 @@ const Order = ({navigation}) => {
         const handleResetCart=()=>{
             axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                     .then((data)=>{
-                        //setCartData(data["data"]);
                         setCart(data["data"])
-                        // console.log(data["data"]);
                     })
         }
         const handleCreateOrder=()=>{
