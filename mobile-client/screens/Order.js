@@ -7,8 +7,19 @@ import SERVER_URL from '../api'
 import axios from 'axios';
 
 const Order = ({navigation, route}) => {
-    //route data
-    // const voucherContainer = route.params;
+    //tao voucher container nếu nó nhận dc data 
+    //từ Voucher screen thì gán vào không thì lấy giá trị mặc định
+    let voucherContainer=route.params;
+    // route.params.length > 0 ? voucherContainer=route.pamrams : voucherContainer={
+    //     name: "",
+    //     code: "",
+    //     value: 0,
+    //     type: "0",
+    //     start: "",
+    //     end: "",
+    //     description: "",
+    //     limit: 1
+    // }
     // console.log(voucherContainer);
     // get current user 
     const CurrentUser = useSelector(state=> state.userReducer.user);
@@ -381,7 +392,7 @@ const Order = ({navigation, route}) => {
                     renderItem={renderItem}
                     contentContainerStyle={{}}
                 />
-                <TotalItems/>
+                <TotalItems />
                 <MyMessage  orderContainer={orderContainer}/>
             </View>
         )
@@ -389,7 +400,7 @@ const Order = ({navigation, route}) => {
 
     //voucher container
     const MyVoucher = ({orderContainer}) => {
-        const [voucher, setVoucher] = useState("");
+        const [voucher, setVoucher] = useState(voucherContainer);
         useEffect(() => {
             orderContainer.Voucher=voucher
         }, [voucher])
@@ -418,35 +429,43 @@ const Order = ({navigation, route}) => {
                     paddingLeft: 15,
                     width: '40%',
                 }}>Voucher: </Text>
-                {/* <TextInput
-                    value={voucher}
-                    placeholder="Type your voucher here . ."
-                    autoCapitalize="characters"
-                    onChangeText= {input => setVoucher(input)}
-                    style={{
-                        width: '100%',
-                        paddingLeft: 10,
-                        fontSize: 16,
-                        
-                    }}
-                /> */}
-                <Text style={{
-                    fontSize: 14.5,
-                    color: COLORS.brand,
-                }}>Choose your voucher here</Text>
-                <FontAwesome5 
-                    name="angle-right"
-                    color={COLORS.xam1}
-                    size={22}
-                    style={{
-                        width: "10%",
-                        //backgroundColor: COLORS.xam1,
-                        height: '100%',
-                        textAlign: 'left',
-                        textAlignVertical: 'center',
-                        marginLeft: 20,
-                    }}
-                />
+                {
+                    voucher.code.length > 0 ? (
+                        <Text style={{
+                            fontSize: 14.5,
+                            color: COLORS.brand,
+                        }}>{voucher.code}</Text>
+                    )
+                    :
+                    (
+                        <View style={{
+                            height: 50,
+                            flexDirection: 'row',
+                            // backgroundColor: COLORS.white,
+                            elevation: 2,
+                            marginLeft: -10,
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                fontSize: 14.5,
+                                color: COLORS.brand,
+                            }}>Choose your voucher here</Text>
+                            <FontAwesome5 
+                                name="angle-right"
+                                color={COLORS.xam1}
+                                size={22}
+                                style={{
+                                    width: "10%",
+                                    //backgroundColor: COLORS.xam1,
+                                    height: '100%',
+                                    textAlign: 'left',
+                                    textAlignVertical: 'center',
+                                    marginLeft: 20,
+                                }}
+                            />
+                        </View>
+                    )
+                }
                     
             </TouchableOpacity>
         )
@@ -510,7 +529,22 @@ const Order = ({navigation, route}) => {
 
 
     //show total payment
-    const TotalPayment = () =>{
+    const TotalPayment = ({voucherContainer}) =>{
+        let {
+            value,
+            type,
+        }=voucherContainer
+        const [discount, setDiscount] = useState(value)
+        useEffect(() => {
+            if(type!=="0"){
+                if(type=="percent"){
+                    setDiscount(Math.ceil((Cart.total*value)* 100)/100);
+                }
+                else if(type=="minus"){
+                    setDiscount(value);
+                }
+            }
+        }, [voucherContainer])
         return (
             <View style={{
                 elevation: 1,
@@ -539,7 +573,7 @@ const Order = ({navigation, route}) => {
                             textAlign: 'right',
                             // backgroundColor: COLORS.xam1,
                         }}
-                    >0$</Text>
+                    >-{discount}$</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -595,7 +629,7 @@ const Order = ({navigation, route}) => {
                             fontWeight: 'bold',
                             // backgroundColor: COLORS.xam1,
                         }}
-                    >{Math.ceil((Cart.total+deliveryFee )* 100)/100}$</Text>
+                    >{Math.ceil((Cart.total+deliveryFee-discount)* 100)/100}$</Text>
                 </View>
             </View>
         )
@@ -636,7 +670,7 @@ const Order = ({navigation, route}) => {
             orderContainer.OrderItems=Cart.items;
             orderContainer.DeliveryFee=deliveryFee;
             orderContainer.ItemsNum=Cart.itemNum;
-            orderContainer.Total=Math.ceil((Cart.total+deliveryFee )* 100)/100;
+            orderContainer.Total=Math.ceil((Cart.total+deliveryFee-discount)* 100)/100;
         }
         const handleSubmitOrder =()=>{
             if(orderContainer.PaymentMethod == 'Cash'){
@@ -687,11 +721,12 @@ const Order = ({navigation, route}) => {
                 />
                 <MyVoucher 
                     orderContainer={orderContainer}
+                    voucherContainer={voucherContainer}
                 />
                 <MyPaymentMethod 
                     orderContainer={orderContainer}
                 />
-                <TotalPayment/>
+                <TotalPayment voucherContainer={voucherContainer}/>
                 <ButtonPayment
                     orderContainer={orderContainer}
                     apartmentAddress={CurrentUser.address.apartmentAddress} 

@@ -9,7 +9,16 @@ const Voucher = ({navigation}) => {
     const [code, setCode] = useState("")
     const [voucherData, setVoucherData] = useState()
     const [selectedVoucher, setSelectedVoucher] = useState({
-        _id: ""
+            _id: "",
+            name: "",
+            code: "",
+            value: 0,
+            type: "0",
+            start: "",
+            end: "",
+            description: "",
+            limit: 1
+        
     })
     // voucherData 
     // [
@@ -35,8 +44,8 @@ const Voucher = ({navigation}) => {
     }, [])
 
     const handleSelectedVoucher =(item)=>{
-        console.log(selectedVoucher);
         setSelectedVoucher(item)
+        console.log(selectedVoucher);
     }
     //render header of this screens
     const Header = () => {
@@ -50,7 +59,7 @@ const Voucher = ({navigation}) => {
                     }}
                     onPress={()=> {
                         
-                        navigation.navigate("Order");
+                        navigation.navigate("Order", selectedVoucher);
                     }}
                     >
                     <FontAwesome5

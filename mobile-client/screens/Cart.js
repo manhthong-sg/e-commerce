@@ -344,7 +344,16 @@ const Cart = ({navigation}) => {
                 </View>
                 <TouchableOpacity 
                     style={styles.Button}
-                    onPress={()=> navigation.navigate('Order')}
+                    onPress={()=> navigation.navigate('Order', {
+                        name: "",
+                        code: "",
+                        value: 0,
+                        type: "minus",
+                        start: "",
+                        end: "",
+                        description: "",
+                        limit: 1
+                    })}
                 >
                     <Text style={{
                         color: COLORS.primary, 
