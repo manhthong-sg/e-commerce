@@ -398,7 +398,7 @@ const OrderDetails = ({navigation, route}) => {
                     width: '60%',
                     textAlign: 'right',
                     color: COLORS.brand
-                }}>{Voucher ? Voucher : "No voucher was used"}</Text>
+                }}>{Voucher[0] !== "" ? Voucher[0].code : "No voucher was used"}</Text>
                     
             </View>
         )
@@ -443,7 +443,7 @@ const OrderDetails = ({navigation, route}) => {
 
 
     //show total payment
-    const OrderTotal = () =>{
+    const OrderTotal = ({Voucher}) =>{
         const [hide, setHide]=useState(false);
         const HiddenOrderInfo=()=>{
             return(
@@ -489,7 +489,7 @@ const OrderDetails = ({navigation, route}) => {
                             width: '70%',
                             textAlign: 'right',
                         }}>
-                        0
+                        -{Voucher[0].discount}
                         </Text>
                     </View>
                     {/* delivery fee  */}
@@ -831,7 +831,7 @@ const OrderDetails = ({navigation, route}) => {
                 <MyItemsOrder/>
                 <MyVoucher/>
                 <MyPaymentMethod/>
-                <OrderTotal/>
+                <OrderTotal Voucher={Voucher}/>
                 <OrderIdContainer/>
                 {
                    (Status == "0" || Status == "1" ) && (

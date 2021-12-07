@@ -22,6 +22,7 @@ import Payment from '../screens/Payment'
 import PaymentTest from '../screens/PaymentTest'
 import PaymentTest1 from '../screens/PaymentTest1'
 import Voucher from '../screens/Voucher'
+import MyVouchers from '../screens/MyVouchers'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -50,6 +51,7 @@ const MeNavigation = () => {
                 <Stack.Screen name = 'Login' component = {Login} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'Register' component = {Register} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'MyOrders' component = {MyOrders} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'MyVouchers' component = {MyVouchers} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'OrderDetails' component = {OrderDetails} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'RatingProducts' component = {RatingProducts} screenOptions={screenOptions}/>
             </Stack.Navigator>

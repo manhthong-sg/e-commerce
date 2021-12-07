@@ -636,7 +636,24 @@ const Order = ({navigation, route}) => {
     }
 
     //button payment
-    const ButtonPayment = ({orderContainer,apartmentAddress, district, ward, province, deliveryFee}) =>{
+    const ButtonPayment = ({voucherContainer, orderContainer,apartmentAddress, district, ward, province, deliveryFee}) =>{
+        let {
+            value,
+            type,
+        }=voucherContainer
+        const [discount, setDiscount] = useState(value)
+        useEffect(() => {
+            if(type!=="0"){
+                if(type=="percent"){
+                    setDiscount(Math.ceil((Cart.total*value)* 100)/100);
+                    voucherContainer.discount=Math.ceil((Cart.total*value)* 100)/100;
+                }
+                else if(type=="minus"){
+                    setDiscount(value);
+                    voucherContainer.discount=discount;
+                }
+            }
+        }, [voucherContainer])
         const handleResetCart=()=>{
             axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                     .then((data)=>{
@@ -671,6 +688,7 @@ const Order = ({navigation, route}) => {
             orderContainer.DeliveryFee=deliveryFee;
             orderContainer.ItemsNum=Cart.itemNum;
             orderContainer.Total=Math.ceil((Cart.total+deliveryFee-discount)* 100)/100;
+            orderContainer.Voucher=voucherContainer;
         }
         const handleSubmitOrder =()=>{
             if(orderContainer.PaymentMethod == 'Cash'){
@@ -734,6 +752,7 @@ const Order = ({navigation, route}) => {
                     district={district}
                     province={province}
                     deliveryFee={deliveryFee}
+                    voucherContainer={voucherContainer}
                 />
 
             </ScrollView>
