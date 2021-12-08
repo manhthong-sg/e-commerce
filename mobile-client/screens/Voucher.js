@@ -4,8 +4,11 @@ import SERVER_URL from '../api'
 import axios from 'axios';
 import { COLORS , SIZES, icons, images } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useSelector, useDispatch } from 'react-redux'
 
 const Voucher = ({navigation}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user); 
+
     const [code, setCode] = useState("")
     const [voucherData, setVoucherData] = useState()
     const [selectedVoucher, setSelectedVoucher] = useState({
@@ -36,10 +39,10 @@ const Voucher = ({navigation}) => {
     //     }
     // ]
     useEffect(() => {
-        axios.get(`${SERVER_URL}/vouchers`)
+        axios.get(`${SERVER_URL}/users/myvouchers/${CurrentUser._id}`)
             .then((data)=>{
-                setVoucherData(data["data"])
-                console.log(data["data"])
+                setVoucherData(data["data"].myVouchers)
+                // console.log(data["data"])
             })
     }, [])
 

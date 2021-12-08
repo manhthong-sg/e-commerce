@@ -23,6 +23,7 @@ import PaymentTest from '../screens/PaymentTest'
 import PaymentTest1 from '../screens/PaymentTest1'
 import Voucher from '../screens/Voucher'
 import MyVouchers from '../screens/MyVouchers'
+import SpinGame from '../screens/SpinGame'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -31,6 +32,7 @@ const HomeNavigation = () => {
     return (
             <Stack.Navigator initialRouteName='Home' screenOptions={screenOptions}>
                 <Stack.Screen name = 'Home' component = {Home} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'SpinGame' component = {SpinGame} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'CategoriesContainer' component = {CategoriesContainer} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'BrandsContainer' component = {BrandsContainer} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'ProductDetail' component = {ProductDetail} screenOptions={screenOptions}/>
