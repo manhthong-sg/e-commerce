@@ -35,7 +35,7 @@ class UsersController {
     //[POST] /users
     async register(req, res){ 
         const passwordHash = await bcrypt.hash(req.body.password, 10)
-
+        
         req.body.password = passwordHash
              
         var newUser=User(req.body);

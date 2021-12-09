@@ -74,7 +74,7 @@ class AdminController {
 
     //U
     //Edit
-    // [post] /bomaylaadmin/:id/edit
+    // [post] /bomaylaadmin/editAdress/:id
     async update(req, res){
         Admin.findOne({phone: req.params.phone})
             .then(user=> {
