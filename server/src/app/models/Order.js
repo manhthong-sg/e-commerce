@@ -25,8 +25,8 @@ const Order=new Schema({
       },
       Message: String,
       Voucher: {
-        type: String,
-        ref: "Voucher"
+        type: Array,
+        // ref: "Voucher"
       },
       DeliveryFee: {
         type: Number,

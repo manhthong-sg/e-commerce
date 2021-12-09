@@ -89,6 +89,31 @@ class UsersController {
         );
     }
 
+    getMyVouchers(req, res){
+        User.findOne({_id: req.params.idUser})
+        .populate("myVouchers")
+        .then(user=>{
+            res.json(user)
+        })
+    }
+
+    handleSpinGame(req, res){
+        User.findOne({_id: req.body.idUser})
+        .then((user)=>{
+            if(user.spinNum>0){
+                user.spinNum=user.spinNum-1;
+                if(req.body.voucher !== ""){
+                    user.myVouchers=[...user.myVouchers, req.body.voucher]
+                }
+                user.save();
+                res.json({status: "Success", msg: "saved"})
+                console.log("add voucher successfully");
+            }
+        })
+        .catch(err=> console.log(err))
+
+    }
+
     
 }
 module.exports=new UsersController;

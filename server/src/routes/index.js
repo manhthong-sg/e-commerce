@@ -5,6 +5,7 @@ const cartsRoute=require('./carts')
 const favoritesRoute=require('./favorites')
 const ordersRoute=require('./orders')
 const stripeRoute=require('./stripe')
+const voucherRoute=require('./vouchers')
 
 function route(app){
 
@@ -12,7 +13,7 @@ function route(app){
     app.use('/carts', cartsRoute)
 
     //define route /vouchers
-    app.use('/vouchers', cartsRoute)
+    app.use('/vouchers', voucherRoute)
     
     //define route /stripe
     app.use('/stripe', stripeRoute)

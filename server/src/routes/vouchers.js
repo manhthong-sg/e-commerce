@@ -1,9 +1,9 @@
 const express = require('express');
 const router=express.Router();
-const ordersController=require('../app/controllers/OrdersController');
+const vouchersController=require('../app/controllers/VouchersController');
 
-// // post /orders/
-// router.post('/', ordersController.createOrder)
+// post /orders/
+router.post('/', vouchersController.addVoucher)
 
 // // post /orders/cancel/:idOrder
 // router.post('/cancel/:idOrder', ordersController.cancelOrderById)
@@ -11,7 +11,8 @@ const ordersController=require('../app/controllers/OrdersController');
 // // get /orders/:idUser/:statusOrder
 // router.get('/:idUser/:statusOrder', ordersController.getOrdersByIdAndStatus)
 
+
 // get /orders/
-router.get('/', ordersController.index)
+router.get('/', vouchersController.index)
 
 module.exports=router;

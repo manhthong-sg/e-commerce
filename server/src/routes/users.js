@@ -33,6 +33,12 @@ router.post('/auth', usersController.auth)
 // get /users/:idUser
 router.get('/:idUser', usersController.getUserByID)
 
+// post spin game
+router.post('/spingame', usersController.handleSpinGame)
+
+// get /users/
+router.get('/myvouchers/:idUser', usersController.getMyVouchers)
+
 // get /users/
 router.get('/', usersController.index)
 
