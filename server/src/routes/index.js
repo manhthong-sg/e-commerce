@@ -4,11 +4,19 @@ const productsRoute=require('./products')
 const cartsRoute=require('./carts')
 const favoritesRoute=require('./favorites')
 const ordersRoute=require('./orders')
+const stripeRoute=require('./stripe')
+const voucherRoute=require('./vouchers')
 
 function route(app){
 
     //define route /carts
     app.use('/carts', cartsRoute)
+
+    //define route /vouchers
+    app.use('/vouchers', voucherRoute)
+    
+    //define route /stripe
+    app.use('/stripe', stripeRoute)
     
     //define route /orders
     app.use('/orders', ordersRoute)

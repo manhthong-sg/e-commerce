@@ -19,6 +19,7 @@ let userReducer= (state = defaultState, action)=>{
                 fullName: action.payload.fullName,
                 password: action.payload.password,
                 phone: action.payload.phone,
+                spinNum: action.payload.spinNum,
                 dateOfBirth: action.payload.dateOfBirth,
                 address: {
                     province: action.payload.address.province,

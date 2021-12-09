@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from '../screens/Login';
@@ -13,6 +13,7 @@ import {HomeNavigation, MeNavigation, CartNavigation} from './index'
 import { useSelector, useDispatch } from 'react-redux'
 import Payment from '../screens/Order';
 import {createStackNavigator} from '@react-navigation/stack'
+import LottieView from "lottie-react-native";
 
 
 const Stack=createStackNavigator();
@@ -30,6 +31,10 @@ const iconCuscom={
 }
 const BottomNavigation = () => {
     const CartContainer = useSelector(state1=> state1.cartReducer.cart);
+    var [onChangeCartNum, setOnChangeCartNum]=useState()
+    useEffect(() => {
+        setOnChangeCartNum(CartContainer.itemNum)
+    }, [CartContainer])
     return (
         <Tab.Navigator 
             screenOptions={{
@@ -111,6 +116,7 @@ const BottomNavigation = () => {
                             justifyContent: 'center',
                             //top: 10,
                         }}>
+                                
                                 <FontAwesome5
                                     name='shopping-cart'
                                     size={focused ? iconCuscom.icon_focus: iconCuscom.icon_out}
@@ -121,7 +127,7 @@ const BottomNavigation = () => {
                                     color: focused ? COLORS.brand: COLORS.xam2,
                                     fontSize: focused ? iconCuscom.text_focus: iconCuscom.text_out
                                     
-                                    }}>
+                                }}>
                                     Cart
                                 </Text>
                                 <View style={{
@@ -134,8 +140,22 @@ const BottomNavigation = () => {
                                     alignItems: 'center',
                                     bottom: focused ? 28: 25,
                                     left: 20
-                                    }}>
-                                    <Text style={{fontSize: focused ? 15: 14, color: COLORS.white }}>{CartContainer.itemNum}</Text>
+                                }}>
+                                    <Text style={{fontSize: focused ? 15: 14, color: COLORS.white, zIndex:1 }}>{onChangeCartNum}</Text>
+                                    
+                                    <LottieView
+                                        source={require("../components/AnimationIcons/cartChange.json")}
+                                        autoPlay
+                                        loop={false}
+                                        resizeMode='contain'
+                                        style={{ 
+                                            height: 100 , 
+                                            // zIndex: -1,
+                                            position: 'absolute',
+                                            // top: 5,
+                                        }}
+                                    />
+
                                 </View>
                         </View>
                 )}}

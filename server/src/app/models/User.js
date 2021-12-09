@@ -54,10 +54,14 @@ const User = new Schema(
       type: String,
       default: "",
     },
-    // cart: [{
-    //   type: String,
-    //   ref: "Cart"
-    // }]
+    spinNum: {
+      type: Number,
+      default: 3
+    },
+    myVouchers: [{
+      type: Schema.Types.ObjectId,
+      ref: "Voucher"
+    }]
   },
   { versionKey: false }
 ); //bỏ __v trong document in mongoose

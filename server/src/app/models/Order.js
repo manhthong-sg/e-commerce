@@ -25,8 +25,8 @@ const Order=new Schema({
       },
       Message: String,
       Voucher: {
-        type: String,
-        ref: "Voucher"
+        type: Array,
+        // ref: "Voucher"
       },
       DeliveryFee: {
         type: Number,
@@ -45,12 +45,16 @@ const Order=new Schema({
         required: true,
       },
       PaymentDetail:{
-        type: String,
+        type: Array,
         ref: "Payment"
       },
+      CancelDate: String,
       Status: {
         type: String,
         required: true,
+      },
+      rating: {
+        type: Array,
       }
 }, {timestamps: true, versionKey: false} )//bỏ __v trong document in mongoose
 

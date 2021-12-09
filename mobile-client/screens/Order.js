@@ -6,7 +6,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import SERVER_URL from '../api'
 import axios from 'axios';
 
-const Order = ({navigation}) => {
+const Order = ({navigation, route}) => {
+    //tao voucher container nếu nó nhận dc data 
+    //từ Voucher screen thì gán vào không thì lấy giá trị mặc định
+    let voucherContainer=route.params;
+    // route.params.length > 0 ? voucherContainer=route.pamrams : voucherContainer={
+    //     name: "",
+    //     code: "",
+    //     value: 0,
+    //     type: "0",
+    //     start: "",
+    //     end: "",
+    //     description: "",
+    //     limit: 1
+    // }
+    // console.log(voucherContainer);
     // get current user 
     const CurrentUser = useSelector(state=> state.userReducer.user);
     const Cart = useSelector(state=> state.cartReducer.cart);
@@ -47,9 +61,9 @@ const Order = ({navigation}) => {
 
     useEffect(() => {
         if(CurrentUser.address.province=="79"){
-            setDeliveryFee(Cart.total*0.03)
+            setDeliveryFee(Math.ceil(Cart.total*0.03 * 100)/100)
         }else{
-            setDeliveryFee(Cart.total*0.05)
+            setDeliveryFee(Math.ceil(Cart.total*0.05 * 100)/100)
         }
         //console.log(getCart());
         setCartData(Cart.items)
@@ -351,7 +365,7 @@ const Order = ({navigation}) => {
                     <Text style={{
                         fontWeight: 'bold',
                         fontSize: 16
-                        }}>Your Cart</Text>
+                        }}>Your Items</Text>
                     <View style={{
                         backgroundColor: COLORS.orange,
                         borderRadius: 3,
@@ -378,7 +392,7 @@ const Order = ({navigation}) => {
                     renderItem={renderItem}
                     contentContainerStyle={{}}
                 />
-                <TotalItems/>
+                <TotalItems />
                 <MyMessage  orderContainer={orderContainer}/>
             </View>
         )
@@ -386,19 +400,21 @@ const Order = ({navigation}) => {
 
     //voucher container
     const MyVoucher = ({orderContainer}) => {
-        const [voucher, setVoucher] = useState("");
+        const [voucher, setVoucher] = useState(voucherContainer);
         useEffect(() => {
             orderContainer.Voucher=voucher
         }, [voucher])
         return (
-            <View style={{
+            <TouchableOpacity style={{
                 height: 50,
                 flexDirection: 'row',
                 backgroundColor: COLORS.white,
                 elevation: 2,
                 paddingLeft: 15,
                 alignItems: 'center'
-            }}>
+            }}
+                onPress={()=> navigation.navigate("Voucher")}
+            >
                 <Image
                     source={icons.voucher}
                     size={20}
@@ -410,22 +426,48 @@ const Order = ({navigation}) => {
                 <Text style={{
                     fontSize: 17,
                     fontWeight: 'bold',
-                    paddingLeft: 15
+                    paddingLeft: 15,
+                    width: '40%',
                 }}>Voucher: </Text>
-                <TextInput
-                    value={voucher}
-                    placeholder="Type your voucher here . ."
-                    autoCapitalize="characters"
-                    onChangeText= {input => setVoucher(input)}
-                    style={{
-                        width: '100%',
-                        paddingLeft: 10,
-                        fontSize: 16,
-                        
-                    }}
-                />
+                {
+                    voucher.code.length > 0 ? (
+                        <Text style={{
+                            fontSize: 14.5,
+                            color: COLORS.brand,
+                        }}>{voucher.code}</Text>
+                    )
+                    :
+                    (
+                        <View style={{
+                            height: 50,
+                            flexDirection: 'row',
+                            // backgroundColor: COLORS.white,
+                            elevation: 2,
+                            marginLeft: -10,
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                fontSize: 14.5,
+                                color: COLORS.brand,
+                            }}>Choose your voucher here</Text>
+                            <FontAwesome5 
+                                name="angle-right"
+                                color={COLORS.xam1}
+                                size={22}
+                                style={{
+                                    width: "10%",
+                                    //backgroundColor: COLORS.xam1,
+                                    height: '100%',
+                                    textAlign: 'left',
+                                    textAlignVertical: 'center',
+                                    marginLeft: 20,
+                                }}
+                            />
+                        </View>
+                    )
+                }
                     
-            </View>
+            </TouchableOpacity>
         )
     }
     
@@ -477,8 +519,8 @@ const Order = ({navigation}) => {
                     }}
                 >
                     <Picker.Item label="Choose your payment method" value="default" />
-                    <Picker.Item label="Ship COD" value="shipCOD" />
-                    <Picker.Item label="Paypal" value="paypal" />
+                    <Picker.Item label="Cash on Delivery" value="Cash" />
+                    {/* <Picker.Item label="Paypal" value="paypal" /> */}
                     <Picker.Item label="Credit Card" value="creditCard" />
                 </Picker>
             </View>
@@ -487,7 +529,22 @@ const Order = ({navigation}) => {
 
 
     //show total payment
-    const TotalPayment = () =>{
+    const TotalPayment = ({voucherContainer}) =>{
+        let {
+            value,
+            type,
+        }=voucherContainer
+        const [discount, setDiscount] = useState(value)
+        useEffect(() => {
+            if(type!=="0"){
+                if(type=="percent"){
+                    setDiscount(Math.ceil((Cart.total*value)* 100)/100);
+                }
+                else if(type=="minus"){
+                    setDiscount(value);
+                }
+            }
+        }, [voucherContainer])
         return (
             <View style={{
                 elevation: 1,
@@ -516,7 +573,7 @@ const Order = ({navigation}) => {
                             textAlign: 'right',
                             // backgroundColor: COLORS.xam1,
                         }}
-                    >0$</Text>
+                    >-{discount}$</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -572,20 +629,35 @@ const Order = ({navigation}) => {
                             fontWeight: 'bold',
                             // backgroundColor: COLORS.xam1,
                         }}
-                    >{Cart.total+deliveryFee}$</Text>
+                    >{Math.ceil((Cart.total+deliveryFee-discount)* 100)/100}$</Text>
                 </View>
             </View>
         )
     }
 
     //button payment
-    const ButtonPayment = ({orderContainer,apartmentAddress, district, ward, province, deliveryFee}) =>{
+    const ButtonPayment = ({voucherContainer, orderContainer,apartmentAddress, district, ward, province, deliveryFee}) =>{
+        let {
+            value,
+            type,
+        }=voucherContainer
+        const [discount, setDiscount] = useState(value)
+        useEffect(() => {
+            if(type!=="0"){
+                if(type=="percent"){
+                    setDiscount(Math.ceil((Cart.total*value)* 100)/100);
+                    voucherContainer.discount=Math.ceil((Cart.total*value)* 100)/100;
+                }
+                else if(type=="minus"){
+                    setDiscount(value);
+                    voucherContainer.discount=discount;
+                }
+            }
+        }, [voucherContainer])
         const handleResetCart=()=>{
             axios.get(`${SERVER_URL}/carts/${CurrentUser._id}`)
                     .then((data)=>{
-                        //setCartData(data["data"]);
                         setCart(data["data"])
-                        // console.log(data["data"]);
                     })
         }
         const handleCreateOrder=()=>{
@@ -615,10 +687,11 @@ const Order = ({navigation}) => {
             orderContainer.OrderItems=Cart.items;
             orderContainer.DeliveryFee=deliveryFee;
             orderContainer.ItemsNum=Cart.itemNum;
-            orderContainer.Total=Cart.total+deliveryFee;
+            orderContainer.Total=Math.ceil((Cart.total+deliveryFee-discount)* 100)/100;
+            orderContainer.Voucher=voucherContainer;
         }
         const handleSubmitOrder =()=>{
-            if(orderContainer.PaymentMethod == 'shipCOD'){
+            if(orderContainer.PaymentMethod == 'Cash'){
                 setInfoOrder();
                 handleCreateOrder();
                 navigation.navigate('CompleteOrder');
@@ -632,11 +705,8 @@ const Order = ({navigation}) => {
                   );
             }
             else{
-                ToastAndroid.showWithGravity(
-                    `Waiting for payment online UI . . .`,
-                    ToastAndroid.LONG,
-                    ToastAndroid.BOTTOM
-                  );
+                setInfoOrder();
+                navigation.navigate("Payment", orderContainer)
             }
         }
         return(
@@ -669,11 +739,12 @@ const Order = ({navigation}) => {
                 />
                 <MyVoucher 
                     orderContainer={orderContainer}
+                    voucherContainer={voucherContainer}
                 />
                 <MyPaymentMethod 
                     orderContainer={orderContainer}
                 />
-                <TotalPayment/>
+                <TotalPayment voucherContainer={voucherContainer}/>
                 <ButtonPayment
                     orderContainer={orderContainer}
                     apartmentAddress={CurrentUser.address.apartmentAddress} 
@@ -681,6 +752,7 @@ const Order = ({navigation}) => {
                     district={district}
                     province={province}
                     deliveryFee={deliveryFee}
+                    voucherContainer={voucherContainer}
                 />
 
             </ScrollView>

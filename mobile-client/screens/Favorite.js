@@ -63,7 +63,7 @@ const Favorite = ({navigation}) => {
             setFavoriteData(Favorite.items[0].idProduct)
 
         }
-    },)
+    })
 
     const ListFavoriteItems=()=>{
         const renderItem = ({ item }) => {

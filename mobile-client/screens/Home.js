@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image } from 'react-native'
+import { StyleSheet, ToastAndroid, Text, TouchableOpacity, View, FlatList, Image, ImageBackground } from 'react-native'
 
 import HomeHeader from '../components/Home/HomeHeader'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import { COLORS , SIZES, icons} from '../constants'
-// import HomeNavigation from '../navigations/index'
+import SERVER_URL from '../api'
+import { useSelector, useDispatch } from 'react-redux'
+
  
 const Home = ({navigation}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user); 
 
     // data categories 
     const categoryData = [
@@ -209,17 +212,17 @@ const Home = ({navigation}) => {
                         //padding: SIZES.padding,
                         marginLeft: 16,
                         backgroundColor: (selectedBrand?.id == item.id) ? COLORS.white : COLORS.white,
-                        borderRadius: 10,
+                        borderRadius: 8,
                         alignItems: "center",
                         elevation: 1 ,
                         justifyContent: "center",
-                        height: 40,
+                        height: 50,
                         width: 110,
                         marginRight: 10,
-                        //marginTop: 10,
+                        // marginTop: 10,
                         //bottom: 40,
                         zIndex: 2,
-                        marginBottom: 10,
+                        marginBottom: 20,
                     }}
                     onPress={() => onSelectedBrand(item)}
                 >     
@@ -238,10 +241,11 @@ const Home = ({navigation}) => {
     
         return (
             <View style={{
-                backgroundColor: COLORS.white,
+                // backgroundColor: COLORS.lightGraydo1,
                 paddingBottom: 10,
                 elevation: 1, 
                 backgroundColor: COLORS.do1,
+                height: 200,
             }}>
                 <View style={styles.PopularBrandHeader}>
                     <Text style={{
@@ -273,7 +277,7 @@ const Home = ({navigation}) => {
                         showsHorizontalScrollIndicator={false}
                         keyExtractor={item => `${item.id}`}
                         renderItem={renderBrandItems}
-                        contentContainerStyle={{ }}
+                        contentContainerStyle={{}}
                     />    
             </View>
         )
@@ -283,8 +287,34 @@ const Home = ({navigation}) => {
         // <KeyboardAvoidingWrapper>
             <View style={styles.container}>
                 
-                <HomeHeader/>
+                <HomeHeader navigation={navigation} />
                 {renderCategories()}
+                <TouchableOpacity style={{
+                }}
+                    onPress={()=>{
+                        //check current user
+                        if(CurrentUser){
+                            navigation.navigate("SpinGame")
+                        }else{
+                            ToastAndroid.showWithGravity(
+                                "You must login to play this game",
+                                ToastAndroid.LONG,
+                                ToastAndroid.BOTTOM
+                              );
+                            }
+                        }
+                    }
+                >
+                <Image 
+                    source={icons.poster_spin_wheel} 
+                    resizeMode="cover"
+                    style={{
+                        width: 450,
+                        height: 200,
+
+                    }}
+                />
+                </TouchableOpacity>
                 {renderBrand()}
             </View>
 

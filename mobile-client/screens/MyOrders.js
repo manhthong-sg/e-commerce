@@ -42,6 +42,7 @@ const MyOrders = ({navigation}) => {
 
     //onPress tab status
     const onSelectStatus = (status) =>{
+        setOrdersData(null);
         //filter orders
         axios.get(`${SERVER_URL}/orders/${CurrentUser._id}/${selectedStatus.id}`)
         .then((ordersList)=>{
@@ -49,25 +50,13 @@ const MyOrders = ({navigation}) => {
             setOrdersData(ordersList["data"])
             setSelectedStatus(status)
         })
-        // setOrdersData(prev => {
-        // })
     }
 
     useEffect(() => {
-        axios.get(`${SERVER_URL}/orders/${CurrentUser._id}/${selectedStatus.id}`)
-        .then(()=>{
-            setOrdersData(ordersList["data"])
-        })
-        // // console.log(ordersList["data"]);
-        // if(!ordersList) return;
-    }, [])
-    useEffect(() => {
-        //fetch products data
-        // if (products)
-            onSelectStatus(selectedStatus);
-        // else return;
+        onSelectStatus(selectedStatus);
         
     }, [selectedStatus]);
+    
     //render header of this screens
     const Header = () => {
         return (
@@ -180,7 +169,9 @@ const MyOrders = ({navigation}) => {
                     backgroundColor: COLORS.white,
                     elevation: 2,
                     marginTop: 10,
-                }}>
+                }}
+                    onPress={()=> navigation.navigate("OrderDetails", item)}
+                >
                     <View style={{
                         flexDirection: 'row',
                         marginBottom: 5,
@@ -316,28 +307,71 @@ const MyOrders = ({navigation}) => {
                             fontSize: 15,
                             letterSpacing: 0.5,
                             fontWeight: 'bold'
-                        }}>Total amount </Text>
+                        }}>Order Total </Text>
                         <Text>({item.ItemsNum} items): </Text>
                         <Text style={{fontSize: 17}}>{item.Total}$</Text>
                     </View>
+                    {
+                        item.Status == "3" && (
+                            <TouchableOpacity style={{
+                                width: 60,
+                                height: 30,
+                                flexDirection: 'row',
+                                position: 'absolute',
+                                backgroundColor: COLORS.red,
+                                elevation: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                                top: 128,
+                                left: 20,
+                            }}
+                                onPress={()=> navigation.navigate("RatingProducts", item)}
+                            >
+                                <Text style={{fontSize: 15, color: COLORS.white}}>Rate</Text>
+                            </TouchableOpacity>
+                        )
+                    }
                 </TouchableOpacity>
             )
         }
         return (
 
             <View style={{}}>
-                
-                <FlatList
-                        data={ordersData}
-                        style={{
-                            
-                        }}
-                        vertical
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={item => `${item._id}`}
-                        renderItem={renderOrderItem}
-                        contentContainerStyle={{}}
-                />
+                {
+                    ordersData.length>0 && (
+                        <FlatList
+                                data={ordersData}
+                                style={{
+                                    
+                                }}
+                                inverted={true}
+                                vertical
+                                showsVerticalScrollIndicator={false}
+                                keyExtractor={item => `${item._id}`}
+                                renderItem={renderOrderItem}
+                                contentContainerStyle={{}}
+                        />
+                    )
+                }
+                {
+                    ordersData.length<1 && (
+                        <View style={{
+                            flex:1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: 200,
+
+                        }}>
+                            <Text style={{
+                                fontSize: 23, 
+                                // fontWeight: 'bold'
+                            }}>
+                                Empty
+                            </Text>
+                        </View>
+                    )
+                }
                 
             </View>
         

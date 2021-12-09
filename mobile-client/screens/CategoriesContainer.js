@@ -150,12 +150,14 @@ const CategoriesContainer = ({route, navigation}) => {
         }
     }
     //onPress category
-    const onSelectCategory = async (category) =>{
+    const onSelectCategory =  (category) =>{
+        // setProducts(null);
         //filter restaurant
-        let productsList = await axios.get(`${SERVER_URL}/products/categories/${category.id}`)
-        
-        setProducts(productsList["data"])
-        setSelectedCategory(category)
+        axios.get(`${SERVER_URL}/products/categories/${category.id}`)
+        .then((productsList)=>{
+            setProducts(productsList["data"]);
+            setSelectedCategory(category)
+        })
     }
 
     //render header of this screens

@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, SafeAreaVie
 import { COLORS, SIZES, images } from '../../constants'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { NavigationContainer } from '@react-navigation/native';
 
-const HomeHeader = () => {
+const HomeHeader = ({navigation}) => {
 
     const scrollX = new Animated.Value(0);
     const [banner, setBanner]=useState([
@@ -113,16 +114,21 @@ const HomeHeader = () => {
     return (
         <View>
 
-            <View style={styles.container}>
+            <View 
+                style={styles.container}
+                // onPress={()=> navigation.navigate("Search")}    
+            >
                 {/* search bar        */}
                 <View style={styles.LeftIcon}>
                     <Image resizeMode="contain" style={{maxWidth: 45}} source= {require('../../assets/icons/logo_brand.png')}/>
                 </View>
                 <TextInput 
                     style = {styles.TextInput}
-                    
+                    onFocus={()=> navigation.navigate("Search")}
                 />
-                <TouchableOpacity style={styles.RightIcon}>
+                <TouchableOpacity 
+                    style={styles.RightIcon}
+                >
                     <Ionicons
                         size={25}
                         color={COLORS.white}
@@ -130,17 +136,6 @@ const HomeHeader = () => {
                         //onPress={()=>setHidePassword(!hidePassword)}
                     />
                 </TouchableOpacity>   
-                
-                {/* <TouchableOpacity style={styles.Message}>
-                    <FontAwesome5
-                        size={25}
-                        color={COLORS.white}
-                        name='comment-dots'
-                        onPress={()=>console.log("Message")}
-                    />
-                </TouchableOpacity>       */}
-
-
             </View>
 
             {/* //banner quang cao */}

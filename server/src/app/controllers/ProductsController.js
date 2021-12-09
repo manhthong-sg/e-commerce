@@ -36,6 +36,33 @@ class ProductsController {
             .catch((err)=> console.log("Log products FAIL!"+err));
     }
 
+    //[POST] post rate & comment for this product
+    ratingProduct(req, res){
+        console.log(req.body);
+        // get time rating
+        let today = new Date();
+        let date = today.getDate()+ '-'+(today.getMonth()+1)+'-'+today.getFullYear()+ " "+ today.getHours() + ":" + today.getMinutes();
+        Product.findOne({_id: req.body.idProduct})
+            .then((product)=>{
+                console.log(product);
+                product.rating = [...product.rating, {
+                    user: req.body.user,
+                    star: req.body.star,
+                    comment: req.body.comment,
+                    time: date,
+                }]
+                let totalStar=0;
+                product.rating.forEach(item => {
+                    totalStar+=item.star;
+                });
+                let starTB=parseFloat(totalStar/(product.rating.length));
+                product.star = starTB;
+                product.save();
+                res.json(product);
+            })
+            .catch(err=> res.json({"Err": err}))
+    }
+
 }
 
 module.exports=new ProductsController;

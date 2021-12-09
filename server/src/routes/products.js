@@ -60,5 +60,8 @@ router.get('/upload', (req, res)=>{
 })
 
 router.post('/upload',multipleUpload , productsController.uploadProduct)
+
+router.post('/rating', productsController.ratingProduct)
+
 //exports
 module.exports=router;

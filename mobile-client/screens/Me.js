@@ -171,6 +171,43 @@ const Me = ({route, navigation}) => {
                                 color= {COLORS.xam3}
                             />
                         </TouchableOpacity>
+                        
+                        {/* //my voucher folder */}
+                        <TouchableOpacity style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            height: 40,
+                            // backgroundColor: COLORS.orange,
+                        }}
+                            onPress={()=>navigation.navigate("MyVouchers")}
+                        >
+                            <FontAwesome5
+                                solid
+                                name="tags"
+                                size={20}
+                                resizeMode="contain"
+                                color= {COLORS.xam3}
+                                style={{
+                                    marginLeft: 2,
+                                }}
+                            />
+                            <Text style={{
+                                alignItems: 'flex-start',
+                                fontSize: 16,
+                                color: COLORS.xam3,
+                                fontWeight: 'bold',
+                                left: -70,
+                                // backgroundColor: COLORS.orange
+                            }}>My vouchers</Text>
+                            <FontAwesome5
+                                solid
+                                name="angle-right"
+                                size={24}
+                                resizeMode="contain"
+                                color= {COLORS.xam3}
+                            />
+                        </TouchableOpacity>
 
                         {/* //button sign out  */}
                         <TouchableOpacity 

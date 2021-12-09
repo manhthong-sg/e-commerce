@@ -29,6 +29,9 @@ export const message=require("../assets/icons/message.png");
 export const defaultAvatar_male=require("../assets/icons/defaultAvatar_male.png");
 export const defaultAvatar_female=require("../assets/icons/defaultAvatar_female.png");
 
+//poser spin wheel
+export const poster_spin_wheel=require("../assets/icons/poster_spin_wheel.jpg");
+
 
 const icons={
         logo,
@@ -51,7 +54,8 @@ const icons={
         payment,
         message,
         defaultAvatar_male,
-        defaultAvatar_female
+        defaultAvatar_female,
+        poster_spin_wheel,
     }
 
 export default icons
