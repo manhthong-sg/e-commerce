@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image, ImageBackground } from 'react-native'
+import { StyleSheet, ToastAndroid, Text, TouchableOpacity, View, FlatList, Image, ImageBackground } from 'react-native'
 
 import HomeHeader from '../components/Home/HomeHeader'
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import { COLORS , SIZES, icons} from '../constants'
 import SERVER_URL from '../api'
+import { useSelector, useDispatch } from 'react-redux'
 
  
 const Home = ({navigation}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user); 
 
     // data categories 
     const categoryData = [
@@ -289,7 +291,19 @@ const Home = ({navigation}) => {
                 {renderCategories()}
                 <TouchableOpacity style={{
                 }}
-                    onPress={()=>navigation.navigate("SpinGame")}
+                    onPress={()=>{
+                        //check current user
+                        if(CurrentUser){
+                            navigation.navigate("SpinGame")
+                        }else{
+                            ToastAndroid.showWithGravity(
+                                "You must login to play this game",
+                                ToastAndroid.LONG,
+                                ToastAndroid.BOTTOM
+                              );
+                            }
+                        }
+                    }
                 >
                 <Image 
                     source={icons.poster_spin_wheel} 
