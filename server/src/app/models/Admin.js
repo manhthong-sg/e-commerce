@@ -37,7 +37,7 @@ const staff = new Schema({
         type: String, default: "",
     },
     role: {
-        type: 'string', enum: ['ADMIN', 'KHO', 'SHIPPER', 'KE TOAN']
+        type: 'string', enum: [ 'KHO', 'SHIPPER', 'KE TOAN', 'NONE'], default:"NONE"
     },
 
 }, { timestamps: true ,versionKey: false })
