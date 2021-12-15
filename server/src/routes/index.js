@@ -41,7 +41,7 @@ function route(app){
 
 
     ///
-    app.use('/bomaylaadmin/',bomaylaadmin )
+    app.use('/admins',bomaylaadmin )
 
 
 

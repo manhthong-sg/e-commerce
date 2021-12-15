@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken')
 const Admin = require('../models/Admin')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 class AdminController {
     async getAll(req, res) {
@@ -14,7 +14,7 @@ class AdminController {
 
     // //CRUD
     // //Create
-    // // [post] /bomaylaadmin/register
+    // [post] /bomaylaadmin/register
     // async register(req, res, next) {
     //     const { phone, password } = req.body
     //     if (!phone || !password)
@@ -53,24 +53,29 @@ class AdminController {
         const { phone, password } = req.body
         //check request have phone and password
         if (!phone || !password)
-            return res.json({ success: false, message: 'missing phonenumber or password' })
+            res.json({ success: false, message: 'missing phonenumber or password' })
         try {
             //check account is valid
             const user = await Admin.findOne({ phone })
             if (!user || !bcrypt.compareSync(password, user.password))
-                return res.json({ success: false, message: 'incorrect phone number or password' })
+                res.json({ success: false, message: 'incorrect phone number or password' })
 
             //when login success return token {phone, role, token}
             const accessToken = await jwt.sign({
                 phone: user.phone,
                 role: user.role,
             }, process.env.ACCESS_TOKEN_SECRET)
-            return res.json({success: true, message: 'login successfuly', accessToken})
+            res.json({success: true, message: 'login successfuly', data: user, accessToken})
 
         } catch (error) {
-            return res.json({ success: false, message: error.message })
+            res.json({ success: false, message: error.message })
         }
     }
+    // test(req, res){
+    //     const data= req.body;
+    //     res.json("hello1");
+    // }
+    
 
     //U
     //Edit
