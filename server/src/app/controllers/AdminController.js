@@ -51,24 +51,25 @@ class AdminController {
     // [post] /bomaylaadmin/login
     async login(req, res) {
         const { phone, password } = req.body
+        console.log("hello: ",phone, password);
         //check request have phone and password
         if (!phone || !password)
-            res.json({ success: false, message: 'missing phonenumber or password' })
+            return res.json({ success: false, message: 'missing phonenumber or password' })
         try {
             //check account is valid
             const user = await Admin.findOne({ phone })
             if (!user || !bcrypt.compareSync(password, user.password))
-                res.json({ success: false, message: 'incorrect phone number or password' })
+                return res.json({ success: false, message: 'incorrect phone number or password' })
 
             //when login success return token {phone, role, token}
             const accessToken = await jwt.sign({
                 phone: user.phone,
                 role: user.role,
             }, process.env.ACCESS_TOKEN_SECRET)
-            res.json({success: true, message: 'login successfuly', data: user, accessToken})
+            return res.json({success: true, message: 'login successfuly', user: user, accessToken})
 
         } catch (error) {
-            res.json({ success: false, message: error.message })
+            return res.json({ success: false, message: error.message })
         }
     }
     // test(req, res){

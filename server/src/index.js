@@ -10,6 +10,9 @@ app.use(express.urlencoded({extended: true}))
 //app.use (express.urlencoded())
 app.use(express.json())
 
+//cors config
+var cors = require('cors')
+app.use(cors())
 
 //ROUTE INIT
 route(app);
