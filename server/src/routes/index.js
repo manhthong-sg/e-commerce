@@ -6,6 +6,8 @@ const favoritesRoute=require('./favorites')
 const ordersRoute=require('./orders')
 const stripeRoute=require('./stripe')
 const voucherRoute=require('./vouchers')
+const messageRoute=require('./messages')
+const roomRoute=require('./rooms')
 const bomaylaadmin = require('./admin')
 
 function route(app){
@@ -38,11 +40,16 @@ function route(app){
           
         `);
     })
-
-
-    ///
+    
+    ///Define route /admins
     app.use('/admins',bomaylaadmin )
-
+    
+    ///Define route /messages
+    app.use('/messages',messageRoute )
+    
+    ///Define route /rooms
+    app.use('/rooms', roomRoute )
+    
 
 
     //Define route /register
