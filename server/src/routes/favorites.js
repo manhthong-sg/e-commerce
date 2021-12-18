@@ -16,4 +16,4 @@ router.get('/:idUser', favoritesController.getFavoriteById)
 // get /carts/
 router.get('/', favoritesController.index)
 
-module.exports=router;
+module.exports=router; 

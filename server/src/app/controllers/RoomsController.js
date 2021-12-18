@@ -35,7 +35,7 @@ class RoomsController {
     }
 
     //[GET] /rooms/:roomId --->get message by roomId
-    getMessagesByRoomID(req, res)=>{
+    getMessagesByRoomID(req, res){
     Messages.find({ roomId: req.params.roomId })
         .then((messages) => {
             req.json(messages)
