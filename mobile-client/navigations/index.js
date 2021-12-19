@@ -24,6 +24,7 @@ import PaymentTest1 from '../screens/PaymentTest1'
 import Voucher from '../screens/Voucher'
 import MyVouchers from '../screens/MyVouchers'
 import SpinGame from '../screens/SpinGame'
+import MyMessage from '../screens/MyMessage'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -37,6 +38,7 @@ const HomeNavigation = () => {
                 <Stack.Screen name = 'BrandsContainer' component = {BrandsContainer} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'ProductDetail' component = {ProductDetail} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'Search' component = {Search} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'MyMessage' component = {MyMessage} screenOptions={screenOptions}/>
             </Stack.Navigator>
     )
 }

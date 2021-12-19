@@ -128,12 +128,13 @@ const HomeHeader = ({navigation}) => {
                 />
                 <TouchableOpacity 
                     style={styles.RightIcon}
+                    onPress={()=> navigation.navigate("MyMessage")}
                 >
-                    <Ionicons
+                    <FontAwesome5
+                        solid
                         size={25}
                         color={COLORS.white}
-                        name='search'
-                        //onPress={()=>setHidePassword(!hidePassword)}
+                        name='comment-dots'
                     />
                 </TouchableOpacity>   
             </View>
