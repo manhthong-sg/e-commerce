@@ -4,8 +4,12 @@ import { COLORS, SIZES, images } from '../../constants'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { NavigationContainer } from '@react-navigation/native';
+import axios from 'axios';
+import SERVER_URL from '../../api'
+import { useSelector, useDispatch } from 'react-redux'
 
 const HomeHeader = ({navigation}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user);
 
     const scrollX = new Animated.Value(0);
     const [banner, setBanner]=useState([
@@ -16,6 +20,13 @@ const HomeHeader = ({navigation}) => {
 
 
     ]);
+    const handlePressMessage=()=>{
+        axios.get(`${SERVER_URL}/rooms/${CurrentUser._id}`)
+        .then((room)=>{
+            // console.log(room["data"]);
+            navigation.navigate("MyMessage", room["data"])
+        })
+    }
     function renderDots() {
 
         const dotPosition = Animated.divide(scrollX, SIZES.width)
@@ -128,7 +139,7 @@ const HomeHeader = ({navigation}) => {
                 />
                 <TouchableOpacity 
                     style={styles.RightIcon}
-                    onPress={()=> navigation.navigate("MyMessage")}
+                    onPress={handlePressMessage}
                 >
                     <FontAwesome5
                         solid

@@ -6,10 +6,13 @@ import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import { COLORS , SIZES, icons} from '../constants'
 import SERVER_URL from '../api'
 import { useSelector, useDispatch } from 'react-redux'
+import { io } from "socket.io-client";
 
  
 const Home = ({navigation}) => {
     const CurrentUser = useSelector(state=> state.userReducer.user); 
+    
+    // const socket = io(SERVER_URL);
 
     // data categories 
     const categoryData = [

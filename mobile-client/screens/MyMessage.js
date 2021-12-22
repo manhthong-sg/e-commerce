@@ -1,33 +1,78 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { StyleSheet, Text, FlatList, View, StatusBar, TextInput, Image, TouchableOpacity } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { COLORS, SIZES, icons } from '../constants'
 import { useSelector, useDispatch } from 'react-redux'
+import { io } from "socket.io-client";
+import SERVER_URL from '../api'
+import axios from 'axios'
+import AutoScroll from 'react-native-auto-scroll'
 
-const MyMessage = ({ navigation }) => {
+const MyMessage = ({ navigation , route}) => {
     const CurrentUser = useSelector(state => state.userReducer.user);
-
+    //get route data
+    const room=route.params;
+    
     const [message, setMessage] = useState("")
     const [messageData, setMessageData] = useState([
-        {
-            userId: CurrentUser._id,
-            roomId: "5720394857203948",
-            message: "Xin chao cac ban",
-            time: "12:23 AM, 17/12"
-        },
-        {
-            userId: "237490832042938",
-            roomId: "5720394857203948",
-            message: "hello cau",
-            time: "12:23 AM, 17/12"
-        },
-        {
-            userId: CurrentUser._id,
-            roomId: "5720394857203948",
-            message: "cho tui hoi xiu",
-            time: "12:23 AM, 17/12"
-        }
+        
     ])
+    
+    //config socket io
+    const socket = io(SERVER_URL);
+    useEffect(() => {
+        socket.on("onMessage", (data)=>{
+            // console.log(messageData);
+            // setMessageData([...messageData, data])
+        setMessageData((msgs)=>[...msgs, data])
+
+        })
+       
+    })
+    const getAllMessageFromRoom=()=>{
+        //get all message from room id
+        axios.get(`${SERVER_URL}/rooms/messages/${room._id}`)
+        .then((msg)=>{
+            // console.log(msg["data"]);
+            setMessageData(msg["data"])
+        })
+    }
+    //handle send message to ui
+    const handleSendMessage=()=>{
+        //convert format date to "3:12 PM, 23/11"
+        let today = new Date();
+        let hours=today.getHours();
+        let minutes=today.getMinutes();
+        let ampm = today.getHours() >= 12 ? 'PM' : 'AM';
+
+        if (hours > 12) {
+            hours=hours-12;
+        }
+        if(hours<10 ){
+            hours="0"+hours;
+        }
+        if(minutes<10){
+            minutes="0"+minutes;
+        }
+        let currentTime = hours + ":" + minutes + " " + ampm + ", " + today.getDate() + '/' + (today.getMonth() + 1)
+        let currentMsg={
+            userId: CurrentUser._id,
+            roomId: room._id,
+            message: message,
+            time: currentTime
+        };
+        // setMessageData((msgs)=>[...msgs, currentMsg])
+        socket.emit("client-gui-tn", currentMsg)
+        setMessage("");
+    }
+    useEffect(() => {
+        getAllMessageFromRoom();
+    }, [])
+    useEffect(() => {
+        socket.emit("join-room", room._id)
+    }, [room._id])
+
+
     //render header of this screens
     const Header = () => {
         return (
@@ -161,58 +206,37 @@ const MyMessage = ({ navigation }) => {
         )
     }
 
-    //handle send message to ui
-    const handleSendMessage=()=>{
-        //convert format date to "3:12 PM, 23/11"
-        let today = new Date();
-        let hours=today.getHours();
-        let minutes=today.getMinutes();
-        let ampm = today.getHours() >= 12 ? 'PM' : 'AM';
-
-        if (hours > 12) {
-            hours=hours-12;
-        }
-        if(hours<10 ){
-            hours="0"+hours;
-        }
-        if(minutes<10){
-            minutes="0"+minutes;
-        }
-        let currentTime = hours + ":" + minutes + " " + ampm + ", " + today.getDate() + '/' + (today.getMonth() + 1)
-        
-        setMessageData([...messageData, {
-            userId: CurrentUser._id,
-            roomId: "5720394857203948",
-            message: message,
-            time: currentTime
-        }])
-        setMessage("");
-    }
+    
     //main return
     return (
         <View style={styles.MyMessageContainer}>
             <Header />
-            <FlatList
-                data={messageData}
-                style={{
-                    // marginTop: 10
-                    paddingTop: 10,
-                    height: "100%",
-                    backgroundColor: COLORS.white,
-                    // paddingBottom: 10,
-                    // maxHeight: 210,
-                }}
-                vertical
-                numColumns={1}
-                //showsVerticalScrollIndicator={false}
-                keyExtractor={item => `${item._id}`}
-                renderItem={renderMessage}
-                contentContainerStyle={{}}
-            />
+            <AutoScroll>
+                <FlatList
+                    data={messageData}
+                    style={{
+                        // marginTop: 10
+                        paddingTop: 10,
+                        height: "100%",
+                        backgroundColor: COLORS.white,
+                        // paddingBottom: 10,
+                        // maxHeight: 210,
+                    }}
+                    vertical
+                    numColumns={1}
+                    //showsVerticalScrollIndicator={false}
+                    keyExtractor={item => `${item._id}`}
+                    renderItem={renderMessage}
+                    contentContainerStyle={{
+                        bottom: 10,
+                    }}
+                />
+            </AutoScroll>
             <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-around',
                     backgroundColor: COLORS.white,
+                    // marginTop: 10,
                 }}>
                     <TextInput style={{
                         height: 50,
