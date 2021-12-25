@@ -12,6 +12,12 @@ router.get('/messages/:roomId', roomsController.getMessagesByRoomID)
 router.get('/staff/:staffId', roomsController.findRoomByIdStaff)
 
 router.get('/user/:userId', roomsController.findRoomById)
+
+//get all rooms that is un match with someone
+router.get('/unmatch', roomsController.getUnMatchRoom)
+
+//match staff to user room
+router.post('/match', roomsController.matchStaff2Room)
 // get /rooms/
 router.get('/', roomsController.index)
 

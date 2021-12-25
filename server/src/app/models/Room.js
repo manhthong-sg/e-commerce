@@ -9,7 +9,7 @@ const roomSchema = mongoose.Schema({
     },
     user2: {
         type: String,
-        // default: "null"
+        default: "unmatch"
     }
 });
 

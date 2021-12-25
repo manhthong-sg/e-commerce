@@ -11,19 +11,19 @@ class RoomsController {
             .catch((err) => console.log("Log room FAIL!" + err));
     }
     // [GET] /rooms/:roomId 
-    async findRoomById(req, res){
-        const room= await Rooms.findOne({user1: req.params.userId})
-        if(room){
+    async findRoomById(req, res) {
+        const room = await Rooms.findOne({ user1: req.params.userId })
+        if (room) {
             return res.json(room);
-        }else{
+        } else {
             try {
-                const newRoom = Rooms({
+                const newRoom = await Rooms({
                     user1: req.params.userId
                 })
                 newRoom.save()
-                .then(()=> {
-                    res.json(saveRoom)
-                })
+                    .then(() => {
+                        res.json(saveRoom)
+                    })
             }
             catch (err) {
                 res.json({ message: err });
@@ -32,13 +32,13 @@ class RoomsController {
     }
 
     // [GET] /rooms/:roomId 
-    async findRoomByIdStaff(req, res){
-        const room= await Rooms.find({user2: req.params.staffId}).populate("user1")
-        if(room){
-            return res.json({hasValue: true, room: room});
+    async findRoomByIdStaff(req, res) {
+        const room = await Rooms.find({ user2: req.params.staffId }).populate("user1")
+        if (room) {
+            return res.json({ hasValue: true, room: room });
         }
-        else{
-            return res.json({hasValue: false})
+        else {
+            return res.json({ hasValue: false })
         }
     }
 
@@ -67,13 +67,31 @@ class RoomsController {
     }
 
     //[GET] /rooms/messages/:roomId --->get message by roomId
-    getMessagesByRoomID(req, res){
-    Messages.find({roomId: req.params.roomId})
-        .then((messages) => {
-            res.json(messages)
+    getMessagesByRoomID(req, res) {
+        Messages.find({ roomId: req.params.roomId })
+            .then((messages) => {
+                res.json(messages)
+            })
+            .catch(err => console.log(err))
+    }
+    async getUnMatchRoom(req, res){
+        const room = await Rooms.find({ user2: "unmatch" }).populate("user1")
+        if (room) {
+            return res.json({ hasValue: true, room: room });
+        }
+        else {
+            return res.json({ hasValue: false })
+        }
+    }
+    matchStaff2Room(req, res){
+        // console.log("hello",req.body.uer1);
+        Rooms.findOne({user1: req.body.user1})
+        .then(data=>{
+            data.user2= req.body.user2
+            data.save()
+            .then(()=> console.log("Success match room"))
         })
-        .catch(err => console.log(err))
-}
-    
+    }
+
 }
 module.exports = new RoomsController;
