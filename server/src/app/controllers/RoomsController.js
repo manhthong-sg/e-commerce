@@ -30,6 +30,18 @@ class RoomsController {
             }
         }
     }
+
+    // [GET] /rooms/:roomId 
+    async findRoomByIdStaff(req, res){
+        const room= await Rooms.find({user2: req.params.staffId}).populate("user1")
+        if(room){
+            return res.json({hasValue: true, room: room});
+        }
+        else{
+            return res.json({hasValue: false})
+        }
+    }
+
     //[POST] /rooms --> get roomId from userid
     async getRoomInfo(req, res) {
         const user1 = req.body.user1;
@@ -54,9 +66,9 @@ class RoomsController {
         }
     }
 
-    //[GET] /rooms/:roomId --->get message by roomId
+    //[GET] /rooms/messages/:roomId --->get message by roomId
     getMessagesByRoomID(req, res){
-    Messages.find({ roomId: req.params.roomId })
+    Messages.find({roomId: req.params.roomId})
         .then((messages) => {
             res.json(messages)
         })

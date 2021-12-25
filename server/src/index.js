@@ -4,11 +4,24 @@ const path = require('path');
 const http= require('http')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+// const io = new Server(server
+//   , {
+//   cors: {
+//     origin: "http://localhost:3000",
+//   },
+// }
+// );
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
 const route = require('./routes/index')
 const Messages = require('../src/app/models/Message');
 require('dotenv').config({ path: __dirname + '/.env' })
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.use(express.static(path.join(__dirname, 'public')));
 // console.log(process.env.STRIPE_KEY);
 app.use(express.urlencoded({ extended: true }))
@@ -28,7 +41,7 @@ io.on('connection', function (socket) {
   // set up socket 
   console.log('User Connection ' + socket.id);
   socket.on("join-room", (roomId)=>{
-    // console.log(roomId);
+    console.log("Co nguoi join room ", roomId);
     socket.join(roomId);
   })
   //server nhan tin nhan
@@ -48,8 +61,8 @@ io.on('connection', function (socket) {
     }
 
     //emit message to all user in room
-    // io.in(message.roomId).emit('onMessage', { userId: message.userId, message: `${message.message} + 1`, time: message.time, roomId: message.roomId });
-    socket.to(message.roomId).emit('onMessage', { userId: message.userId, message: `${message.message}`, time: message.time, roomId: message.roomId });
+    io.in(message.roomId).emit('onMessage', { userId: message.userId, message: `${message.message}`, time: message.time, roomId: message.roomId });
+    // socket.to(message.roomId).emit('onMessage', { userId: message.userId, message: `${message.message}`, time: message.time, roomId: message.roomId });
   })
 
 

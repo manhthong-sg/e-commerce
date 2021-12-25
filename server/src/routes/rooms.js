@@ -5,10 +5,13 @@ const roomsController=require('../app/controllers/RoomsController');
 //get /rooms
 router.post('/', roomsController.getRoomInfo)
 
-//get /rooms/:roomId
+//get /rooms/messages/:roomId
 router.get('/messages/:roomId', roomsController.getMessagesByRoomID)
 
-router.get('/:userId', roomsController.findRoomById)
+//get /rooms/:staffId
+router.get('/staff/:staffId', roomsController.findRoomByIdStaff)
+
+router.get('/user/:userId', roomsController.findRoomById)
 // get /rooms/
 router.get('/', roomsController.index)
 

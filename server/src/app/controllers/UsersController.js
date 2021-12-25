@@ -10,10 +10,14 @@ class UsersController {
             .catch((err) => console.log("Log user FAIL!" + err));
     }
     //[GET] get user by id
-    getUserByID(req, res) {
-        User.findOne({ _id: req.params.idUser })
-            .then((user) => res.json(user))
-            .catch((err) => console.log(err))
+    async getUserByID(req, res) {
+        const user= await User.findOne({ _id: req.params.idUser })
+        if(user){
+            return res.json({hasValue: true, user: user})
+        }
+        else{
+            return res.json({hasValue: false})
+        }
     }
     //[POST] /users/updateAddress/:idUser
     updateAddress(req, res) {

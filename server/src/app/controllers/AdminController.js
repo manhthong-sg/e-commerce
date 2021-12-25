@@ -3,6 +3,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
 class AdminController {
+    async getStaffById(req, res){
+        const staff= await Admin.findOne({ _id: req.params.idStaff })
+        if(staff){
+            return res.json({hasValue: true, user: staff})
+        }
+        else{
+            return res.json({hasValue: false})
+        }
+    }
     async getAll(req, res) {
         try {
             const users = await Admin.find({})

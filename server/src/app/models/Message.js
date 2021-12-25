@@ -8,7 +8,7 @@ const messageSchema = mongoose.Schema({
         ref: "User"
     },
     roomId: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         validate: {
             validator: roomId => roomId !== "",
             message: "RoomId is not empty",
