@@ -21,7 +21,7 @@ const HomeHeader = ({navigation}) => {
 
     ]);
     const handlePressMessage=()=>{
-        axios.get(`${SERVER_URL}/rooms/${CurrentUser._id}`)
+        axios.get(`${SERVER_URL}/rooms/user/${CurrentUser._id}`)
         .then((room)=>{
             // console.log(room["data"]);
             navigation.navigate("MyMessage", room["data"])

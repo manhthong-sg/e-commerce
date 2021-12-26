@@ -28,7 +28,7 @@ const MyMessage = ({ navigation , route}) => {
 
         })
        
-    })
+    },[])
     const getAllMessageFromRoom=()=>{
         //get all message from room id
         axios.get(`${SERVER_URL}/rooms/messages/${room._id}`)
@@ -217,7 +217,7 @@ const MyMessage = ({ navigation , route}) => {
                     style={{
                         // marginTop: 10
                         paddingTop: 10,
-                        height: "100%",
+                        minHeight: 680,
                         backgroundColor: COLORS.white,
                         // paddingBottom: 10,
                         // maxHeight: 210,

@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react'
-import { Image,SafeAreaView, StyleSheet, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
-import { COLORS , SIZES, icons, } from '../constants'
+import React, { useEffect, useState } from 'react'
+import { Image, SafeAreaView, StyleSheet, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
+import { COLORS, SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SERVER_URL from '../api'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
 import LottieView from "lottie-react-native";
 
-const CategoriesContainer = ({route, navigation}) => {
-    const CurrentUser = useSelector(state=> state.userReducer.user);
-    const Favorite = useSelector(state=> state.favoriteReducer.favorite);
-    var favoriteData=[];
-    if(CurrentUser && Favorite.items[0] !== undefined){
+const CategoriesContainer = ({ route, navigation }) => {
+    const CurrentUser = useSelector(state => state.userReducer.user);
+    const Favorite = useSelector(state => state.favoriteReducer.favorite);
+    var favoriteData = [];
+    if (CurrentUser && Favorite.items[0] !== undefined) {
         //lay ra id nhung item da them vao favorite de hien ra
-        Favorite.items[0].idProduct.forEach(item=>{
+        Favorite.items[0].idProduct.forEach(item => {
             favoriteData.push(item._id)
         })
     }
@@ -45,119 +45,129 @@ const CategoriesContainer = ({route, navigation}) => {
             icon: icons.student2,
         },
     ]
-    
-    const setFavorite=(fav)=> dispatch({
-        type: 'SET_FAVORITE', 
+
+    const setFavorite = (fav) => dispatch({
+        type: 'SET_FAVORITE',
         payload: fav
     })
     const dispatch = useDispatch();
-    const handleResetFavorite=()=>{
+    const handleResetFavorite = () => {
         axios.get(`${SERVER_URL}/favorites/${CurrentUser._id}`)
-                .then((data)=>{
-                    //setCartData(data["data"]);
-                    setFavorite(data["data"])
-                    // console.log(data["data"]);
-                })
+            .then((data) => {
+                //setCartData(data["data"]);
+                setFavorite(data["data"])
+                // console.log(data["data"]);
+            })
     }
     //handle add to favorite 
-    const handleAddToFavorite=(idProduct)=>{
+    const handleAddToFavorite = (idProduct) => {
         //console.log(Favorite)
-        if(CurrentUser){
-            const url=`${SERVER_URL}/favorites`;
-            axios.post(url, {idProduct: idProduct, idUser: CurrentUser._id})
-            .then(()=>{
-                handleResetFavorite();
-                setIsFavorite(!isFavorite)
-                //setCount(1)
-            })
-            .catch((err)=> {
-                console.log(err+ " :ERROR!");
-            })
+        if (CurrentUser) {
+            const url = `${SERVER_URL}/favorites`;
+            axios.post(url, { idProduct: idProduct, idUser: CurrentUser._id })
+                .then(() => {
+                    handleResetFavorite();
+                    setIsFavorite(!isFavorite)
+                    //setCount(1)
+                })
+                .catch((err) => {
+                    console.log(err + " :ERROR!");
+                })
             //setCart(item)
-        }else{
+        } else {
             ToastAndroid.showWithGravity(
                 "Sorry, you must LOGIN to add to Favorite",
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
-              );
+            );
         }
     }
     const initialSelectedCategory = route.params;
     //console.log(initialSelectedCategory);
-    var [productsData, setProductData]=useState(null);
+    // var [productsData, setProductData] = useState(null);
     const [products, setProducts] = useState(null);
     const [categories, setCategories] = useState(categoryData)
     const [selectedCategory, setSelectedCategory] = useState(initialSelectedCategory)
-    const [isFavorite, setIsFavorite]=useState(false);
-    
-    
-    //call api product and get all products
-    const fetchProducts = async () => {
-        const res = await axios.get(`${SERVER_URL}/products`).catch((err) => { console.log("Fetch API failed!! " + err); }); 
-        //const res = await getProducts.getAllProduct(); 
-        if (!res) return;
+    const [isFavorite, setIsFavorite] = useState(false);
 
-        //console.log(res["data"]);
-        setProductData(res["data"]);
-    }
 
+    // //call api product and get all products
+    // const fetchProducts = async () => {
+    //     const res = await axios.get(`${SERVER_URL}/products`).catch((err) => { console.log("Fetch API failed!! " + err); });
+    //     //const res = await getProducts.getAllProduct(); 
+    //     if (!res) return;
+
+    //     //console.log(res["data"]);
+    //     setProductData(res["data"]);
+    // }
+
+    
 
     useEffect(() => {
-        //fetch products data
-        fetchProducts();
-        
+        //fetch data initial products category
+        onSelectCategory(initialSelectedCategory)
+
     }, []);
 
 
     useEffect(() => {
         //fetch products data
-        // if (products)
-            onSelectCategory(selectedCategory);
-        // else return;
-        
+        onSelectCategory(selectedCategory);
     }, [selectedCategory]);
-    
+
     //products
-    
+
     const [selectedBrand, setSelectedBrand] = useState(null)
 
     //onpress sort
-    const [isPriceSort, setPriceSort]=useState(true); //khi chon option price sort
-    const [isAlphaSort, setAlphaSort]=useState(false); //khi chon option alpha sort
-    const [isPriceDown, setPriceDown]=useState(true); //price down
-    const [isAlphaDown, setAlphaDown]=useState(false); //alpha down
-    
+    const [isPriceSort, setPriceSort] = useState(true); //khi chon option price sort
+    const [isAlphaSort, setAlphaSort] = useState(false); //khi chon option alpha sort
+    const [isPriceDown, setPriceDown] = useState(true); //price down
+    const [isAlphaDown, setAlphaDown] = useState(false); //alpha down
+
     //handle press sort option
-    function onSelectSort(type){
-        if(type==1){
-            if(!isPriceSort){
+    function onSelectSort(type) {
+        if (type == 1) {
+            if (!isPriceSort) {
                 setAlphaSort(false)
                 setPriceSort(true)
-                setPriceDown(!isPriceDown)
-            }else{
+                setPriceDown(prev=> setPriceDown(!prev))
+            } else {
                 setAlphaSort(false)
-                setPriceDown(!isPriceDown)
+                setPriceDown(prev=> setPriceDown(!prev))
             }
-        }else{
-            if(!isAlphaSort){
+        } else {
+            if (!isAlphaSort) {
                 setPriceSort(false)
                 setAlphaSort(true)
                 setAlphaDown(!isAlphaDown)
-            }else{
+            } else {
                 setPriceSort(false)
                 setAlphaDown(!isAlphaDown)
             }
         }
     }
+    useEffect(() => {
+        if (products) {
+            if (isPriceDown == false) {
+                let tempData = products.sort((firstItem, secondItem) => secondItem.price - firstItem.price)
+                setProducts(tempData);
+            } else {
+                let tempData = products.sort((firstItem, secondItem) => firstItem.price - secondItem.price)
+                setProducts(tempData);
+            }
+        }
+    })
     //onPress category
-    const onSelectCategory =  (category) =>{
+    const onSelectCategory = (category) => {
         // setProducts(null);
         //filter restaurant
         axios.get(`${SERVER_URL}/products/categories/${category.id}`)
-        .then((productsList)=>{
-            setProducts(productsList["data"]);
-            setSelectedCategory(category)
-        })
+            .then((productsList) => {
+                setProducts(productsList["data"]);
+                setSelectedCategory(category)
+                setPriceDown(true)
+            })
     }
 
     //render header of this screens
@@ -170,8 +180,8 @@ const CategoriesContainer = ({route, navigation}) => {
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
-                    onPress={()=> {
-                        
+                    onPress={() => {
+
                         navigation.goBack();
                     }}
                 >
@@ -194,7 +204,7 @@ const CategoriesContainer = ({route, navigation}) => {
                             marginRight: 18,
                         }}
                     >
-                        <Text style={{fontWeight: 'bold', fontSize: 25, color: COLORS.xam4}}>Main Categories</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 25, color: COLORS.xam4 }}>Main Categories</Text>
                     </View>
                 </View>
             </View>
@@ -202,9 +212,9 @@ const CategoriesContainer = ({route, navigation}) => {
     }
 
 
-    
+
     //render categories list item
-    const renderCategories=()=>{
+    const renderCategories = () => {
         const renderItem = ({ item }) => {
             return (
                 <TouchableOpacity
@@ -218,7 +228,7 @@ const CategoriesContainer = ({route, navigation}) => {
                         marginRight: SIZES.padding,
                         //marginTop: 10,
                         bottom: 10,
-                        zIndex:1,
+                        zIndex: 1,
                     }}
                     onPress={() => onSelectCategory(item)}
 
@@ -242,7 +252,7 @@ const CategoriesContainer = ({route, navigation}) => {
                             }}
                         />
                     </View>
-    
+
                     <Text
                         style={{
                             marginTop: SIZES.padding,
@@ -255,30 +265,30 @@ const CategoriesContainer = ({route, navigation}) => {
                 </TouchableOpacity>
             )
         }
-        
-        
+
+
         return (
-            <View style={{paddingTop: 15}}>
-                
+            <View style={{ paddingTop: 15 }}>
+
                 <FlatList
-                        data={categories}
-                        style={{
-                            zIndex: 1,
-                        }}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => `${item.id}`}
-                        renderItem={renderItem}
-                        contentContainerStyle={{ paddingVertical: SIZES.padding }}
-                    />    
+                    data={categories}
+                    style={{
+                        zIndex: 1,
+                    }}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={item => `${item.id}`}
+                    renderItem={renderItem}
+                    contentContainerStyle={{ paddingVertical: SIZES.padding }}
+                />
             </View>
         )
     }
 
     //render filter
-    const renderSort=()=>{
+    const renderSort = () => {
         return (
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                 {/* // price sort */}
                 <TouchableOpacity
                     style={{
@@ -292,42 +302,42 @@ const CategoriesContainer = ({route, navigation}) => {
                         marginRight: SIZES.padding,
                         //marginTop: 10,
                         bottom: 10,
-                        zIndex:1,
+                        zIndex: 1,
                     }}
-                    onPress={() => onSelectSort(type=1)}
+                    onPress={() => onSelectSort(type = 1)}
                 >
-                        <Text style={{
-                            fontSize: 12, 
-                            marginRight: 5,
-                            color: isPriceSort ? COLORS.brand : COLORS.xam4
-                             }}
-                        >
-                            Price
-                        </Text>
-                        {
-                            isPriceDown && (
-                                <FontAwesome5
-                                    name="arrow-down"
-                                    size={13.5}
-                                    resizeMode="contain"
-                                    color= {isPriceSort ? COLORS.brand : COLORS.xam4}
-                                />
+                    <Text style={{
+                        fontSize: 12,
+                        marginRight: 5,
+                        color: isPriceSort ? COLORS.brand : COLORS.xam4
+                    }}
+                    >
+                        Price
+                    </Text>
+                    {
+                        isPriceDown && (
+                            <FontAwesome5
+                                name="arrow-down"
+                                size={13.5}
+                                resizeMode="contain"
+                                color={isPriceSort ? COLORS.brand : COLORS.xam4}
+                            />
 
-                            )
-                        }
-                        {
-                            !isPriceDown && (
-                                <FontAwesome5
-                                    name="arrow-up"
-                                    size={13.5}
-                                    resizeMode="contain"
-                                    color= {isPriceSort ? COLORS.brand : COLORS.xam4}
-                                />
+                        )
+                    }
+                    {
+                        !isPriceDown && (
+                            <FontAwesome5
+                                name="arrow-up"
+                                size={13.5}
+                                resizeMode="contain"
+                                color={isPriceSort ? COLORS.brand : COLORS.xam4}
+                            />
 
-                            )
-                        }
-    
-                    
+                        )
+                    }
+
+
                 </TouchableOpacity>
 
                 {/* alpha sort             */}
@@ -343,72 +353,72 @@ const CategoriesContainer = ({route, navigation}) => {
                         marginRight: SIZES.padding,
                         //marginTop: 10,
                         bottom: 10,
-                        zIndex:1,
+                        zIndex: 1,
                     }}
-                    onPress={() => onSelectSort(type=2)}
+                    onPress={() => onSelectSort(type = 2)}
                 >
-                        <Text style={{
-                            fontSize: 12,
-                            marginRight: 5,
-                            color: isAlphaSort ? COLORS.brand: COLORS.xam4
-                            }}
-                        >
-                            Alpha
-                        </Text>
-                        {
-                            isAlphaDown && (
-                                <FontAwesome5
-                                    name="sort-alpha-down"
-                                    resizeMode="contain"
-                                    size={14}
-                                    color= {isAlphaSort ? COLORS.brand : COLORS.xam4}
-                                />
+                    <Text style={{
+                        fontSize: 12,
+                        marginRight: 5,
+                        color: isAlphaSort ? COLORS.brand : COLORS.xam4
+                    }}
+                    >
+                        Alpha
+                    </Text>
+                    {
+                        isAlphaDown && (
+                            <FontAwesome5
+                                name="sort-alpha-down"
+                                resizeMode="contain"
+                                size={14}
+                                color={isAlphaSort ? COLORS.brand : COLORS.xam4}
+                            />
 
-                            )
-                        }
-                        {
-                            !isAlphaDown && (
-                                <FontAwesome5
-                                    name="sort-alpha-up"
-                                    resizeMode="contain"
-                                    size={14}
-                                    color= {isAlphaSort ? COLORS.brand : COLORS.xam4}
-                                />
+                        )
+                    }
+                    {
+                        !isAlphaDown && (
+                            <FontAwesome5
+                                name="sort-alpha-up"
+                                resizeMode="contain"
+                                size={14}
+                                color={isAlphaSort ? COLORS.brand : COLORS.xam4}
+                            />
 
-                            )
-                        }
-    
-                    
+                        )
+                    }
+
+
                 </TouchableOpacity>
             </View>
         )
     }
 
     // render products 
-    const renderProducts=()=>{
+    const renderProducts = () => {
 
         //if (!productsData) return <Text>Loading...</Text>
-        
+
         const renderProductItems = ({ item }) => {
             return (
                 <TouchableOpacity
                     style={{
                         backgroundColor: (selectedBrand?.id == item.id) ? COLORS.white : COLORS.white,
                         alignItems: "center",
-                        elevation: 2 ,
+                        elevation: 2,
                         height: 200,
                         width: "49.9%",
                         marginRight: 5,
                         marginBottom: 5,
                         zIndex: -1,
                     }}
-                    onPress={() =>navigation.navigate("ProductDetail", item)}
-                >   
+                    onPress={() => navigation.navigate("ProductDetail", item)}
+                >
                     {/* //icon favorite      */}
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={{
                             width: 45,
-                            height: 45, 
+                            height: 45,
                             zIndex: 10,
                             position: 'absolute',
                             justifyContent: 'center',
@@ -416,18 +426,18 @@ const CategoriesContainer = ({route, navigation}) => {
                             right: 0,
 
                         }}
-                        onPress={()=>handleAddToFavorite(item._id)}
+                        onPress={() => handleAddToFavorite(item._id)}
                     >
                         <FontAwesome5
-                                solid
-                                //solid={(selectedFavorite[item.id].id == item.id) ? true : false}
-                                name="heart"
-                                size={20}
-                                color={(favoriteData.includes(item._id)) ? COLORS.do2 : COLORS.white} 
-                            />    
+                            solid
+                            //solid={(selectedFavorite[item.id].id == item.id) ? true : false}
+                            name="heart"
+                            size={20}
+                            color={(favoriteData.includes(item._id)) ? COLORS.do2 : COLORS.white}
+                        />
                     </TouchableOpacity>
                     <Image
-                        source={{uri: `${SERVER_URL}/images/${item.image[0]}`}}
+                        source={{ uri: `${SERVER_URL}/images/${item.image[0]}` }}
                         resizeMode="cover"
                         style={{
                             width: '100%',
@@ -435,7 +445,7 @@ const CategoriesContainer = ({route, navigation}) => {
 
                         }}
                     />
-                    <Text style={{textAlign: 'left', paddingLeft: 10, width: '100%'}}>{item.name}</Text>
+                    <Text style={{ textAlign: 'left', paddingLeft: 10, width: '100%' }}>{item.name}</Text>
                     <View style={{
                         //backgroundColor: COLORS.xam2,
                         flexDirection: 'row',
@@ -443,71 +453,72 @@ const CategoriesContainer = ({route, navigation}) => {
                         width: '100%',
                         height: 40,
                         alignItems: 'center'
-                        }}>
+                    }}>
                         {
-                            [1, 2, 3, 4, 5].map((star)=>(
-                                    <FontAwesome5 
-                                        size={10} 
-                                        solid name='star' 
-                                        color={(star <= item.star) ? COLORS.orange : COLORS.xam2}
-                                        style={{
-                                            marginLeft: 3
-                                        }}
-                                    />
-                                ))
-                                
+                            [1, 2, 3, 4, 5].map((star) => (
+                                <FontAwesome5
+                                    size={10}
+                                    solid name='star'
+                                    color={(star <= item.star) ? COLORS.orange : COLORS.xam2}
+                                    style={{
+                                        marginLeft: 3
+                                    }}
+                                />
+                            ))
+
                         }
-                        <Text style={{fontWeight: 'bold', textAlign: 'right', fontSize: 16, width: '55%'}}>{item.price}$</Text>
+                        <Text style={{ fontWeight: 'bold', textAlign: 'right', fontSize: 16, width: '55%' }}>{item.price}$</Text>
                     </View>
-                    
+
                 </TouchableOpacity>
             )
         }
-    
+
         return (
 
-                <View style={{marginBottom: 125, maxHeight: SIZES.height-50}}>
-                    
-                    <FlatList
-                            data={!products ? productsData: products}
-                            style={{
-                                
-                            }}
-                            vertical
-                            numColumns={2}
-                            //showsHorizontalScrollIndicator={false}
-                            showsVerticalScrollIndicator={false}
-                            keyExtractor={item => `${item._id}`}
-                            renderItem={renderProductItems}
-                            contentContainerStyle={{}}
-                        />    
-                </View>
-            
+            <View style={{ marginBottom: 125, maxHeight: SIZES.height - 50 }}>
+
+                <FlatList
+                    // data={!products ? productsData : products}
+                    data={products}
+                    style={{
+
+                    }}
+                    vertical
+                    numColumns={2}
+                    //showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={item => `${item._id}`}
+                    renderItem={renderProductItems}
+                    contentContainerStyle={{}}
+                />
+            </View>
+
         )
     }
-    
-    
+
+
     return (
         <View style={styles.container}>
             {renderHeader()}
             {renderCategories()}
             {renderSort()}
-            {productsData ? renderProducts() : (
-                    <View style={{
-                            marginTop: 100,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <LottieView
-                            source={require("../components/AnimationIcons/itemsLoading.json")}
-                            autoPlay
-                            loop={true}
-                            resizeMode='contain'
-                            style={{ height: 130 }}
-                        />
-                    </View>
-                )
+            {products ? renderProducts() : (
+                <View style={{
+                    marginTop: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+                >
+                    <LottieView
+                        source={require("../components/AnimationIcons/itemsLoading.json")}
+                        autoPlay
+                        loop={true}
+                        resizeMode='contain'
+                        style={{ height: 130 }}
+                    />
+                </View>
+            )
             }
         </View>
     )
@@ -516,8 +527,8 @@ const CategoriesContainer = ({route, navigation}) => {
 export default CategoriesContainer
 
 const styles = StyleSheet.create({
-    container:{
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    container: {
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
 
     },
 })
