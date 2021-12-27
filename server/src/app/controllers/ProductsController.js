@@ -6,7 +6,10 @@ class ProductsController {
     //[GET] /products
     index(req, res){
         Product.find({})
-            .then(products=> res.json(products))
+            .then(products=> {
+                products.sort((firstItem, secondItem) => secondItem.price - firstItem.price);
+                res.json(products)
+            })
             .catch((err)=> console.log("Log products FAIL!"+err));
     }
 
@@ -32,7 +35,10 @@ class ProductsController {
     //[GET] categories bussiness
     getProductsCategories(req, res){
         Product.find({'description.category': req.params.categoryID})
-            .then(products=> res.json(products))
+            .then(products=> {
+                var tempData=products.sort((firstItem, secondItem) => secondItem.price - firstItem.price);
+                res.json(tempData)
+            })
             .catch((err)=> console.log("Log products FAIL!"+err));
     }
 
