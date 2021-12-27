@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, SafeAreaView, Animated} from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image,ToastAndroid, TouchableOpacity, SafeAreaView, Animated} from 'react-native'
 import { COLORS, SIZES, images } from '../../constants'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -21,11 +21,19 @@ const HomeHeader = ({navigation}) => {
 
     ]);
     const handlePressMessage=()=>{
-        axios.get(`${SERVER_URL}/rooms/user/${CurrentUser._id}`)
-        .then((room)=>{
-            // console.log(room["data"]);
-            navigation.navigate("MyMessage", room["data"])
-        })
+        if(CurrentUser){
+            axios.get(`${SERVER_URL}/rooms/user/${CurrentUser._id}`)
+            .then((room)=>{
+                // console.log(room["data"]);
+                navigation.navigate("MyMessage", room["data"])
+            })
+        }else{
+            ToastAndroid.showWithGravity(
+                "Sorry, Please login to chat with us",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+        }
     }
     function renderDots() {
 

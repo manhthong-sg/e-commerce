@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, StyleSheet, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, Picker, ToastAndroid, Text, View, Platform, StatusBar, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS, SIZES, icons, } from '../constants'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SERVER_URL from '../api'
@@ -101,7 +101,7 @@ const CategoriesContainer = ({ route, navigation }) => {
     //     setProductData(res["data"]);
     // }
 
-    
+
 
     useEffect(() => {
         //fetch data initial products category
@@ -124,32 +124,98 @@ const CategoriesContainer = ({ route, navigation }) => {
     const [isAlphaSort, setAlphaSort] = useState(false); //khi chon option alpha sort
     const [isPriceDown, setPriceDown] = useState(true); //price down
     const [isAlphaDown, setAlphaDown] = useState(false); //alpha down
+    const [brandFilterData, setBrandFilterData] = useState(
+        [
+            {
+                id: 1,
+                name: 'Acer',
+                icon: icons.acer,
+            },
+            {
+                id: 2,
+                name: 'Asus',
+                icon: icons.asus,
+            },
+            {
+                id: 3,
+                name: 'Dell',
+                icon: icons.dell,
+            },
+            {
+                id: 5,
+                name: 'Msi',
+                icon: icons.msi2,
+            },
+            {
+                id: 6,
+                name: 'Hp',
+                icon: icons.hp,
+            },
+            {
+                id: 7,
+                name: 'Lenovo',
+                icon: icons.lenovo,
+            },
+            {
+                id: 8,
+                name: 'MacBook',
+                icon: icons.macbook,
+            },
+        ]
+    )
+    const [selectedBrandFilter, setSelectedBrandFilter] = useState("default")
 
     //handle press sort option
     function onSelectSort(type) {
         if (type == 1) {
             if (!isPriceSort) {
-                setAlphaSort(false)
-                setPriceSort(true)
-                setPriceDown(prev=> setPriceDown(!prev))
+                setAlphaSort(prev => setAlphaSort(false))
+                setPriceSort(prev => setPriceSort(true))
+                setPriceDown(prev => setPriceDown(!prev))
+
+                // let tempData = products.sort((firstItem, secondItem) => firstItem.price - secondItem.price)
+                // setProducts(tempData);
+
             } else {
-                setAlphaSort(false)
-                setPriceDown(prev=> setPriceDown(!prev))
+                setAlphaSort(prev => setAlphaSort(false))
+                setPriceDown(prev => setPriceDown(!prev))
+
+                // // setAlphaSort(false)
+                // let tempData = products.sort((firstItem, secondItem) => secondItem.price - firstItem.price)
+                // setProducts(tempData);
+
             }
         } else {
             if (!isAlphaSort) {
-                setPriceSort(false)
-                setAlphaSort(true)
-                setAlphaDown(!isAlphaDown)
+                setPriceSort(prev => setPriceSort(false))
+                setAlphaSort(prev => setAlphaSort(true))
+                setAlphaDown(prev => setAlphaDown(!isAlphaDown))
+
+                // let tempData = products.sort(function(a, b) {
+                //     var textA = a.name.toUpperCase();
+                //     var textB = b.name.toUpperCase();
+                //     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                // });
+                // setProducts(tempData);
+
             } else {
-                setPriceSort(false)
-                setAlphaDown(!isAlphaDown)
+                setPriceSort(prev => setPriceSort(false))
+                setAlphaDown(prev => setAlphaDown(!isAlphaDown))
+
+                // let tempData = products.sort(function(a, b) {
+                //     var textA = a.name.toUpperCase();
+                //     var textB = b.name.toUpperCase();
+                //     return (textA > textB) ? -1 : (textA < textB) ? 1 : 0;
+                // });
+                // setProducts(tempData);
+
             }
         }
     }
     useEffect(() => {
-        if (products) {
+        if (products && isPriceSort) {
             if (isPriceDown == false) {
+                //sort obj arr by price
                 let tempData = products.sort((firstItem, secondItem) => secondItem.price - firstItem.price)
                 setProducts(tempData);
             } else {
@@ -158,15 +224,41 @@ const CategoriesContainer = ({ route, navigation }) => {
             }
         }
     })
+
+    useEffect(() => {
+        if (products && isAlphaSort) {
+            if (isAlphaDown == false) {
+                //sort obj arr by alphabet
+                let tempData = products.sort(function (a, b) {
+                    var textA = a.name.toUpperCase();
+                    var textB = b.name.toUpperCase();
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                });
+                setProducts(tempData);
+            } else {
+                let tempData = products.sort(function (a, b) {
+                    var textA = a.name.toUpperCase();
+                    var textB = b.name.toUpperCase();
+                    return (textA > textB) ? -1 : (textA < textB) ? 1 : 0;
+                });
+                setProducts(tempData);
+            }
+        }
+    })
+
     //onPress category
     const onSelectCategory = (category) => {
-        // setProducts(null);
+        // refresh Filter by brand
+        setSelectedBrandFilter("default")
         //filter restaurant
         axios.get(`${SERVER_URL}/products/categories/${category.id}`)
             .then((productsList) => {
                 setProducts(productsList["data"]);
                 setSelectedCategory(category)
+                setPriceSort(true)
                 setPriceDown(true)
+                setAlphaDown(false)
+                setAlphaSort(false)
             })
     }
 
@@ -289,6 +381,53 @@ const CategoriesContainer = ({ route, navigation }) => {
     const renderSort = () => {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <Picker
+                    selectedValue={selectedBrandFilter}
+                    style={{
+                        height: 20,
+                        width: 130,
+                        fontSize: 18,
+                        color: COLORS.brand,
+                        fontWeight: 'bold',
+                        elevation: 1,
+                        // backgroundColor: COLORS.white,
+                    }}
+                    onValueChange={async (itemValue, itemIndex) => {
+                        if (itemValue !== "default") {
+                            axios.get(`${SERVER_URL}/products/categories/${selectedCategory.id}`)
+                                .then((productsList) => {
+                                    const newData = productsList["data"].filter(item => {
+                                        return item.description.brand == itemValue
+                                    })
+                                    setProducts(newData)
+                                })
+                            //filter by brand name
+                            // const newData = products.filter(item => {
+                            //     return item.description.brand == itemValue
+                            // })
+                            // setProducts(newData)
+                        } else {
+                            //redo all search data by keysearch
+                            onSelectCategory(selectedCategory);
+                            // setProducts(newData)
+                        }
+                        setSelectedBrandFilter(itemValue),
+                            ToastAndroid.showWithGravity(
+                                `${itemValue} is choose`,
+                                ToastAndroid.LONG,
+                                ToastAndroid.BOTTOM
+                            );
+                    }}
+                >
+                    <Picker.Item label="All Brand" value="default" />
+                    {
+                        brandFilterData.map(brand => {
+                            return (
+                                <Picker.Item label={brand.name} value={brand.name} />
+                            )
+                        })
+                    }
+                </Picker>
                 {/* // price sort */}
                 <TouchableOpacity
                     style={{
