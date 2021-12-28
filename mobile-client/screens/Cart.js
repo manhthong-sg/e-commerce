@@ -19,6 +19,14 @@ const Cart = ({navigation}) => {
         type: 'SET_CART', 
         payload: cart
     })
+    const SET_INSCREASE=(id)=> dispatch({
+        type: 'SET_INSCREASE', 
+        payload: id
+    })
+    const SET_DESCREASE=(id)=> dispatch({
+        type: 'SET_DESCREASE', 
+        payload: id
+    })
     
     const dispatch = useDispatch();
 
@@ -59,27 +67,28 @@ const Cart = ({navigation}) => {
     
 
     const ListCartItems=()=>{
+        const [count, setCount] = useState(0)
         const renderItem = ({ item }) => {
-            
             //handle decrease product
             const handleIncreaseCount=()=>{
-                if(count>remaining-1){
+                if(item.itemNum>item.idProduct.remaining-1){
                     ToastAndroid.showWithGravity(
-                        "Only "+remaining +" products left!",
+                        "Only "+item.idProduct.remaining +" products left!",
                         ToastAndroid.LONG,
                         ToastAndroid.BOTTOM
                     );
                 }else{
-                    setCount(count+1)
+                    SET_INSCREASE(item.idProduct._id)
+                    // item.itemNum+=1
+                    // console.log(item.itemNum)
                     
                     // setTotal(total+price)
                 }
             }
             //handle increase product
             const handleDecreaseCount=()=>{
-                if(count>1){
-                    setCount(count-1); 
-                    // setTotal(total-price)
+                if(item.itemNum>1){
+                    SET_DESCREASE(item.idProduct._id)
                 }else{
                     ToastAndroid.showWithGravity(
                         "Minimum is 1",
@@ -189,7 +198,13 @@ const Cart = ({navigation}) => {
                                     >
                                         <Text style={styles.updown}>-</Text>
                                     </TouchableOpacity>
-                                    <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 5, marginRight: 5}}>{item.itemNum}</Text>
+                                    <Text style={{
+                                        fontSize: 20,
+                                         fontWeight: 'bold', 
+                                         marginLeft: 5,
+                                          marginRight: 5}}>
+                                        {item.itemNum}
+                                        </Text>
                                     <TouchableOpacity style={{
                                         width: 20,
                                         height: 20,

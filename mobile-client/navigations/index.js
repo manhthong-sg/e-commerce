@@ -57,6 +57,7 @@ const MeNavigation = () => {
                 <Stack.Screen name = 'MyOrders' component = {MyOrders} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'MyVouchers' component = {MyVouchers} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'OrderDetails' component = {OrderDetails} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'MyMessage' component = {MyMessage} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'RatingProducts' component = {RatingProducts} screenOptions={screenOptions}/>
             </Stack.Navigator>
     )
