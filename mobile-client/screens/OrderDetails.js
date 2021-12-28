@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, StatusBar, Text, View, TouchableOpacity, Alert, ScrollView, ToastAndroid, Image, FlatList, TextInput } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { COLORS , SIZES, icons, images } from '../constants'
+import { COLORS, SIZES, icons, images } from '../constants'
 import { useSelector, useDispatch } from 'react-redux';
 import SERVER_URL from '../api'
 import LottieView from "lottie-react-native";
 import axios from 'axios';
 
-const OrderDetails = ({navigation, route}) => {
+const OrderDetails = ({ navigation, route }) => {
     const {
         _id,
         ItemsNum,
@@ -22,8 +22,8 @@ const OrderDetails = ({navigation, route}) => {
         Voucher,
         createdAt,
         CancelDate
-    }=route.params;
-    console.log(PaymentDetail);
+    } = route.params;
+    // console.log(PaymentDetail);
     var date = new Date(createdAt);
 
     // console.log("Date: "+date.getDate()+
@@ -43,8 +43,8 @@ const OrderDetails = ({navigation, route}) => {
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
-                    onPress={()=> {
-                        
+                    onPress={() => {
+
                         navigation.goBack();
                     }}
                 >
@@ -54,7 +54,7 @@ const OrderDetails = ({navigation, route}) => {
                         size={25}
                     />
                 </TouchableOpacity>
-    
+
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <View
                         style={{
@@ -68,7 +68,7 @@ const OrderDetails = ({navigation, route}) => {
                         }}
                     >
                         <Text style={{
-                            fontWeight: 'bold', 
+                            fontWeight: 'bold',
                             fontSize: 25,
                             color: COLORS.xam4
                         }}>
@@ -80,7 +80,7 @@ const OrderDetails = ({navigation, route}) => {
         )
     }
     //when status =0 (waiting confirm)
-    const OnCancelStatus=()=>{
+    const OnCancelStatus = () => {
         return (
             <View style={{
                 height: 120,
@@ -104,24 +104,24 @@ const OrderDetails = ({navigation, route}) => {
                         marginTop: 15,
                         fontSize: 13,
                     }}>
-                        You have cancelled this order. We are sorry about that. 
+                        You have cancelled this order. We are sorry about that.
                     </Text>
                 </View>
                 <LottieView
-                source={require("../components/AnimationIcons/cancelStatus.json")}
-                autoPlay
-                loop={false}
-                resizeMode='contain'
-                style={{ 
-                    width: 80, 
-                    paddingLeft: 20,
-                 }}
-            />
+                    source={require("../components/AnimationIcons/cancelStatus.json")}
+                    autoPlay
+                    loop={false}
+                    resizeMode='contain'
+                    style={{
+                        width: 80,
+                        paddingLeft: 20,
+                    }}
+                />
             </View>
         )
     }
     //when status order = 4 (cancel)
-    const OnWaitingConfirm=()=>{
+    const OnWaitingConfirm = () => {
         return (
             <View style={{
                 height: 120,
@@ -149,26 +149,26 @@ const OrderDetails = ({navigation, route}) => {
                     </Text>
                 </View>
                 <LottieView
-                source={require("../components/AnimationIcons/waitConfirmStatus.json")}
-                autoPlay
-                loop={true}
-                resizeMode='contain'
-                style={{ 
-                    width: 150, 
-                    
-                 }}
-            />
+                    source={require("../components/AnimationIcons/waitConfirmStatus.json")}
+                    autoPlay
+                    loop={true}
+                    resizeMode='contain'
+                    style={{
+                        width: 150,
+
+                    }}
+                />
             </View>
         )
     }
     //render your info and address
-    const MyInfo = ()=> {
-        
+    const MyInfo = () => {
+
         return (
-            <View 
+            <View
                 style={styles.MyInfoContainer}
             >
-                <FontAwesome5 
+                <FontAwesome5
                     name="map-marker-alt"
                     size={18}
                     color={COLORS.orange}
@@ -179,7 +179,7 @@ const OrderDetails = ({navigation, route}) => {
                 />
                 <View style={styles.Info}>
                     <Text style={{
-                        paddingBottom: 5, 
+                        paddingBottom: 5,
                         fontWeight: 'bold',
                         fontSize: 16,
                         paddingTop: 5,
@@ -187,7 +187,7 @@ const OrderDetails = ({navigation, route}) => {
                         Delivery address
                     </Text>
                     <Text>{DeliveryInfo.name} || {DeliveryInfo.phone}</Text>
-                    <View style={{width: 250}}>
+                    <View style={{ width: 250 }}>
                         <Text style={{
                             //paddingBottom: 10
                         }}>
@@ -200,7 +200,7 @@ const OrderDetails = ({navigation, route}) => {
     }
 
     //show all cart that you wanna buy
-    const MyItemsOrder = () =>{
+    const MyItemsOrder = () => {
 
         //message for seller
         const MyMessage = () => {
@@ -212,7 +212,7 @@ const OrderDetails = ({navigation, route}) => {
                     backgroundColor: COLORS.white,
                     elevation: 2,
                     alignItems: 'center',
-                    marginBottom:5,
+                    marginBottom: 5,
                     paddingLeft: 15,
                 }}>
                     <Image
@@ -245,29 +245,29 @@ const OrderDetails = ({navigation, route}) => {
                         backgroundColor: COLORS.lightGray,
                         alignItems: "center",
                         justifyContent: 'center',
-                        elevation: 0.3 ,
+                        elevation: 0.3,
                         height: 100,
                         marginBottom: 5,
                         borderRadius: 5,
-                        elevation:0.8,
+                        elevation: 0.8,
                     }}
-                    //onPress={() =>navigation.navigate("ProductDetail", item.idProduct)}
-                > 
+                //onPress={() =>navigation.navigate("ProductDetail", item.idProduct)}
+                >
                     <View style={{
                         flexDirection: 'row',
                     }}>
                         <View style={styles.ImageCart}>
-                            <Image 
-                                source={{uri: `${SERVER_URL}/images/${item["idProduct"].image[0]}`}}
+                            <Image
+                                source={{ uri: `${SERVER_URL}/images/${item["idProduct"].image[0]}` }}
                                 style={{
                                     width: 70,
                                     height: 70,
                                 }}
                                 resizeMode="contain"
-                                
+
                             />
                         </View>
-                        <View style={{width: '70%',}}>
+                        <View style={{ width: '70%', }}>
                             <Text style={{
                                 fontWeight: 'bold',
                                 paddingLeft: 10,
@@ -283,18 +283,18 @@ const OrderDetails = ({navigation, route}) => {
                                 // backgroundColor: COLORS.xam1,
                                 alignItems: 'center'
                             }}>
-                            {
-                                [1, 2, 3, 4, 5].map((star)=>(
-                                    <FontAwesome5 
-                                        size={10} 
-                                        solid name='star' 
-                                        color={(star <= item["idProduct"].star) ? COLORS.orange : COLORS.xam2}
-                                        style={{
-                                            marginLeft: 3
-                                        }}
-                                    />
-                                ))
-                            }
+                                {
+                                    [1, 2, 3, 4, 5].map((star) => (
+                                        <FontAwesome5
+                                            size={10}
+                                            solid name='star'
+                                            color={(star <= item["idProduct"].star) ? COLORS.orange : COLORS.xam2}
+                                            style={{
+                                                marginLeft: 3
+                                            }}
+                                        />
+                                    ))
+                                }
                             </View>
                             <View style={{
                                 flexDirection: 'row',
@@ -315,16 +315,16 @@ const OrderDetails = ({navigation, route}) => {
                                     color: COLORS.xam3,
                                     marginLeft: 5,
                                 }}>x{item.itemNum}</Text>
-                                </View>
                             </View>
+                        </View>
                         <View>
+                        </View>
                     </View>
-                </View>
-                </TouchableOpacity>    
+                </TouchableOpacity>
             )
         }
         return (
-            <View style={{width: '100%', marginTop: 5}}>
+            <View style={{ width: '100%', marginTop: 5 }}>
                 <View style={{
                     backgroundColor: COLORS.white,
                     flexDirection: 'row',
@@ -336,17 +336,17 @@ const OrderDetails = ({navigation, route}) => {
                     <Text style={{
                         fontWeight: 'bold',
                         fontSize: 16
-                        }}>Your Order</Text>
+                    }}>Your Order</Text>
                     <View style={{
                         backgroundColor: COLORS.orange,
                         borderRadius: 3,
                         marginLeft: 5,
-                        paddingLeft:5,
+                        paddingLeft: 5,
                         paddingRight: 5,
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                        <Text style={{color: COLORS.white}}>{ItemsNum} items</Text>
+                        <Text style={{ color: COLORS.white }}>{ItemsNum} items</Text>
                     </View>
                 </View>
                 <FlatList
@@ -363,7 +363,7 @@ const OrderDetails = ({navigation, route}) => {
                     renderItem={renderItem}
                     contentContainerStyle={{}}
                 />
-                <MyMessage/>
+                <MyMessage />
             </View>
         )
     }
@@ -399,11 +399,11 @@ const OrderDetails = ({navigation, route}) => {
                     textAlign: 'right',
                     color: COLORS.brand
                 }}>{Voucher[0] !== "" ? Voucher[0].code : "No voucher was used"}</Text>
-                    
+
             </View>
         )
     }
-    
+
     //payment method container
     const MyPaymentMethod = () => {
         return (
@@ -443,10 +443,10 @@ const OrderDetails = ({navigation, route}) => {
 
 
     //show total payment
-    const OrderTotal = ({Voucher}) =>{
-        const [hide, setHide]=useState(false);
-        const HiddenOrderInfo=()=>{
-            return(
+    const OrderTotal = ({ Voucher }) => {
+        const [hide, setHide] = useState(false);
+        const HiddenOrderInfo = () => {
+            return (
                 <View>
                     {/* total amount */}
                     <View style={{
@@ -455,7 +455,7 @@ const OrderDetails = ({navigation, route}) => {
                         alignItems: 'center',
                         paddingRight: 20,
                     }}>
-                        
+
                         <Text style={{
                             width: '30%',
                             fontSize: 14,
@@ -466,9 +466,9 @@ const OrderDetails = ({navigation, route}) => {
                             width: '70%',
                             textAlign: 'right',
                         }}>
-                        {
-                            Total-DeliveryFee
-                        }
+                            {
+                                Total - DeliveryFee
+                            }
                         </Text>
                     </View>
                     {/* discount voucher  */}
@@ -478,7 +478,7 @@ const OrderDetails = ({navigation, route}) => {
                         alignItems: 'center',
                         paddingRight: 20,
                     }}>
-                        
+
                         <Text style={{
                             width: '30%',
                             fontSize: 14,
@@ -489,7 +489,7 @@ const OrderDetails = ({navigation, route}) => {
                             width: '70%',
                             textAlign: 'right',
                         }}>
-                        -{Voucher[0].discount}
+                            -{Voucher[0].discount}
                         </Text>
                     </View>
                     {/* delivery fee  */}
@@ -499,7 +499,7 @@ const OrderDetails = ({navigation, route}) => {
                         alignItems: 'center',
                         paddingRight: 20,
                     }}>
-                        
+
                         <Text style={{
                             width: '30%',
                             fontSize: 14,
@@ -510,17 +510,17 @@ const OrderDetails = ({navigation, route}) => {
                             width: '70%',
                             textAlign: 'right',
                         }}>
-                        {
-                            DeliveryFee
-                        }
+                            {
+                                DeliveryFee
+                            }
                         </Text>
-                    </View>    
+                    </View>
                 </View>
-                
+
             )
         }
         return (
-            <View style={{marginTop: 10,}}>
+            <View style={{ marginTop: 10, }}>
                 {/* //order total  */}
                 <View style={{
                     flex: 1,
@@ -545,19 +545,19 @@ const OrderDetails = ({navigation, route}) => {
                             flexDirection: 'row',
                             justifyContent: 'flex-end'
                         }}
-                        onPress={()=> setHide(!hide)}
-                        >
-                        <Text style={{fontSize: 16}}>${Total}  </Text>
+                        onPress={() => setHide(!hide)}
+                    >
+                        <Text style={{ fontSize: 16 }}>${Total}  </Text>
                         <FontAwesome5
                             name="angle-down"
                             size={18}
                             color={COLORS.xam2}
-                            />
+                        />
                     </TouchableOpacity>
                 </View>
                 {
                     hide && (
-                        <HiddenOrderInfo/>
+                        <HiddenOrderInfo />
                     )
                 }
             </View>
@@ -565,10 +565,19 @@ const OrderDetails = ({navigation, route}) => {
     }
 
     //button payment
-    const ContactUs = () =>{
-        return(
-            <TouchableOpacity 
+    const ContactUs = ({ navigation }) => {
+        const CurrentUser = useSelector(state => state.userReducer.user);
+        const handleContactUsPress = () => {
+            axios.get(`${SERVER_URL}/rooms/user/${CurrentUser._id}`)
+                .then((room) => {
+                    // console.log(room["data"]);
+                    navigation.navigate("MyMessage", room["data"])
+                })
+        }
+        return (
+            <TouchableOpacity
                 style={styles.Button}
+                onPress={handleContactUsPress}
             >
                 <LottieView
                     source={require("../components/AnimationIcons/messageOrderDetails.json")}
@@ -578,7 +587,7 @@ const OrderDetails = ({navigation, route}) => {
                     style={{ height: 60 }}
                 />
                 <Text style={{
-                    color: COLORS.xam3, 
+                    color: COLORS.xam3,
                     fontSize: 15,
                     fontWeight: 'bold'
                 }}>
@@ -588,30 +597,12 @@ const OrderDetails = ({navigation, route}) => {
         )
     }
     //button payment
-    const CancelOrder = () =>{
-        const handleConfirmYes =()=>{
-            if(PaymentDetail[0] == ""){
-                const url=`${SERVER_URL}/orders/cancel/${_id}`;
+    const CancelOrder = () => {
+        const handleConfirmYes = () => {
+            if (PaymentDetail[0] == "") {
+                const url = `${SERVER_URL}/orders/cancel/${_id}`;
                 axios.post(url)
-                .then(()=>{
-                    ToastAndroid.showWithGravity(
-                        "Cancel order successfully!",
-                        ToastAndroid.LONG,
-                        ToastAndroid.BOTTOM
-                      );
-                    navigation.navigate("MyOrders")
-                })
-                .catch((err)=> {
-                    console.log(err+ " :ERROR!");
-                })
-            }else{
-
-                const url=`${SERVER_URL}/stripe/v1/refunds`;
-                axios.post(url, {paymentIntent: PaymentDetail[0].paymentIntent.id})
-                .then((refundsInfo)=>{
-                    const url=`${SERVER_URL}/orders/cancel/${_id}`;
-                    axios.post(url, refundsInfo)
-                    .then(()=>{
+                    .then(() => {
                         ToastAndroid.showWithGravity(
                             "Cancel order successfully!",
                             ToastAndroid.LONG,
@@ -619,36 +610,54 @@ const OrderDetails = ({navigation, route}) => {
                         );
                         navigation.navigate("MyOrders")
                     })
-                    .catch((err)=> {
-                        console.log(err+ " :ERROR!");
+                    .catch((err) => {
+                        console.log(err + " :ERROR!");
                     })
-                })
-                .catch((err)=> {
-                    console.log(err+ " :ERROR!");
-                })
+            } else {
+
+                const url = `${SERVER_URL}/stripe/v1/refunds`;
+                axios.post(url, { paymentIntent: PaymentDetail[0].paymentIntent.id })
+                    .then((refundsInfo) => {
+                        const url = `${SERVER_URL}/orders/cancel/${_id}`;
+                        axios.post(url, refundsInfo)
+                            .then(() => {
+                                ToastAndroid.showWithGravity(
+                                    "Cancel order successfully!",
+                                    ToastAndroid.LONG,
+                                    ToastAndroid.BOTTOM
+                                );
+                                navigation.navigate("MyOrders")
+                            })
+                            .catch((err) => {
+                                console.log(err + " :ERROR!");
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err + " :ERROR!");
+                    })
             }
         }
-        const handleCancelOrder =()=>{
+        const handleCancelOrder = () => {
             Alert.alert(
                 "Are you sure?",
                 "You want to cancel your order?",
                 [
-                  {
-                    text: "NO",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  },
-                  { text: "YES", onPress: handleConfirmYes }
+                    {
+                        text: "NO",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                    },
+                    { text: "YES", onPress: handleConfirmYes }
                 ]
-              );
+            );
         }
-        return(
-            <TouchableOpacity 
+        return (
+            <TouchableOpacity
                 style={styles.Button}
                 onPress={handleCancelOrder}
             >
                 <Text style={{
-                    color: COLORS.xam3, 
+                    color: COLORS.xam3,
                     fontSize: 15,
                     fontWeight: 'bold'
                 }}>
@@ -657,8 +666,8 @@ const OrderDetails = ({navigation, route}) => {
             </TouchableOpacity>
         )
     }
-    const OrderIdContainer=()=>{
-        return(
+    const OrderIdContainer = () => {
+        return (
             <View style={{
                 // height: 100,
                 backgroundColor: COLORS.white,
@@ -673,7 +682,7 @@ const OrderDetails = ({navigation, route}) => {
                     alignItems: 'center',
                     paddingRight: 20,
                 }}>
-                    
+
                     <Text style={{
                         width: '30%',
                         fontSize: 15,
@@ -697,7 +706,7 @@ const OrderDetails = ({navigation, route}) => {
                             alignItems: 'center',
                             paddingRight: 20,
                         }}>
-                            
+
                             <Text style={{
                                 width: '30%',
                                 fontSize: 14,
@@ -708,13 +717,13 @@ const OrderDetails = ({navigation, route}) => {
                                 width: '70%',
                                 textAlign: 'right',
                             }}>
-                            {
-                                date.getDate()+
-                                    "-"+(date.getMonth()+1)+
-                                    "-"+date.getFullYear()+
-                                    " "+date.getHours()+
-                                    ":"+(date.getMinutes()-1)+""
-                            }
+                                {
+                                    date.getDate() +
+                                    "-" + (date.getMonth() + 1) +
+                                    "-" + date.getFullYear() +
+                                    " " + date.getHours() +
+                                    ":" + (date.getMinutes() - 1) + ""
+                                }
                             </Text>
                         </View>
                     )
@@ -726,7 +735,7 @@ const OrderDetails = ({navigation, route}) => {
                     alignItems: 'center',
                     paddingRight: 20,
                 }}>
-                    
+
                     <Text style={{
                         width: '30%',
                         fontSize: 14,
@@ -737,17 +746,17 @@ const OrderDetails = ({navigation, route}) => {
                         width: '70%',
                         textAlign: 'right',
                     }}>
-                    {
-                        date.getDate()+
-                              "-"+(date.getMonth()+1)+
-                              "-"+date.getFullYear()+
-                              " "+date.getHours()+
-                              ":"+date.getMinutes()
-                    }
+                        {
+                            date.getDate() +
+                            "-" + (date.getMonth() + 1) +
+                            "-" + date.getFullYear() +
+                            " " + date.getHours() +
+                            ":" + date.getMinutes()
+                        }
                     </Text>
                 </View>
                 {
-                    Status=="4" && (
+                    Status == "4" && (
                         <View style={{
                             flex: 1,
                             // height: 40,
@@ -755,7 +764,7 @@ const OrderDetails = ({navigation, route}) => {
                             alignItems: 'center',
                             paddingRight: 20,
                         }}>
-                            
+
                             <Text style={{
                                 width: '30%',
                                 fontSize: 14,
@@ -766,9 +775,9 @@ const OrderDetails = ({navigation, route}) => {
                                 width: '70%',
                                 textAlign: 'right',
                             }}>
-                            {
-                                CancelDate
-                            }
+                                {
+                                    CancelDate
+                                }
                             </Text>
                         </View>
 
@@ -779,32 +788,32 @@ const OrderDetails = ({navigation, route}) => {
     }
 
     //return-refund received order container
-    const RefundReceivedContainer =()=>{
-        return(
+    const RefundReceivedContainer = () => {
+        return (
             <View style={{
                 flexDirection: 'row',
             }}>
-                <TouchableOpacity 
-                        style={styles.ButtonReturn}
-                    >
-                        <Text style={{
-                            color: COLORS.xam3, 
-                            fontSize: 15,
-                            fontWeight: 'bold'
-                        }}>
-                            Return/Refund
-                        </Text>
+                <TouchableOpacity
+                    style={styles.ButtonReturn}
+                >
+                    <Text style={{
+                        color: COLORS.xam3,
+                        fontSize: 15,
+                        fontWeight: 'bold'
+                    }}>
+                        Return/Refund
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                        style={styles.ButtonReceived}
-                    >
-                        <Text style={{
-                            color: COLORS.primary, 
-                            fontSize: 15,
-                            fontWeight: 'bold'
-                        }}>
-                            Order Received
-                        </Text>
+                <TouchableOpacity
+                    style={styles.ButtonReceived}
+                >
+                    <Text style={{
+                        color: COLORS.primary,
+                        fontSize: 15,
+                        fontWeight: 'bold'
+                    }}>
+                        Order Received
+                    </Text>
                 </TouchableOpacity>
             </View>
         )
@@ -815,35 +824,35 @@ const OrderDetails = ({navigation, route}) => {
             flex: 1,
             paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
         }}>
-            <Header/>
+            <Header />
             <ScrollView style={styles.Ordercontainer}>
                 {
                     Status == "0" && (
-                        <OnWaitingConfirm/>
+                        <OnWaitingConfirm />
                     )
                 }
                 {
                     Status == "4" && (
-                        <OnCancelStatus/> 
+                        <OnCancelStatus />
                     )
                 }
-                <MyInfo/>
-                <MyItemsOrder/>
-                <MyVoucher/>
-                <MyPaymentMethod/>
-                <OrderTotal Voucher={Voucher}/>
-                <OrderIdContainer/>
+                <MyInfo />
+                <MyItemsOrder />
+                <MyVoucher />
+                <MyPaymentMethod />
+                <OrderTotal Voucher={Voucher} />
+                <OrderIdContainer />
                 {
-                   (Status == "0" || Status == "1" ) && (
-                       <CancelOrder/>
-                   )
+                    (Status == "0" || Status == "1") && (
+                        <CancelOrder />
+                    )
                 }
-                <ContactUs/>
+                <ContactUs navigation={navigation} />
 
             </ScrollView>
             {
-                (Status == "2" || Status == "3" ) && (
-                    <RefundReceivedContainer/>
+                (Status == "2" || Status == "3") && (
+                    <RefundReceivedContainer />
                 )
             }
         </View>
@@ -852,23 +861,23 @@ const OrderDetails = ({navigation, route}) => {
 export default OrderDetails
 
 const styles = StyleSheet.create({
-    Ordercontainer:{
+    Ordercontainer: {
         flex: 1,
         marginBottom: 60,
     },
-    updown:{
+    updown: {
         fontWeight: 'bold',
         fontSize: 20,
         color: COLORS.white,
-        
+
     },
-    MyInfoContainer:{
+    MyInfoContainer: {
         flexDirection: 'row',
         backgroundColor: COLORS.white,
         elevation: 2,
         paddingBottom: 8,
     },
-    Info:{
+    Info: {
         marginLeft: 15,
         width: '80%',
         // backgroundColor: COLORS.xam2
@@ -881,7 +890,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    Button:{
+    Button: {
         width: '95%',
         height: 50,
         marginLeft: 10,
@@ -894,7 +903,7 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         // marginBottom: 30,
     },
-    ButtonReturn:{
+    ButtonReturn: {
         width: '45%',
         height: 50,
         // padding: 15,
@@ -907,7 +916,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         marginBottom: 60,
     },
-    ButtonReceived:{
+    ButtonReceived: {
         width: '45%',
         height: 50,
         // padding: 15,
