@@ -25,6 +25,8 @@ import Voucher from '../screens/Voucher'
 import MyVouchers from '../screens/MyVouchers'
 import SpinGame from '../screens/SpinGame'
 import MyMessage from '../screens/MyMessage'
+import MyProfile from '../screens/MyProfile'
+import ChangePass from '../screens/ChangePass'
 const HomeNavigation = () => {
     const Stack=createStackNavigator();
     const screenOptions={
@@ -59,6 +61,8 @@ const MeNavigation = () => {
                 <Stack.Screen name = 'OrderDetails' component = {OrderDetails} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'MyMessage' component = {MyMessage} screenOptions={screenOptions}/>
                 <Stack.Screen name = 'RatingProducts' component = {RatingProducts} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'MyProfile' component = {MyProfile} screenOptions={screenOptions}/>
+                <Stack.Screen name = 'ChangePass' component = {ChangePass} screenOptions={screenOptions}/>
             </Stack.Navigator>
     )
 }

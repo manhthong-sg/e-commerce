@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, StatusBar, FlatList, Image, Button, } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ToastAndroid, TextInput, StatusBar, FlatList, Image, Button, } from 'react-native'
 import SERVER_URL from '../api'
 import axios from 'axios';
 import { COLORS, SIZES, icons, images } from '../constants'
@@ -203,6 +203,19 @@ const Voucher = ({ navigation }) => {
             </>
         )
     }
+    const handleUseCodeVoucher=()=>{
+        voucherData.map(item=>{
+            if(code==item.code){
+                navigation.navigate("Order", item)
+            }else{
+                ToastAndroid.showWithGravity(
+                    "Voucher is not exist",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.BOTTOM
+                );
+            }
+        })
+    }
     //main return 
     return (
         <View style={styles.VoucherContainer}>
@@ -235,7 +248,9 @@ const Voucher = ({ navigation }) => {
                         width: 60,
                         justifyContent: 'center',
                         alignItems: 'center',
-                    }}>
+                    }}
+                    onPress={handleUseCodeVoucher}
+                    >
                         <Text style={{
                             color: COLORS.primary,
                         }}>Apply</Text>
