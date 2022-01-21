@@ -39,6 +39,7 @@ const staff = new Schema({
     role: {
         type: 'string', enum: ['ADMIN', 'KHO', 'SHIPPER', 'KE TOAN']
     },
+    
 
 }, { timestamps: true ,versionKey: false })
 module.exports = mongoose.model("Staff", staff);

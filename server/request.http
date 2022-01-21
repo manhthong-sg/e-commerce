@@ -41,3 +41,23 @@ Post http://localhost:3000/bomaylaadmin/edit/2
     "role":"",
     "password":"",
 }
+
+################################
+###update
+Post http://localhost:3001/vouchers/update/61acd9ee397fa9f04e1cdee7
+Content-Type: application/json
+
+{
+    "_id": "61acd9ee397fa9f04e1cdee7",
+    "name": "Voucher discount 10% price",
+    "code": "ELAP10PERCENT",
+    "image": "voucher.jpg",
+    "type": "percent",
+    "value": 0.1,
+    "limit": 10,
+    "start": "5-12-2021",
+    "end": "15-1-2022",
+    "description": "This voucher will discount your order 10%"
+
+}
+

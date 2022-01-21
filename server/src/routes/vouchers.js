@@ -14,5 +14,8 @@ router.post('/', vouchersController.addVoucher)
 
 // get /orders/
 router.get('/', vouchersController.index)
+router.post("/remove/:idVoucher", vouchersController.removeVoucher)
+router.post("/update/:idVoucher", vouchersController.updateVoucher)
+
 
 module.exports=router;

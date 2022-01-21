@@ -49,6 +49,7 @@ const Order=new Schema({
         ref: "Payment"
       },
       CancelDate: String,
+      RefundDate: String,
       Status: {
         type: String,
         required: true,

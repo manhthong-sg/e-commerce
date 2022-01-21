@@ -1,4 +1,5 @@
 const Admin = require('../models/Admin')
+const Order = require('../models/Order')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
@@ -104,6 +105,30 @@ class AdminController {
             .catch((err)=> res.json({success: false, message: err}));
     }
 
+    //[GET] /orders
+    getOrdersByStatus(req, res){
+        // let {statusOrder} = req.params;
+        // console.log(statusOrder);
+        Order.find({Status:  req.params.statusID})
+            .then(order=> res.json(order))
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+    }
+    removeStaff(req, res){
+        Admin.findOneAndDelete({_id: req.params.idStaff})
+        .then(order=> res.json(order))
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+    }
+    updateAdmin(req, res) {
+        let a=req.body
+        Admin.findOneAndUpdate({_id: req.params.idStaff}, a)
+        // console.log(a);
+        .then( (data)=> {
+            res.json({status: "success", data: data})
+            // res.redirect('/products')
+        })
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+
+    }
 }
 
 module.exports = new AdminController;

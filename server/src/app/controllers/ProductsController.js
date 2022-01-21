@@ -69,6 +69,24 @@ class ProductsController {
             .catch(err=> res.json({"Err": err}))
     }
 
+    removeProduct(req, res){
+        Product.findOneAndDelete({_id: req.params.idProduct})
+        .then(order=> res.json(order))
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+    }
+
+    updateProduct(req, res) {
+        let a=req.body
+        Product.findOneAndUpdate({_id: req.params.idProduct}, a)
+        // console.log(a);
+        .then( (data)=> {
+            res.json({status: "success", data: data})
+            // res.redirect('/products')
+        })
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+
+    }
+
 }
 
 module.exports=new ProductsController;

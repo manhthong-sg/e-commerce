@@ -117,7 +117,23 @@ class UsersController {
             .catch(err => console.log(err))
 
     }
+    removeUser(req, res){
+        User.findOneAndDelete({_id: req.params.idUser})
+        .then(order=> res.json(order))
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+    }
 
+    updateUser(req, res) {
+        let a=req.body
+        User.findOneAndUpdate({_id: req.params.idUser}, a)
+        // console.log(a);
+        .then( (data)=> {
+            res.json({status: "success", data: data})
+            // res.redirect('/products')
+        })
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+
+    }
 
 }
 module.exports = new UsersController;
