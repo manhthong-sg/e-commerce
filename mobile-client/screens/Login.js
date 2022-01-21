@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}) => {
     const [hidePassword, setHidePassword]=useState(true);
-    
+    // console.log(SERVER_URL);
     const dispatch = useDispatch();
 
     const setUser=(user)=> dispatch({

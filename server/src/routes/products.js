@@ -63,5 +63,8 @@ router.post('/upload',multipleUpload , productsController.uploadProduct)
 
 router.post('/rating', productsController.ratingProduct)
 
+router.post("/remove/:idProduct", productsController.removeProduct)
+router.post("/udpate/:idProduct", productsController.updateProduct)
+
 //exports
 module.exports=router;

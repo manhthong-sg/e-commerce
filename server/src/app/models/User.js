@@ -52,7 +52,7 @@ const User = new Schema(
     },
     profilePicture: {
       type: String,
-      default: "",
+      default: "defaultAvatar_male.png",
     },
     spinNum: {
       type: Number,

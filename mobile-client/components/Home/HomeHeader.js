@@ -1,11 +1,15 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, SafeAreaView, Animated} from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image,ToastAndroid, TouchableOpacity, SafeAreaView, Animated} from 'react-native'
 import { COLORS, SIZES, images } from '../../constants'
 import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { NavigationContainer } from '@react-navigation/native';
+import axios from 'axios';
+import SERVER_URL from '../../api'
+import { useSelector, useDispatch } from 'react-redux'
 
 const HomeHeader = ({navigation}) => {
+    const CurrentUser = useSelector(state=> state.userReducer.user);
 
     const scrollX = new Animated.Value(0);
     const [banner, setBanner]=useState([
@@ -16,6 +20,21 @@ const HomeHeader = ({navigation}) => {
 
 
     ]);
+    const handlePressMessage=()=>{
+        if(CurrentUser){
+            axios.get(`${SERVER_URL}/rooms/user/${CurrentUser._id}`)
+            .then((room)=>{
+                // console.log(room["data"]);
+                navigation.navigate("MyMessage", room["data"])
+            })
+        }else{
+            ToastAndroid.showWithGravity(
+                "Sorry, Please login to chat with us",
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+        }
+    }
     function renderDots() {
 
         const dotPosition = Animated.divide(scrollX, SIZES.width)
@@ -128,12 +147,13 @@ const HomeHeader = ({navigation}) => {
                 />
                 <TouchableOpacity 
                     style={styles.RightIcon}
+                    onPress={handlePressMessage}
                 >
-                    <Ionicons
+                    <FontAwesome5
+                        solid
                         size={25}
                         color={COLORS.white}
-                        name='search'
-                        //onPress={()=>setHidePassword(!hidePassword)}
+                        name='comment-dots'
                     />
                 </TouchableOpacity>   
             </View>

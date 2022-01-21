@@ -43,6 +43,56 @@ let cartReducer= (state = defaultState, action)=>{
                cart
             }
         }
+        case 'SET_INSCREASE':{
+            //get id product that want to increase
+            let idUpdate=action.payload
+            // console.log(idUpdate);
+            // console.log(state.cart.items);
+            let items = state.cart.items;
+            let priceTotal=state.cart.total;
+            items.map(item => {
+                if(item.idProduct._id==idUpdate){
+                    //tang itemNum cua sp do len 1
+                    item.itemNum+=1;
+                    
+                    //cong gia tien no len khi tang 1 sp
+                    priceTotal+=item.idProduct.price
+                }
+            });
+            cart= {
+                ...state.cart,
+                itemNum: state.cart.itemNum+1,
+                total: priceTotal,
+            }
+            return {
+                cart
+            }
+        }
+        case 'SET_DESCREASE':{
+            //get id product that want to increase
+            let idUpdate=action.payload
+            // console.log(idUpdate);
+            // console.log(state.cart.items);
+            let items = state.cart.items;
+            let priceTotal=state.cart.total;
+            items.map(item => {
+                if(item.idProduct._id==idUpdate){
+                    //tang itemNum cua sp do len 1
+                    item.itemNum-=1;
+                    
+                    //cong gia tien no len khi tang 1 sp
+                    priceTotal-=item.idProduct.price
+                }
+            });
+            cart= {
+                ...state.cart,
+                itemNum: state.cart.itemNum-1,
+                total: priceTotal,
+            }
+            return {
+                cart
+            }
+        }
         default: 
             return state;
     }

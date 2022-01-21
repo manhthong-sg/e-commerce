@@ -6,7 +6,10 @@ class ProductsController {
     //[GET] /products
     index(req, res){
         Product.find({})
-            .then(products=> res.json(products))
+            .then(products=> {
+                products.sort((firstItem, secondItem) => secondItem.price - firstItem.price);
+                res.json(products)
+            })
             .catch((err)=> console.log("Log products FAIL!"+err));
     }
 
@@ -32,7 +35,10 @@ class ProductsController {
     //[GET] categories bussiness
     getProductsCategories(req, res){
         Product.find({'description.category': req.params.categoryID})
-            .then(products=> res.json(products))
+            .then(products=> {
+                var tempData=products.sort((firstItem, secondItem) => secondItem.price - firstItem.price);
+                res.json(tempData)
+            })
             .catch((err)=> console.log("Log products FAIL!"+err));
     }
 
@@ -61,6 +67,24 @@ class ProductsController {
                 res.json(product);
             })
             .catch(err=> res.json({"Err": err}))
+    }
+
+    removeProduct(req, res){
+        Product.findOneAndDelete({_id: req.params.idProduct})
+        .then(order=> res.json(order))
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+    }
+
+    updateProduct(req, res) {
+        let a=req.body
+        Product.findOneAndUpdate({_id: req.params.idProduct}, a)
+        // console.log(a);
+        .then( (data)=> {
+            res.json({status: "success", data: data})
+            // res.redirect('/products')
+        })
+            .catch((err)=> console.log("Log orders FAIL!"+err));
+
     }
 
 }

@@ -63,6 +63,14 @@ const Product = new Schema({
         //   ref: "Cart"
         // }
       },
+      ngayNhap: {
+        type: String,
+        default: new Date()
+      },
+      giaNhap: {
+        type: Number,
+        default: 500
+      }
       
     //   comment: {
     //       type: String,

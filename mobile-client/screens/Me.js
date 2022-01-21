@@ -110,7 +110,9 @@ const Me = ({route, navigation}) => {
                             height: 40,
                         
                             // backgroundColor: COLORS.orange,
-                        }}>
+                        }}
+                            onPress={()=>navigation.navigate("MyProfile")}
+                        >
                             <FontAwesome5
                                 solid
                                 name="user-circle"
@@ -123,9 +125,9 @@ const Me = ({route, navigation}) => {
                                 fontSize: 16,
                                 color: COLORS.xam3,
                                 fontWeight: 'bold',
-                                left: -60,
+                                left: -75,
                                 // backgroundColor: COLORS.orange
-                            }}>Edit my profile</Text>
+                            }}>My Profile</Text>
                             <FontAwesome5
                                 solid
                                 name="angle-right"

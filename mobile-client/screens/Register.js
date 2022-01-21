@@ -136,7 +136,12 @@ const Register = ({navigation}) => {
                         } else if(values.password != values.confirmPW){
                             handleMessage('Make sure confirm password is same with password')
                             setSubmitting(false)
-                        } else{
+                        } 
+                        else if(values.phone.length <9 || values.phone.length>11){
+                            handleMessage('Your phone number is not valid')
+                            setSubmitting(false)
+                        }
+                        else{
                             handleRegister(values, setSubmitting)
 
                         }

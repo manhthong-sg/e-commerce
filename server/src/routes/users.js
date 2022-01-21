@@ -26,7 +26,8 @@ router.get('/register', (req, res)=>{
             </div>
         `)
 })
-
+router.post('/remove/:idUser', usersController.removeUser)
+router.post('/update/:idUser', usersController.updateUser)
 // Post /users/auth 
 router.post('/auth', usersController.auth)
 

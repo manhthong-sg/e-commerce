@@ -28,7 +28,7 @@ const Order = ({navigation, route}) => {
     const [cartData, setCartData]=useState(null);
 
     //address usestate
-    const [province, setProvince]= useState();
+    const [province, setProvince]= useState(CurrentUser.address.province);
     const [district, setDistrict]= useState();
     const [ward, setWard]= useState();
 
